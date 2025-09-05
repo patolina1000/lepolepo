@@ -37,6 +37,26 @@
       "dest": "/funil_completo/up1.html"
     },
     {
+      "src": "/up2",
+      "dest": "/funil_completo/up2.html"
+    },
+    {
+      "src": "/up3",
+      "dest": "/funil_completo/up3.html"
+    },
+    {
+      "src": "/back1",
+      "dest": "/funil_completo/back1.html"
+    },
+    {
+      "src": "/back2",
+      "dest": "/funil_completo/back2.html"
+    },
+    {
+      "src": "/back3",
+      "dest": "/funil_completo/back3.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/public/$1"
     }
