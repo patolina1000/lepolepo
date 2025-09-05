@@ -652,10 +652,10 @@
 </div>
 
 <!-- Adicione o jQuery e o Slick Carousel JS -->
-<script src="../../code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../../cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 <!-- QRCode.js para gerar QR Codes -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"></script>
 
 <script>
     function revealOffer() {
@@ -775,6 +775,13 @@
             // Define o código PIX no input
             pixCodeInput.value = pixCode;
             
+            // Verifica se QRCode está disponível
+            if (typeof QRCode === 'undefined') {
+                console.error('QRCode library not loaded');
+                alert('Erro: Biblioteca QRCode não carregada. Recarregue a página.');
+                return;
+            }
+            
             // Gera o QR Code
             QRCode.toCanvas(qrCanvas, pixCode, {
                 width: 200,
@@ -784,7 +791,12 @@
                     light: '#FFFFFF'
                 }
             }, function (error) {
-                if (error) console.error('Erro ao gerar QR Code:', error);
+                if (error) {
+                    console.error('Erro ao gerar QR Code:', error);
+                    alert('Erro ao gerar QR Code: ' + error.message);
+                } else {
+                    console.log('QR Code gerado com sucesso');
+                }
             });
             
             // Mostra o modal
@@ -815,33 +827,54 @@
             }
         }
         
+        // Função para aguardar bibliotecas carregarem
+        function waitForLibraries() {
+            return new Promise((resolve) => {
+                const checkLibraries = () => {
+                    if (typeof QRCode !== 'undefined' && typeof $ !== 'undefined') {
+                        console.log('Todas as bibliotecas carregadas com sucesso');
+                        resolve();
+                    } else {
+                        console.log('Aguardando bibliotecas...');
+                        setTimeout(checkLibraries, 100);
+                    }
+                };
+                checkLibraries();
+            });
+        }
+
         // Event Listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Botão para abrir modal PIX
-            const buyButtons = document.querySelectorAll('#buy-button, #buy-button-bottom');
-            buyButtons.forEach(button => {
-                // Remove todos os event listeners existentes
-                button.onclick = null;
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Botão clicado - abrindo modal PIX');
-                    showPixModal();
-                    return false;
+            // Aguarda bibliotecas carregarem
+            waitForLibraries().then(() => {
+                console.log('Inicializando event listeners...');
+                
+                // Botão para abrir modal PIX
+                const buyButtons = document.querySelectorAll('#buy-button, #buy-button-bottom');
+                buyButtons.forEach(button => {
+                    // Remove todos os event listeners existentes
+                    button.onclick = null;
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('Botão clicado - abrindo modal PIX');
+                        showPixModal();
+                        return false;
+                    });
                 });
-            });
-            
-            // Botão para fechar modal
-            document.getElementById('closePixModal').addEventListener('click', hidePixModal);
-            
-            // Botão para copiar código PIX
-            document.getElementById('copyPixCode').addEventListener('click', copyPixCode);
-            
-            // Fechar modal clicando fora dele
-            document.getElementById('pixModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    hidePixModal();
-                }
+                
+                // Botão para fechar modal
+                document.getElementById('closePixModal').addEventListener('click', hidePixModal);
+                
+                // Botão para copiar código PIX
+                document.getElementById('copyPixCode').addEventListener('click', copyPixCode);
+                
+                // Fechar modal clicando fora dele
+                document.getElementById('pixModal').addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        hidePixModal();
+                    }
+                });
             });
         });
     </script>
