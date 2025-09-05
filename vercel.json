@@ -23,7 +23,7 @@
   ],
   "env": {
     "NODE_ENV": "production",
-    "GATEWAY": "pushinpay",
+    "GATEWAY": "syncpay",
     "ENVIRONMENT": "production",
     "GENERATE_QR_CODE_ON_MOBILE": "true",
     "SYNCPAY_CLIENT_ID": "708ddc0b-357d-4548-b158-615684caa616",
