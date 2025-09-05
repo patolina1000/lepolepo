@@ -52,42 +52,6 @@
   </script>
   <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=916142607046004&ev=PageView&noscript=1"/></noscript>
 
-  <!-- ===== UTMify ===== -->
-  <script
-    src="https://cdn.utmify.com.br/scripts/utms/latest.js"
-    data-utmify-prevent-xcod-sck
-    data-utmify-prevent-subids
-    async defer></script>
-
-  <!-- ===== Script UTMs ===== -->
-  <script>
-  (function(){
-    const qs = new URLSearchParams(location.search);
-    const utm = {};
-    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid','gclid']
-      .forEach(k => { if (qs.get(k)) utm[k] = qs.get(k); });
-
-    const clean = o => Object.fromEntries(Object.entries(o).filter(([,v]) => v!=null && v!==''));
-    const withParams = (url, params) => {
-      const u = new URL(url, location.origin);
-      Object.entries(clean(params)).forEach(([k,v]) => u.searchParams.set(k,v));
-      return u.toString();
-    };
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const p = document.querySelector('#btnPrivacy');
-      if (p) {
-        const href = withParams('/privacy', utm);
-        p.setAttribute('href', href);
-      }
-      const t = document.querySelector('#btnTelegram');
-      if (t) {
-        const href = withParams('/redirect', {...utm, from:'links'});
-        t.setAttribute('href', href);
-      }
-    });
-  })();
-  </script>
 </head>
 <body>
   <div class="stack">

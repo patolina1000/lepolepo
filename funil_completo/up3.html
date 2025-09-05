@@ -5,21 +5,6 @@
 <head>
 
     
-    <script
-  src="https://cdn.utmify.com.br/scripts/utms/latest.js"
-  data-utmify-prevent-xcod-sck
-  data-utmify-prevent-subids
-  async
-  defer
-></script>
-<script>
-  window.pixelId = "686565a96b65aced207f4d9f";
-  var a = document.createElement("script");
-  a.setAttribute("async", "");
-  a.setAttribute("defer", "");
-  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
-  document.head.appendChild(a);
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oferta Especial</title>
@@ -610,8 +595,8 @@
 </div>
 
 <!-- Adicione o jQuery e o Slick Carousel JS -->
-<script src="../../code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../../cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 <!-- QRCode.js para gerar QR Codes -->
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 
@@ -754,11 +739,23 @@
                     const checkLibraries = () => {
                         attempts++;
                         
-                        if (typeof QRCode !== 'undefined' && typeof $ !== 'undefined' && window.universalPayment) {
+                        const qrCodeReady = typeof QRCode !== 'undefined';
+                        const jqueryReady = typeof $ !== 'undefined';
+                        const universalPaymentReady = window.universalPayment && typeof window.universalPayment.createPixTransaction === 'function';
+                        const syncPayReady = window.syncPay && typeof window.syncPay.createPixTransaction === 'function';
+                        
+                        console.log(`🔍 UP3: Verificando bibliotecas (tentativa ${attempts}):`, {
+                            QRCode: qrCodeReady,
+                            jQuery: jqueryReady,
+                            universalPayment: universalPaymentReady,
+                            syncPay: syncPayReady
+                        });
+                        
+                        if (qrCodeReady && jqueryReady && (universalPaymentReady || syncPayReady)) {
                             console.log('✅ UP3: Todas as bibliotecas carregadas');
                             resolve();
                         } else if (attempts >= maxAttempts) {
-                            console.warn('⚠️ UP3: Timeout aguardando bibliotecas');
+                            console.warn('⚠️ UP3: Timeout aguardando bibliotecas - continuando mesmo assim');
                             resolve();
                         } else {
                             setTimeout(checkLibraries, 100);
@@ -822,8 +819,18 @@
                 try {
                     this.showLoading();
                     
-                    // Usar integração universal real
+                    // Verificar se há serviço de pagamento disponível
                     const paymentService = window.universalPayment || window.syncPay;
+                    
+                    if (!paymentService) {
+                        console.error('❌ UP3: Nenhum serviço de pagamento disponível!');
+                        console.log('🔍 UP3: Verificando estado das bibliotecas:');
+                        console.log('  - window.universalPayment:', typeof window.universalPayment);
+                        console.log('  - window.syncPay:', typeof window.syncPay);
+                        throw new Error('Serviço de pagamento não disponível');
+                    }
+                    
+                    console.log('✅ UP3: Serviço de pagamento encontrado:', paymentService.constructor.name);
                     const pixData = await paymentService.createPixTransaction(amount, description, {
                         name: 'Cliente Upsell 3',
                         cpf: '12345678901',

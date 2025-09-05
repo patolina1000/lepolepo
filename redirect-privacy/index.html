@@ -98,15 +98,6 @@ fbq('init','916142607046004'); fbq('track','PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=916142607046004&ev=PageView&noscript=1"/></noscript>
 
-<!-- ===== Pixel UTMify (como enviado) ===== -->
-<script>
-  window.pixelId = "68ab5af11e86ba9ece216b63";
-  var a = document.createElement("script");
-  a.setAttribute("async", "");
-  a.setAttribute("defer", "");
-  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
-  document.head.appendChild(a);
-</script>
 
 </head>
 <body>
@@ -186,19 +177,6 @@ fbq('init','916142607046004'); fbq('track','PageView');
     }, STEP);
   })();
 
-  // ===== Helpers UTM =====
-  function getUTMs() {
-    const qs = new URLSearchParams(location.search);
-    const keys = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid','gclid'];
-    const utm = {};
-    keys.forEach(k => { if (qs.get(k)) utm[k] = qs.get(k); });
-    return utm;
-  }
-  function withParams(url, params){
-    const u = new URL(url, location.origin);
-    Object.entries(params || {}).forEach(([k,v]) => { if (v!=null && v!=='') u.searchParams.set(k,v); });
-    return u.toString();
-  }
 
   // ===== Fluxo =====
   const form = document.getElementById('nameForm');
