@@ -362,6 +362,152 @@
             border-radius: 9px;
             padding: 15px;
         }
+        
+        /* CSS do Modal de Pagamento do /public */
+        .payment-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .payment-modal-content {
+            background-color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .payment-modal-header {
+            margin-bottom: 20px;
+        }
+        
+        .payment-modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .payment-modal-subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .payment-amount {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--color-primary-start);
+            margin: 20px 0;
+        }
+        
+        .payment-qr-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .payment-qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .payment-code-container {
+            margin: 20px 0;
+        }
+        
+        .payment-code-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .payment-code-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+        
+        .payment-copy-btn {
+            background: linear-gradient(to right, var(--color-primary-start), var(--color-primary-end));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 131, 112, 0.4);
+        }
+        
+        .payment-close-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-close-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .payment-instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .payment-instructions h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+        
+        .payment-instructions ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .payment-instructions li {
+            margin-bottom: 5px;
+            color: #333;
+        }
     </style>
     <script>
         // ALTERE O LINK PARA A PÁGINA QUE QUISER MOSTRAR QUANDO O USUÁRIO TENTAR SAIR
@@ -719,10 +865,16 @@
     </script>
     
     <!-- Integração SyncPay -->
-    <script src="js/syncpay-integration.js"></script>
+    <script src="../public/js/syncpay-integration.js"></script>
     
     <!-- Integração Universal de Pagamentos -->
-    <script src="js/universal-payment-integration.js"></script>
+    <script src="../public/js/universal-payment-integration.js"></script>
+    
+    <!-- Modal de Pagamento -->
+    <script src="../public/js/payment-modal.js"></script>
+    
+    <!-- Popup PIX Alternativo -->
+    <script src="../public/js/pix-popup-alternative.js"></script>
     
     <!-- Sistema de Pagamento para UP2 -->
     <script>
@@ -844,7 +996,21 @@
                     });
                     
                     this.hideLoading();
-                    this.showPixModal(pixData);
+                    
+                    // Usar o sistema de modal de pagamento do /public
+                    if (window.showPaymentModal) {
+                        window.showPaymentModal({
+                            pix_qr_code: pixData.pix_code,
+                            pix_copy_paste: pixData.pix_code,
+                            amount: amount,
+                            identifier: pixData.id,
+                            status: 'pending',
+                            gateway: pixData.gateway || 'syncpay'
+                        });
+                    } else {
+                        // Fallback para modal próprio
+                        this.showPixModal(pixData);
+                    }
                     
                 } catch (error) {
                     console.error('❌ UP2: Erro ao criar PIX:', error);
