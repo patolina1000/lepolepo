@@ -571,9 +571,47 @@
     <a id="buy-button-bottom" class="btn-upsell" href="https://go.fortpayapp.com.br/fqxm5eclja">LIGAR PARA VÍRGINIA</a>
 </div>
 
+<!-- Modal PIX -->
+<div id="pixModal" class="pix-modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8);">
+    <div class="pix-modal-content" style="background-color: #fefefe; margin: 5% auto; padding: 30px; border-radius: 15px; max-width: 450px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+        <div class="pix-modal-header">
+            <h2 class="pix-modal-title" style="color: #333; margin-bottom: 10px;">💳 Pagamento via PIX</h2>
+            <p class="pix-modal-subtitle" style="color: #666; margin-bottom: 20px;">Escaneie o QR Code ou copie o código PIX</p>
+        </div>
+        
+        <div class="pix-amount" style="font-size: 24px; font-weight: bold; color: #27ae60; margin-bottom: 20px;">R$ 17,00</div>
+        
+        <div class="pix-qr-container" style="margin: 20px 0;">
+            <canvas id="pixQRCode" class="pix-qr-code" style="border: 1px solid #ddd; border-radius: 8px;"></canvas>
+        </div>
+        
+        <div class="pix-code-container" style="margin: 20px 0;">
+            <label class="pix-code-label" style="display: block; margin-bottom: 10px; font-weight: bold; color: #333;">Código PIX (Copie e cole no seu app):</label>
+            <input type="text" id="pixCode" class="pix-code-input" readonly style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 12px;">
+            <button id="copyPixCode" class="pix-copy-btn" style="background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">📋 Copiar Código</button>
+        </div>
+        
+        <div class="pix-instructions" style="text-align: left; margin: 20px 0;">
+            <h4 style="color: #333; margin-bottom: 10px;">📱 Como pagar:</h4>
+            <ol style="color: #666; padding-left: 20px;">
+                <li>Abra o app do seu banco</li>
+                <li>Escolha a opção PIX</li>
+                <li>Escaneie o QR Code ou cole o código PIX</li>
+                <li>Confirme o pagamento de R$ 17,00</li>
+            </ol>
+        </div>
+        
+        <div>
+            <button id="closePixModal" class="pix-close-btn" style="background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">❌ Fechar</button>
+        </div>
+    </div>
+</div>
+
 <!-- Adicione o jQuery e o Slick Carousel JS -->
 <script src="../../code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="../../cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+<!-- QRCode.js para gerar QR Codes -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 
 <script>
     function revealOffer() {
@@ -676,6 +714,138 @@
         // document.getElementById('upsell-image').src = "/api/placeholder/700/400";
         // document.getElementById('buy-button').href = "#comprar";
         // document.getElementById('buy-button-bottom').href = "#comprar";
+    </script>
+
+    <script>
+        // Modal PIX Functions
+        function generatePixCode() {
+            // Código PIX de exemplo - substitua pelo código real do seu gateway
+            const pixCode = '00020126580014BR.GOV.BCB.PIX0136123e4567-e12b-12d1-a456-426614174000520400005303986540517.005802BR5913STELLA BEGHINI6009SAO PAULO61080540900062070503***6304ABCD';
+            return pixCode;
+        }
+        
+        function showPixModal() {
+            console.log('showPixModal() chamada');
+            const modal = document.getElementById('pixModal');
+            const pixCode = generatePixCode();
+            const pixCodeInput = document.getElementById('pixCode');
+            const qrCanvas = document.getElementById('pixQRCode');
+            
+            console.log('Elementos encontrados:', { modal, pixCodeInput, qrCanvas });
+            
+            // Define o código PIX no input
+            pixCodeInput.value = pixCode;
+            
+            // Verifica se QRCode está disponível
+            if (typeof QRCode === 'undefined') {
+                console.error('QRCode library not loaded');
+                alert('Erro: Biblioteca QRCode não carregada. Recarregue a página.');
+                return;
+            }
+            
+            // Gera o QR Code
+            console.log('Tentando gerar QR Code...');
+            QRCode.toCanvas(qrCanvas, pixCode, {
+                width: 200,
+                height: 200,
+                color: {
+                    dark: '#000000',
+                    light: '#FFFFFF'
+                }
+            }, function (error) {
+                if (error) {
+                    console.error('Erro ao gerar QR Code:', error);
+                    alert('Erro ao gerar QR Code: ' + error.message);
+                } else {
+                    console.log('QR Code gerado com sucesso');
+                }
+            });
+            
+            // Mostra o modal
+            console.log('Mostrando modal...');
+            modal.style.display = 'block';
+        }
+        
+        function hidePixModal() {
+            const modal = document.getElementById('pixModal');
+            modal.style.display = 'none';
+        }
+        
+        function copyPixCode() {
+            const pixCodeInput = document.getElementById('pixCode');
+            pixCodeInput.select();
+            pixCodeInput.setSelectionRange(0, 99999); // Para mobile
+            
+            try {
+                document.execCommand('copy');
+                alert('Código PIX copiado para a área de transferência!');
+            } catch (err) {
+                console.error('Erro ao copiar:', err);
+                // Fallback para navegadores modernos
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(pixCodeInput.value).then(function() {
+                        alert('Código PIX copiado para a área de transferência!');
+                    });
+                }
+            }
+        }
+        
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Inicializando event listeners para up2...');
+            
+            // Configurar botão "QUERO FALAR COM ELA AGORA!" para gerar PIX
+            const buyButton = document.getElementById('buy-button');
+            if (buyButton) {
+                console.log('Configurando botão "QUERO FALAR COM ELA AGORA!" para gerar PIX');
+                buyButton.onclick = null;
+                buyButton.href = '#';
+                buyButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Botão "QUERO FALAR COM ELA AGORA!" clicado - abrindo modal PIX');
+                    showPixModal();
+                    return false;
+                });
+            }
+            
+            // Configurar botão "LIGAR PARA VÍRGINIA" para redirecionar para back2
+            const buyButtonBottom = document.getElementById('buy-button-bottom');
+            if (buyButtonBottom) {
+                console.log('Configurando botão "LIGAR PARA VÍRGINIA" para redirecionar para back2');
+                buyButtonBottom.onclick = null;
+                buyButtonBottom.href = '#';
+                buyButtonBottom.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Botão "LIGAR PARA VÍRGINIA" clicado - redirecionando para back2');
+                    window.location.href = 'back2.html';
+                    return false;
+                });
+            }
+            
+            // Botão para fechar modal
+            const closeButton = document.getElementById('closePixModal');
+            if (closeButton) {
+                closeButton.addEventListener('click', hidePixModal);
+            }
+            
+            // Botão para copiar código PIX
+            const copyButton = document.getElementById('copyPixCode');
+            if (copyButton) {
+                copyButton.addEventListener('click', copyPixCode);
+            }
+            
+            // Fechar modal clicando fora dele
+            const modal = document.getElementById('pixModal');
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        hidePixModal();
+                    }
+                });
+            }
+        });
     </script>
 </body>
 

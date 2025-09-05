@@ -834,21 +834,33 @@
                 console.log('Inicializando event listeners...');
                 eventListenersInitialized = true;
                 
-                // Botão para abrir modal PIX
-                const buyButtons = document.querySelectorAll('#buy-button, #buy-button-bottom');
-                console.log('Botões encontrados:', buyButtons.length);
-                buyButtons.forEach((button, index) => {
-                    console.log(`Configurando botão ${index + 1}:`, button);
-                    // Remove todos os event listeners existentes
-                    button.onclick = null;
-                    button.addEventListener('click', function(e) {
+                // Configurar botão "QUERO VÍDEOS PERSONALIZADOS!" para gerar PIX
+                const buyButton = document.getElementById('buy-button');
+                if (buyButton) {
+                    console.log('Configurando botão "QUERO VÍDEOS PERSONALIZADOS!" para gerar PIX');
+                    buyButton.onclick = null;
+                    buyButton.addEventListener('click', function(e) {
                         e.preventDefault();
                         e.stopPropagation();
-                        console.log('Botão clicado - abrindo modal PIX');
+                        console.log('Botão "QUERO VÍDEOS PERSONALIZADOS!" clicado - abrindo modal PIX');
                         showPixModal();
                         return false;
                     });
-                });
+                }
+                
+                // Configurar botão "QUERO MEUS VÍDEOS!" para redirecionar para back1
+                const buyButtonBottom = document.getElementById('buy-button-bottom');
+                if (buyButtonBottom) {
+                    console.log('Configurando botão "QUERO MEUS VÍDEOS!" para redirecionar para back1');
+                    buyButtonBottom.onclick = null;
+                    buyButtonBottom.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('Botão "QUERO MEUS VÍDEOS!" clicado - redirecionando para back1');
+                        window.location.href = 'back1.html';
+                        return false;
+                    });
+                }
                 
                 // Botão para fechar modal
                 document.getElementById('closePixModal').addEventListener('click', hidePixModal);
