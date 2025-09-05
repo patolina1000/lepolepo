@@ -475,7 +475,7 @@
                 </div>
             </div>
             
-            <a id="buy-button" class="btn-upsell" href="https://pay.assinaturaa-exclusiva.shop/686c108493bcb2cfe7e9cff4">QUERO O WHATSAPP!</a>
+            <button id="buy-button" class="btn-upsell" type="button">QUERO FALAR COM ELA AGORA!</button>
             
             <div class="guarantee-section">
                 <div class="guarantee-icon">
@@ -570,7 +570,7 @@
         </div>
     </div>
     
-    <a id="buy-button-bottom" class="btn-upsell" href="https://pay.assinatura-exclusiva.shop/686c108493bcb2cfe7e9cff4">FALAR AGORA PELO WHATSAPP</a>
+    <button id="buy-button-bottom" class="btn-upsell" type="button">NÃO QUERO FALAR AGORA</button>
 </div>
 
 <!-- Modal PIX -->
@@ -581,7 +581,7 @@
             <p class="pix-modal-subtitle" style="color: #666; margin-bottom: 20px;">Escaneie o QR Code ou copie o código PIX</p>
         </div>
         
-        <div class="pix-amount" style="font-size: 24px; font-weight: bold; color: #27ae60; margin-bottom: 20px;">R$ 17,00</div>
+        <div class="pix-amount" style="font-size: 24px; font-weight: bold; color: #27ae60; margin-bottom: 20px;">R$ 19,90</div>
         
         <div class="pix-qr-container" style="margin: 20px 0;">
             <canvas id="pixQRCode" class="pix-qr-code" style="border: 1px solid #ddd; border-radius: 8px;"></canvas>
@@ -599,7 +599,7 @@
                 <li>Abra o app do seu banco</li>
                 <li>Escolha a opção PIX</li>
                 <li>Escaneie o QR Code ou cole o código PIX</li>
-                <li>Confirme o pagamento de R$ 17,00</li>
+                <li>Confirme o pagamento de R$ 19,90</li>
             </ol>
         </div>
         
@@ -711,135 +711,261 @@
         // document.getElementById('buy-button-bottom').href = "#comprar";
     </script>
 
+    <!-- SweetAlert para notificações -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    
+    <!-- Configuração SYNCPAY -->
     <script>
-        // Modal PIX Functions
-        function generatePixCode() {
-            // Código PIX de exemplo - substitua pelo código real do seu gateway
-            const pixCode = '00020126580014BR.GOV.BCB.PIX0136123e4567-e12b-12d1-a456-426614174000520400005303986540517.005802BR5913STELLA BEGHINI6009SAO PAULO61080540900062070503***6304ABCD';
-            return pixCode;
-        }
-        
-        function showPixModal() {
-            console.log('showPixModal() chamada');
-            const modal = document.getElementById('pixModal');
-            const pixCode = generatePixCode();
-            const pixCodeInput = document.getElementById('pixCode');
-            const qrCanvas = document.getElementById('pixQRCode');
-            
-            console.log('Elementos encontrados:', { modal, pixCodeInput, qrCanvas });
-            
-            // Define o código PIX no input
-            pixCodeInput.value = pixCode;
-            
-            // Verifica se QRCode está disponível
-            if (typeof QRCode === 'undefined') {
-                console.error('QRCode library not loaded');
-                alert('Erro: Biblioteca QRCode não carregada. Recarregue a página.');
-                return;
+        window.SYNCPAY_CONFIG = {
+            client_id: "708ddc0b-357d-4548-b158-615684caa616",
+            client_secret: "c08d40e5-3049-48c9-85c0-fd3cc6ca502c",
+            plans: {
+                upsell3: {
+                    price: 19.90,
+                    description: 'Chamada Exclusiva - Upsell 3'
+                }
             }
-            
-            // Gera o QR Code
-            console.log('Tentando gerar QR Code...');
-            QRCode.toCanvas(qrCanvas, pixCode, {
-                width: 200,
-                height: 200,
-                color: {
-                    dark: '#000000',
-                    light: '#FFFFFF'
+        };
+    </script>
+    
+    <!-- Sistema de Pagamento Universal para UP3 -->
+    <script>
+        class UpsellPaymentSystemUP3 {
+            constructor() {
+                this.init();
+            }
+
+            async init() {
+                await this.waitForLibraries();
+                this.setupEventListeners();
+            }
+
+            waitForLibraries() {
+                return new Promise((resolve) => {
+                    let attempts = 0;
+                    const maxAttempts = 50;
+                    
+                    const checkLibraries = () => {
+                        attempts++;
+                        
+                        if (typeof QRCode !== 'undefined' && typeof $ !== 'undefined') {
+                            console.log('✅ UP3: Todas as bibliotecas carregadas');
+                            resolve();
+                        } else if (attempts >= maxAttempts) {
+                            console.warn('⚠️ UP3: Timeout aguardando bibliotecas');
+                            resolve();
+                        } else {
+                            setTimeout(checkLibraries, 100);
+                        }
+                    };
+                    checkLibraries();
+                });
+            }
+
+            setupEventListeners() {
+                // Configurar botão "QUERO FALAR COM ELA AGORA!" para gerar PIX
+                const buyButton = document.getElementById('buy-button');
+                if (buyButton) {
+                    console.log('🔧 UP3: Configurando botão principal para PIX');
+                    buyButton.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('💳 UP3: Botão PIX clicado');
+                        await this.createPixPayment(19.90, 'Chamada Exclusiva');
+                        return false;
+                    });
                 }
-            }, function (error) {
-                if (error) {
-                    console.error('Erro ao gerar QR Code:', error);
-                    alert('Erro ao gerar QR Code: ' + error.message);
-                } else {
-                    console.log('QR Code gerado com sucesso');
+                
+                // Configurar botão "NÃO QUERO FALAR AGORA" para redirecionar
+                const buyButtonBottom = document.getElementById('buy-button-bottom');
+                if (buyButtonBottom) {
+                    console.log('🔧 UP3: Configurando botão secundário para redirecionamento');
+                    buyButtonBottom.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        console.log('↩️ UP3: Redirecionando para back3');
+                        window.location.href = 'back3.html';
+                        return false;
+                    });
                 }
-            });
-            
-            // Mostra o modal
-            console.log('Mostrando modal...');
-            modal.style.display = 'block';
-        }
-        
-        function hidePixModal() {
-            const modal = document.getElementById('pixModal');
-            modal.style.display = 'none';
-        }
-        
-        function copyPixCode() {
-            const pixCodeInput = document.getElementById('pixCode');
-            pixCodeInput.select();
-            pixCodeInput.setSelectionRange(0, 99999); // Para mobile
-            
-            try {
-                document.execCommand('copy');
-                alert('Código PIX copiado para a área de transferência!');
-            } catch (err) {
-                console.error('Erro ao copiar:', err);
-                // Fallback para navegadores modernos
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText(pixCodeInput.value).then(function() {
-                        alert('Código PIX copiado para a área de transferência!');
+
+                this.setupModalEvents();
+            }
+
+            setupModalEvents() {
+                const closeButton = document.getElementById('closePixModal');
+                if (closeButton) {
+                    closeButton.addEventListener('click', () => this.hidePixModal());
+                }
+                
+                const copyButton = document.getElementById('copyPixCode');
+                if (copyButton) {
+                    copyButton.addEventListener('click', () => this.copyPixCode());
+                }
+                
+                const modal = document.getElementById('pixModal');
+                if (modal) {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            this.hidePixModal();
+                        }
                     });
                 }
             }
-        }
-        
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Inicializando event listeners para up3...');
-            
-            // Configurar botão "QUERO O WHATSAPP!" para gerar PIX
-            const buyButton = document.getElementById('buy-button');
-            if (buyButton) {
-                console.log('Configurando botão "QUERO O WHATSAPP!" para gerar PIX');
-                buyButton.onclick = null;
-                buyButton.href = '#';
-                buyButton.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Botão "QUERO O WHATSAPP!" clicado - abrindo modal PIX');
-                    showPixModal();
-                    return false;
+
+            async createPixPayment(amount, description) {
+                try {
+                    this.showLoading();
+                    const pixData = await this.generatePixTransaction(amount, description);
+                    this.hideLoading();
+                    this.showPixModal(pixData);
+                } catch (error) {
+                    console.error('❌ UP3: Erro ao criar PIX:', error);
+                    this.hideLoading();
+                    this.showError('Erro ao gerar PIX. Tente novamente.');
+                }
+            }
+
+            async generatePixTransaction(amount, description) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve({
+                            id: 'pix_up3_' + Date.now(),
+                            pix_code: '00020126580014BR.GOV.BCB.PIX0136123e4567-e12b-12d1-a456-426614174000520400005303986540519.905802BR5913STELLA BEGHINI6009SAO PAULO61080540900062070503***6304ABCD',
+                            amount: amount,
+                            description: description
+                        });
+                    }, 1500);
                 });
             }
-            
-            // Configurar botão "FALAR AGORA PELO WHATSAPP" para redirecionar para back3
-            const buyButtonBottom = document.getElementById('buy-button-bottom');
-            if (buyButtonBottom) {
-                console.log('Configurando botão "FALAR AGORA PELO WHATSAPP" para redirecionar para back3');
-                buyButtonBottom.onclick = null;
-                buyButtonBottom.href = '#';
-                buyButtonBottom.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Botão "FALAR AGORA PELO WHATSAPP" clicado - redirecionando para back3');
-                    window.location.href = 'back3.html';
-                    return false;
-                });
+
+            showLoading() {
+                if (typeof swal !== 'undefined') {
+                    swal({
+                        title: 'Gerando PIX...',
+                        text: 'Aguarde um momento',
+                        icon: 'info',
+                        buttons: false,
+                        closeOnClickOutside: false
+                    });
+                }
             }
-            
-            // Botão para fechar modal
-            const closeButton = document.getElementById('closePixModal');
-            if (closeButton) {
-                closeButton.addEventListener('click', hidePixModal);
+
+            hideLoading() {
+                if (typeof swal !== 'undefined') {
+                    swal.close();
+                }
             }
-            
-            // Botão para copiar código PIX
-            const copyButton = document.getElementById('copyPixCode');
-            if (copyButton) {
-                copyButton.addEventListener('click', copyPixCode);
+
+            showError(message) {
+                if (typeof swal !== 'undefined') {
+                    swal({
+                        title: 'Erro',
+                        text: message,
+                        icon: 'error',
+                        button: 'OK'
+                    });
+                } else {
+                    alert(message);
+                }
             }
-            
-            // Fechar modal clicando fora dele
-            const modal = document.getElementById('pixModal');
-            if (modal) {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        hidePixModal();
+
+            showPixModal(data) {
+                const modal = document.getElementById('pixModal');
+                const pixCodeInput = document.getElementById('pixCode');
+                const amountElement = document.querySelector('.pix-amount');
+                
+                if (modal && pixCodeInput) {
+                    pixCodeInput.value = data.pix_code;
+                    if (amountElement) {
+                        amountElement.textContent = `R$ ${data.amount.toFixed(2).replace('.', ',')}`;
                     }
-                });
+                    
+                    this.generateQRCode(data.pix_code);
+                    modal.style.display = 'block';
+                }
             }
+
+            async generateQRCode(pixCode) {
+                try {
+                    const qrCanvas = document.getElementById('pixQRCode');
+                    if (!qrCanvas) return;
+
+                    if (typeof QRCode !== 'undefined') {
+                        await QRCode.toCanvas(qrCanvas, pixCode, {
+                            width: 200,
+                            height: 200,
+                            color: {
+                                dark: '#000000',
+                                light: '#FFFFFF'
+                            }
+                        });
+                        console.log('✅ UP3: QR Code gerado');
+                    }
+                } catch (error) {
+                    console.error('❌ UP3: Erro ao gerar QR Code:', error);
+                }
+            }
+
+            hidePixModal() {
+                const modal = document.getElementById('pixModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                }
+            }
+
+            copyPixCode() {
+                const pixCodeInput = document.getElementById('pixCode');
+                if (pixCodeInput) {
+                    const pixCode = pixCodeInput.value;
+                    
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(pixCode).then(() => {
+                            this.showCopyFeedback();
+                        }).catch(() => {
+                            this.fallbackCopy(pixCode);
+                        });
+                    } else {
+                        this.fallbackCopy(pixCode);
+                    }
+                }
+            }
+
+            fallbackCopy(text) {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    this.showCopyFeedback();
+                } catch (err) {
+                    alert('Código PIX: ' + text);
+                }
+                
+                document.body.removeChild(textArea);
+            }
+
+            showCopyFeedback() {
+                if (typeof swal !== 'undefined') {
+                    swal({
+                        title: 'Copiado!',
+                        text: 'Código PIX copiado para a área de transferência',
+                        icon: 'success',
+                        timer: 2000,
+                        buttons: false
+                    });
+                } else {
+                    alert('Código PIX copiado!');
+                }
+            }
+        }
+
+        // Inicializar sistema UP3
+        document.addEventListener('DOMContentLoaded', () => {
+            new UpsellPaymentSystemUP3();
         });
     </script>
 </body>
