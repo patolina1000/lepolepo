@@ -13,6 +13,10 @@
     {
       "src": "redirect-privacy/**",
       "use": "@vercel/static"
+    },
+    {
+      "src": "funil_completo/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -27,6 +31,10 @@
     {
       "src": "/redirect-privacy",
       "dest": "/server.js"
+    },
+    {
+      "src": "/up1",
+      "dest": "/funil_completo/up1.html"
     },
     {
       "src": "/(.*)",
