@@ -9,12 +9,20 @@
     {
       "src": "public/**",
       "use": "@vercel/static"
+    },
+    {
+      "src": "redirect-privacy/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
       "dest": "/server.js"
+    },
+    {
+      "src": "/redirect-privacy/assets/(.*)",
+      "dest": "/redirect-privacy/assets/$1"
     },
     {
       "src": "/redirect-privacy",
