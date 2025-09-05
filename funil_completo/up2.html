@@ -733,7 +733,13 @@
         };
     </script>
     
-    <!-- Sistema de Pagamento Universal para UP2 -->
+    <!-- Integração SyncPay -->
+    <script src="js/syncpay-integration.js"></script>
+    
+    <!-- Integração Universal de Pagamentos -->
+    <script src="js/universal-payment-integration.js"></script>
+    
+    <!-- Sistema de Pagamento para UP2 -->
     <script>
         class UpsellPaymentSystemUP2 {
             constructor() {
@@ -753,7 +759,7 @@
                     const checkLibraries = () => {
                         attempts++;
                         
-                        if (typeof QRCode !== 'undefined' && typeof $ !== 'undefined') {
+                        if (typeof QRCode !== 'undefined' && typeof $ !== 'undefined' && window.universalPayment) {
                             console.log('✅ UP2: Todas as bibliotecas carregadas');
                             resolve();
                         } else if (attempts >= maxAttempts) {
@@ -768,15 +774,15 @@
             }
 
             setupEventListeners() {
-                // Configurar botão "QUERO O WHATSAPP!" para gerar PIX
+                // Configurar botão "QUERO O WHATSAPP!" para gerar PIX real
                 const buyButton = document.getElementById('buy-button');
                 if (buyButton) {
-                    console.log('🔧 UP2: Configurando botão principal para PIX');
+                    console.log('🔧 UP2: Configurando botão principal para PIX real');
                     buyButton.addEventListener('click', async (e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        console.log('💳 UP2: Botão PIX clicado');
-                        await this.createPixPayment(15.00, 'Acesso ao WhatsApp');
+                        console.log('💳 UP2: Botão PIX clicado - gerando pagamento real');
+                        await this.createPixPayment(15.00, 'Acesso ao WhatsApp - Upsell 2');
                         return false;
                     });
                 }
@@ -820,27 +826,24 @@
             async createPixPayment(amount, description) {
                 try {
                     this.showLoading();
-                    const pixData = await this.generatePixTransaction(amount, description);
+                    
+                    // Usar integração universal real
+                    const paymentService = window.universalPayment || window.syncPay;
+                    const pixData = await paymentService.createPixTransaction(amount, description, {
+                        name: 'Cliente Upsell 2',
+                        cpf: '12345678901',
+                        email: 'cliente@exemplo.com',
+                        phone: '11999999999'
+                    });
+                    
                     this.hideLoading();
                     this.showPixModal(pixData);
+                    
                 } catch (error) {
                     console.error('❌ UP2: Erro ao criar PIX:', error);
                     this.hideLoading();
                     this.showError('Erro ao gerar PIX. Tente novamente.');
                 }
-            }
-
-            async generatePixTransaction(amount, description) {
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                        resolve({
-                            id: 'pix_up2_' + Date.now(),
-                            pix_code: '00020126580014BR.GOV.BCB.PIX0136123e4567-e12b-12d1-a456-426614174000520400005303986540515.005802BR5913STELLA BEGHINI6009SAO PAULO61080540900062070503***6304ABCD',
-                            amount: amount,
-                            description: description
-                        });
-                    }, 1500);
-                });
             }
 
             showLoading() {

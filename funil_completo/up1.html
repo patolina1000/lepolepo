@@ -678,16 +678,20 @@
         };
     </script>
     
-    <!-- Sistema de Pagamento Universal -->
+    <!-- Integração SyncPay -->
+    <script src="js/syncpay-integration.js"></script>
+    
+    <!-- Integração Universal de Pagamentos -->
+    <script src="js/universal-payment-integration.js"></script>
+    
+    <!-- Sistema de Pagamento para UP1 -->
     <script>
-        // Integração universal de pagamento para upsells
-        class UpsellPaymentSystem {
+        class UpsellPaymentSystemUP1 {
             constructor() {
                 this.init();
             }
 
             async init() {
-                // Aguardar bibliotecas carregarem
                 await this.waitForLibraries();
                 this.setupEventListeners();
             }
@@ -700,11 +704,11 @@
                     const checkLibraries = () => {
                         attempts++;
                         
-                        if (typeof QRCode !== 'undefined' && typeof $ !== 'undefined') {
-                            console.log('✅ Todas as bibliotecas carregadas');
+                        if (typeof QRCode !== 'undefined' && typeof $ !== 'undefined' && window.universalPayment) {
+                            console.log('✅ UP1: Todas as bibliotecas carregadas');
                             resolve();
                         } else if (attempts >= maxAttempts) {
-                            console.warn('⚠️ Timeout aguardando bibliotecas');
+                            console.warn('⚠️ UP1: Timeout aguardando bibliotecas');
                             resolve();
                         } else {
                             setTimeout(checkLibraries, 100);
@@ -715,15 +719,15 @@
             }
 
             setupEventListeners() {
-                // Configurar botão "QUERO VÍDEOS PERSONALIZADOS!" para gerar PIX
+                // Configurar botão "QUERO VÍDEOS PERSONALIZADOS!" para gerar PIX real
                 const buyButton = document.getElementById('buy-button');
                 if (buyButton) {
-                    console.log('🔧 Configurando botão principal para PIX');
+                    console.log('🔧 UP1: Configurando botão principal para PIX real');
                     buyButton.addEventListener('click', async (e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        console.log('💳 Botão PIX clicado');
-                        await this.createPixPayment(17.00, 'Vídeos Personalizados');
+                        console.log('💳 UP1: Botão PIX clicado - gerando pagamento real');
+                        await this.createPixPayment(17.00, 'Vídeos Personalizados - Upsell 1');
                         return false;
                     });
                 }
@@ -731,33 +735,29 @@
                 // Configurar botão "QUERO MEUS VÍDEOS!" para redirecionar
                 const buyButtonBottom = document.getElementById('buy-button-bottom');
                 if (buyButtonBottom) {
-                    console.log('🔧 Configurando botão secundário para redirecionamento');
+                    console.log('🔧 UP1: Configurando botão secundário para redirecionamento');
                     buyButtonBottom.addEventListener('click', (e) => {
                         e.preventDefault();
-                        console.log('↩️ Redirecionando para back1');
+                        console.log('↩️ UP1: Redirecionando para back1');
                         window.location.href = 'back1.html';
                         return false;
                     });
                 }
 
-                // Configurar modal existente
                 this.setupModalEvents();
             }
 
             setupModalEvents() {
-                // Botão para fechar modal
                 const closeButton = document.getElementById('closePixModal');
                 if (closeButton) {
                     closeButton.addEventListener('click', () => this.hidePixModal());
                 }
                 
-                // Botão para copiar código PIX
                 const copyButton = document.getElementById('copyPixCode');
                 if (copyButton) {
                     copyButton.addEventListener('click', () => this.copyPixCode());
                 }
                 
-                // Fechar modal clicando fora
                 const modal = document.getElementById('pixModal');
                 if (modal) {
                     modal.addEventListener('click', (e) => {
@@ -772,31 +772,23 @@
                 try {
                     this.showLoading();
                     
-                    // Simular criação de PIX (substitua pela integração real)
-                    const pixData = await this.generatePixTransaction(amount, description);
+                    // Usar integração universal real
+                    const paymentService = window.universalPayment || window.syncPay;
+                    const pixData = await paymentService.createPixTransaction(amount, description, {
+                        name: 'Cliente Upsell 1',
+                        cpf: '12345678901',
+                        email: 'cliente@exemplo.com',
+                        phone: '11999999999'
+                    });
                     
                     this.hideLoading();
                     this.showPixModal(pixData);
                     
                 } catch (error) {
-                    console.error('❌ Erro ao criar PIX:', error);
+                    console.error('❌ UP1: Erro ao criar PIX:', error);
                     this.hideLoading();
                     this.showError('Erro ao gerar PIX. Tente novamente.');
                 }
-            }
-
-            async generatePixTransaction(amount, description) {
-                // Simular resposta da API (substitua pela integração real)
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                        resolve({
-                            id: 'pix_' + Date.now(),
-                            pix_code: '00020126580014BR.GOV.BCB.PIX0136123e4567-e12b-12d1-a456-426614174000520400005303986540517.005802BR5913STELLA BEGHINI6009SAO PAULO61080540900062070503***6304ABCD',
-                            amount: amount,
-                            description: description
-                        });
-                    }, 1500);
-                });
             }
 
             showLoading() {
@@ -808,8 +800,6 @@
                         buttons: false,
                         closeOnClickOutside: false
                     });
-                } else {
-                    console.log('🔄 Carregando...');
                 }
             }
 
@@ -838,16 +828,12 @@
                 const amountElement = document.querySelector('.pix-amount');
                 
                 if (modal && pixCodeInput) {
-                    // Atualizar valores
                     pixCodeInput.value = data.pix_code;
                     if (amountElement) {
                         amountElement.textContent = `R$ ${data.amount.toFixed(2).replace('.', ',')}`;
                     }
                     
-                    // Gerar QR Code
                     this.generateQRCode(data.pix_code);
-                    
-                    // Mostrar modal
                     modal.style.display = 'block';
                 }
             }
@@ -866,10 +852,10 @@
                                 light: '#FFFFFF'
                             }
                         });
-                        console.log('✅ QR Code gerado');
+                        console.log('✅ UP1: QR Code gerado');
                     }
                 } catch (error) {
-                    console.error('❌ Erro ao gerar QR Code:', error);
+                    console.error('❌ UP1: Erro ao gerar QR Code:', error);
                 }
             }
 
@@ -930,9 +916,9 @@
             }
         }
 
-        // Inicializar sistema quando página carregar
+        // Inicializar sistema UP1
         document.addEventListener('DOMContentLoaded', () => {
-            new UpsellPaymentSystem();
+            new UpsellPaymentSystemUP1();
         });
     </script>
 
