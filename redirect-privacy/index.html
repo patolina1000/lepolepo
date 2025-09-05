@@ -1,0 +1,258 @@
+<!DOCTYPE html> 
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy</title>
+<meta name="description" content="Stella Beghini">
+
+<link rel="preload" href="./assets/logo-black.svg" as="image" fetchpriority="high">
+
+<!-- Proteção (mesmo padrão do /links) -->
+<link rel="stylesheet" href="/assets/protect.css">
+
+<style>
+  :root{
+    --bg:#ffffff;
+    --text:#111;
+    --muted:#5b5b5b;
+    --primary:#f97316; /* laranja */
+    --border:#e5e7eb;
+    --shadow:0 10px 25px rgba(0,0,0,.15);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;
+  }
+
+  /* Loading */
+  #loadingScreen{
+    position:fixed;inset:0;display:grid;place-items:center;background:rgba(255,255,255,.9);
+    z-index:50;transition:opacity .35s ease;
+  }
+  #loadingScreen.hidden{opacity:0;pointer-events:none}
+  .logo{height:34px;width:auto;max-width:240px;object-fit:contain;display:block;margin:0 auto 12px;visibility:visible;opacity:1}
+  .progress{height:6px;width:280px;border-radius:9999px;overflow:hidden;background:#eee;margin:4px auto 6px}
+  .progress__bar{height:100%;width:0;background:#111;transition:width .08s linear}
+  .progress__txt{font-size:11px;font-weight:600;color:#444;text-align:center}
+
+  /* Overlay */
+  #pixOverlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(2px);z-index:40;display:none}
+  #pixOverlay.show{display:block}
+
+  /* Modal */
+  #pixModal{
+    position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:min(95vw,520px);background:#fff;border:1px solid var(--border);
+    border-radius:16px;box-shadow:var(--shadow);padding:24px;z-index:60;display:none;
+  }
+  #pixModal.show{display:block}
+
+  .stack{display:flex;flex-direction:column;align-items:center;gap:16px;margin-bottom:6px}
+  .title{font-size:24px;font-weight:700;margin:0;color:#111;text-align:center}
+  .p{font-size:14px;color:#333;text-align:center;margin:0}
+  .row{display:flex;gap:12px;width:100%;margin-top:8px}
+
+  .btn{
+    appearance:none;border:1px solid var(--border);background:#fff;color:#222;
+    padding:10px 14px;border-radius:10px;cursor:pointer;flex:1;font-weight:600;
+    transition:filter .2s ease;
+  }
+  .btn:hover{background:#f7f7f7}
+
+  /* PRIMÁRIO — SEM mudar cor no hover/click */
+  .btn--primary{
+    background:var(--primary);border-color:var(--primary);color:#fff;
+    transition:none;
+  }
+  .btn--primary:hover{background:var(--primary);color:#fff;filter:none}
+  .btn--primary:active{background:var(--primary);color:#fff;filter:none}
+
+  .input{
+    width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;
+    outline:none;font:inherit;
+  }
+  .input:focus{border-color:#d1d5db;box-shadow:0 0 0 2px rgba(249,115,22,.2)}
+  .terms{font-size:10px;color:#6b7280;text-align:center}
+  .terms a{color:#111;text-decoration:underline}
+  @media (max-width:420px){.title{font-size:22px}}
+
+  /* Dentro do modal pode selecionar/digitar/clicar normalmente */
+  #pixModal, #pixModal *{
+    -webkit-user-select:text !important;
+    user-select:text !important;
+    -webkit-touch-callout:default !important;
+    pointer-events:auto !important;
+  }
+</style>
+
+<!-- ===== Meta Pixel (somente PageView) ===== -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','916142607046004'); fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=916142607046004&ev=PageView&noscript=1"/></noscript>
+
+<!-- ===== Pixel UTMify (como enviado) ===== -->
+<script>
+  window.pixelId = "68ab5af11e86ba9ece216b63";
+  var a = document.createElement("script");
+  a.setAttribute("async", "");
+  a.setAttribute("defer", "");
+  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+  document.head.appendChild(a);
+</script>
+
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loadingScreen">
+  <div>
+    <img src="/redirect-privacy/assets/logo-black.svg" alt="Privacy" class="logo">
+    <div class="progress"><div id="progressBar" class="progress__bar"></div></div>
+    <div id="progressText" class="progress__txt">0%</div>
+  </div>
+</div>
+
+<!-- OVERLAY -->
+<div id="pixOverlay"></div>
+
+<!-- MODAL -->
+<div id="pixModal">
+  <div class="stack">
+    <img src="/redirect-privacy/assets/logo-black.svg" alt="Privacy" class="logo" style="height:28px">
+  </div>
+
+  <!-- STEP 1 -->
+  <section id="stepName">
+    <h2 class="title">Como podemos te chamar?</h2>
+    <form id="nameForm" style="margin-top:12px">
+      <input id="userName" name="userName" class="input" type="text" placeholder="Digite seu nome" maxlength="40" required>
+      <button class="btn btn--primary" type="submit" style="margin-top:12px;width:100%">Continuar</button>
+    </form>
+    <p class="terms" style="margin-top:10px">
+      Ao continuar, você concorda com nossos
+      <a href="https://privacy.com.br/termos" target="_blank" rel="noopener">termos de uso</a>
+      e
+      <a href="https://privacy.com.br/privacidade" target="_blank" rel="noopener">política de privacidade</a>.
+    </p>
+  </section>
+
+  <!-- STEP 2 -->
+  <section id="stepConfirm" style="display:none;text-align:center">
+    <h3 class="title" style="margin-bottom:6px">Olá, <span id="nomeUsuarioSpan">usuário</span>!</h3>
+    <p class="p">Este conteúdo é destinado apenas para maiores de 18 anos.<br>Você confirma que tem 18 anos ou mais?</p>
+    <div class="row">
+      <button id="btnVoltar" class="btn">← Voltar</button>
+      <button id="btnConfirmar" class="btn btn--primary">Confirmar ✓</button>
+    </div>
+    <p class="terms" style="margin-top:10px">
+      Ao continuar, você concorda com nossos
+      <a href="https://privacy.com.br/termos" target="_blank" rel="noopener">termos de uso</a>
+      e
+      <a href="https://privacy.com.br/privacidade" target="_blank" rel="noopener">política de privacidade</a>.
+    </p>
+  </section>
+</div>
+
+<script>
+  // ===== Loading com progresso até 100% (1,8s) =====
+  (function(){
+    const bar = document.getElementById('progressBar');
+    const txt = document.getElementById('progressText');
+    let p = 0, DURATION = 1800, STEP = 50;
+
+    const tick = setInterval(() => {
+      p = Math.min(100, p + (100 * STEP / DURATION));
+      bar.style.width = p.toFixed(2) + '%';
+      txt.textContent = Math.round(p) + '%';
+      if (p >= 100){
+        clearInterval(tick);
+        const loading = document.getElementById('loadingScreen');
+        loading.classList.add('hidden');
+        setTimeout(() => {
+          loading.style.display = 'none';
+          document.getElementById('pixModal').classList.add('show');
+          document.getElementById('pixOverlay').classList.add('show');
+          document.getElementById('userName').focus();
+        }, 150);
+      }
+    }, STEP);
+  })();
+
+  // ===== Helpers UTM =====
+  function getUTMs() {
+    const qs = new URLSearchParams(location.search);
+    const keys = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid','gclid'];
+    const utm = {};
+    keys.forEach(k => { if (qs.get(k)) utm[k] = qs.get(k); });
+    return utm;
+  }
+  function withParams(url, params){
+    const u = new URL(url, location.origin);
+    Object.entries(params || {}).forEach(([k,v]) => { if (v!=null && v!=='') u.searchParams.set(k,v); });
+    return u.toString();
+  }
+
+  // ===== Fluxo =====
+  const form = document.getElementById('nameForm');
+  const stepName = document.getElementById('stepName');
+  const stepConfirm = document.getElementById('stepConfirm');
+  const nomeSpan = document.getElementById('nomeUsuarioSpan');
+  const btnVoltar = document.getElementById('btnVoltar');
+  const btnConfirmar = document.getElementById('btnConfirmar');
+
+  function validName(n){return /^[A-Za-zÀ-ÿ'´`^~çÇ ]{2,40}$/.test((n||'').trim());}
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('userName').value.trim();
+    if(!validName(name)){ document.getElementById('userName').focus(); return; }
+    localStorage.setItem('nomeDoUsuario', name);
+    nomeSpan.textContent = name;
+    stepName.style.display = 'none';
+    stepConfirm.style.display = 'block';
+    btnConfirmar.focus();
+  });
+
+  btnVoltar.addEventListener('click', () => {
+    stepConfirm.style.display = 'none';
+    stepName.style.display = 'block';
+    document.getElementById('userName').focus();
+  });
+
+  btnConfirmar.addEventListener('click', () => {
+    // Redireciona para a página principal do checkout
+    window.location.href = '/public/index.html';
+  });
+</script>
+
+<!-- Proteção geral -->
+<script src="/assets/protect.js"></script>
+
+<!-- ✅ Antídoto mobile: remove overlay "Conteúdo protegido." quando teclado/touch -->
+<script>
+(function(){
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if(!isMobile) return;
+
+  function killOverlay(){
+    const ov = document.querySelector('body > div[style*="999999"]');
+    if(ov) ov.remove();
+  }
+  ['focusin','touchstart','touchend','resize','orientationchange'].forEach(ev=>{
+    window.addEventListener(ev, killOverlay, true);
+    document.addEventListener(ev, killOverlay, true);
+  });
+  setInterval(killOverlay, 400);
+})();
+</script>
+
+</body>
+</html>

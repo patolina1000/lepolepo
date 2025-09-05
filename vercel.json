@@ -17,6 +17,10 @@
       "dest": "/server.js"
     },
     {
+      "src": "/redirect-privacy",
+      "dest": "/server.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "/public/$1"
     }

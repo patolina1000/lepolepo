@@ -660,6 +660,11 @@ app.get('/redirect', (req, res) => {
     res.sendFile(path.join(__dirname, 'redirect', 'index.html'));
 });
 
+// Rota para a página de redirecionamento privacy
+app.get('/redirect-privacy', (req, res) => {
+    res.sendFile(path.join(__dirname, 'redirect-privacy', 'index.html'));
+});
+
 // Rota de teste para verificar se a imagem está sendo servida
 app.get('/test-image', (req, res) => {
     const imagePath = path.join(__dirname, 'redirect', 'images', 'foto.jpg');
@@ -723,6 +728,7 @@ app.use((req, res, next) => {
 // Servir arquivos estáticos de cada diretório (APÓS o debug)
 app.use('/links', express.static(path.join(__dirname, 'links')));
 app.use('/compra-aprovada', express.static(path.join(__dirname, 'compra-aprovada')));
+app.use('/redirect-privacy', express.static(path.join(__dirname, 'redirect-privacy')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // Middleware para servir arquivos estáticos de forma mais flexível
