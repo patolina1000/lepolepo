@@ -658,224 +658,335 @@
 <!-- Adicione o jQuery e o Slick Carousel JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-<!-- QRCode.js para gerar QR Codes -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-
-<script>
-    function revealOffer() {
-        document.getElementById('popup').classList.add('hidden');
-        document.getElementById('upsell-content').classList.remove('hidden');
-        startCountdown();
-    }
-
-    function startCountdown() {
-    let hours = 0;
-    let minutes = 5;
-    let seconds = 0;
-
-    const countdownInterval = setInterval(function() {
-        // Verifica se o tempo acabou
-        if (hours === 0 && minutes === 0 && seconds === 0) {
-            clearInterval(countdownInterval); // Para o contador
-            return; // Sai da função
-        }
-
-        // Lógica do contador
-        if (seconds > 0) {
-            seconds--;
-        } else {
-            seconds = 59;
-            if (minutes > 0) {
-                minutes--;
-            } else {
-                minutes = 59;
-                if (hours > 0) {
-                    hours--;
-                }
-            }
-        }
-
-        // Atualiza o HTML
-        document.getElementById('hours').textContent = hours < 10 ? '0' + hours : hours;
-        document.getElementById('minutes').textContent = minutes < 10 ? '0' + minutes : minutes;
-        document.getElementById('seconds').textContent = seconds < 10 ? '0' + seconds : seconds;
-    }, 1000);
-}
-
-    // Inicializar o carrossel de comentários
-    $(document).ready(function(){
-        $('.comment-carousel').slick({
-            dots: true, // Mostra os pontos de navegação
-            infinite: true, // Loop infinito
-            speed: 300, // Velocidade da transição
-            slidesToShow: 1, // Quantidade de slides visíveis
-            adaptiveHeight: true // Ajusta a altura automaticamente
-        });
-    });
-</script>
-
-<script>
-    // Na página antes do checkout
-    const currentStep = "upsell2"; // ou qualquer valor determinado pela navegação
-    localStorage.setItem('lastStep', currentStep);
-    </script>
-
+    <!-- QRCode.js para gerar QR Codes -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    
+    <!-- SweetAlert para notificações -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    
+    <!-- Configuração SYNCPAY -->
     <script>
-        // Modal PIX Functions
-        function generatePixCode() {
-            // Código PIX de exemplo - substitua pelo código real do seu gateway
-            const pixCode = '00020126580014BR.GOV.BCB.PIX0136123e4567-e12b-12d1-a456-426614174000520400005303986540517.005802BR5913STELLA BEGHINI6009SAO PAULO61080540900062070503***6304ABCD';
-            return pixCode;
-        }
-        
-        function showPixModal() {
-            console.log('showPixModal() chamada');
-            const modal = document.getElementById('pixModal');
-            const pixCode = generatePixCode();
-            const pixCodeInput = document.getElementById('pixCode');
-            const qrCanvas = document.getElementById('pixQRCode');
-            
-            console.log('Elementos encontrados:', { modal, pixCodeInput, qrCanvas });
-            
-            // Define o código PIX no input
-            pixCodeInput.value = pixCode;
-            
-            // Verifica se QRCode está disponível
-            if (typeof QRCode === 'undefined') {
-                console.error('QRCode library not loaded');
-                alert('Erro: Biblioteca QRCode não carregada. Recarregue a página.');
-                return;
-            }
-            
-            // Gera o QR Code
-            console.log('Tentando gerar QR Code...');
-            QRCode.toCanvas(qrCanvas, pixCode, {
-                width: 200,
-                height: 200,
-                color: {
-                    dark: '#000000',
-                    light: '#FFFFFF'
-                }
-            }, function (error) {
-                if (error) {
-                    console.error('Erro ao gerar QR Code:', error);
-                    alert('Erro ao gerar QR Code: ' + error.message);
-                } else {
-                    console.log('QR Code gerado com sucesso');
-                }
-            });
-            
-            // Mostra o modal
-            console.log('Mostrando modal...');
-            modal.style.display = 'block';
-        }
-        
-        function hidePixModal() {
-            const modal = document.getElementById('pixModal');
-            modal.style.display = 'none';
-        }
-        
-        function copyPixCode() {
-            const pixCodeInput = document.getElementById('pixCode');
-            pixCodeInput.select();
-            pixCodeInput.setSelectionRange(0, 99999); // Para mobile
-            
-            try {
-                document.execCommand('copy');
-                alert('Código PIX copiado para a área de transferência!');
-            } catch (err) {
-                console.error('Erro ao copiar:', err);
-                // Fallback para navegadores modernos
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText(pixCodeInput.value).then(function() {
-                        alert('Código PIX copiado para a área de transferência!');
-                    });
+        window.SYNCPAY_CONFIG = {
+            client_id: "708ddc0b-357d-4548-b158-615684caa616",
+            client_secret: "c08d40e5-3049-48c9-85c0-fd3cc6ca502c",
+            plans: {
+                upsell1: {
+                    price: 17.00,
+                    description: 'Vídeos Personalizados - Upsell 1'
                 }
             }
-        }
-        
-        // Função para aguardar bibliotecas carregarem
-        function waitForLibraries() {
-            return new Promise((resolve) => {
-                let attempts = 0;
-                const maxAttempts = 50; // Máximo 5 segundos (50 * 100ms)
-                
-                const checkLibraries = () => {
-                    attempts++;
-                    
-                    if (typeof QRCode !== 'undefined' && typeof $ !== 'undefined') {
-                        console.log('Todas as bibliotecas carregadas com sucesso');
-                        resolve();
-                    } else if (attempts >= maxAttempts) {
-                        console.warn('Timeout aguardando bibliotecas - continuando sem algumas funcionalidades');
-                        resolve();
-                    } else {
-                        if (attempts % 10 === 0) { // Log apenas a cada 1 segundo
-                            console.log(`Aguardando bibliotecas... (tentativa ${attempts}/${maxAttempts})`);
-                        }
-                        setTimeout(checkLibraries, 100);
-                    }
-                };
-                checkLibraries();
-            });
-        }
+        };
+    </script>
+    
+    <!-- Sistema de Pagamento Universal -->
+    <script>
+        // Integração universal de pagamento para upsells
+        class UpsellPaymentSystem {
+            constructor() {
+                this.init();
+            }
 
-        // Event Listeners
-        let eventListenersInitialized = false;
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            if (eventListenersInitialized) {
-                console.log('Event listeners já inicializados - ignorando');
-                return;
+            async init() {
+                // Aguardar bibliotecas carregarem
+                await this.waitForLibraries();
+                this.setupEventListeners();
             }
-            
-            // Aguarda bibliotecas carregarem
-            waitForLibraries().then(() => {
-                console.log('Inicializando event listeners...');
-                eventListenersInitialized = true;
-                
+
+            waitForLibraries() {
+                return new Promise((resolve) => {
+                    let attempts = 0;
+                    const maxAttempts = 50;
+                    
+                    const checkLibraries = () => {
+                        attempts++;
+                        
+                        if (typeof QRCode !== 'undefined' && typeof $ !== 'undefined') {
+                            console.log('✅ Todas as bibliotecas carregadas');
+                            resolve();
+                        } else if (attempts >= maxAttempts) {
+                            console.warn('⚠️ Timeout aguardando bibliotecas');
+                            resolve();
+                        } else {
+                            setTimeout(checkLibraries, 100);
+                        }
+                    };
+                    checkLibraries();
+                });
+            }
+
+            setupEventListeners() {
                 // Configurar botão "QUERO VÍDEOS PERSONALIZADOS!" para gerar PIX
                 const buyButton = document.getElementById('buy-button');
                 if (buyButton) {
-                    console.log('Configurando botão "QUERO VÍDEOS PERSONALIZADOS!" para gerar PIX');
-                    buyButton.onclick = null;
-                    buyButton.addEventListener('click', function(e) {
+                    console.log('🔧 Configurando botão principal para PIX');
+                    buyButton.addEventListener('click', async (e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        console.log('Botão "QUERO VÍDEOS PERSONALIZADOS!" clicado - abrindo modal PIX');
-                        showPixModal();
+                        console.log('💳 Botão PIX clicado');
+                        await this.createPixPayment(17.00, 'Vídeos Personalizados');
                         return false;
                     });
                 }
                 
-                // Configurar botão "QUERO MEUS VÍDEOS!" para redirecionar para back1
+                // Configurar botão "QUERO MEUS VÍDEOS!" para redirecionar
                 const buyButtonBottom = document.getElementById('buy-button-bottom');
                 if (buyButtonBottom) {
-                    console.log('Configurando botão "QUERO MEUS VÍDEOS!" para redirecionar para back1');
-                    buyButtonBottom.onclick = null;
-                    buyButtonBottom.addEventListener('click', function(e) {
+                    console.log('🔧 Configurando botão secundário para redirecionamento');
+                    buyButtonBottom.addEventListener('click', (e) => {
                         e.preventDefault();
-                        e.stopPropagation();
-                        console.log('Botão "QUERO MEUS VÍDEOS!" clicado - redirecionando para back1');
+                        console.log('↩️ Redirecionando para back1');
                         window.location.href = 'back1.html';
                         return false;
                     });
                 }
-                
+
+                // Configurar modal existente
+                this.setupModalEvents();
+            }
+
+            setupModalEvents() {
                 // Botão para fechar modal
-                document.getElementById('closePixModal').addEventListener('click', hidePixModal);
+                const closeButton = document.getElementById('closePixModal');
+                if (closeButton) {
+                    closeButton.addEventListener('click', () => this.hidePixModal());
+                }
                 
                 // Botão para copiar código PIX
-                document.getElementById('copyPixCode').addEventListener('click', copyPixCode);
+                const copyButton = document.getElementById('copyPixCode');
+                if (copyButton) {
+                    copyButton.addEventListener('click', () => this.copyPixCode());
+                }
                 
-                // Fechar modal clicando fora dele
-                document.getElementById('pixModal').addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        hidePixModal();
-                    }
+                // Fechar modal clicando fora
+                const modal = document.getElementById('pixModal');
+                if (modal) {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            this.hidePixModal();
+                        }
+                    });
+                }
+            }
+
+            async createPixPayment(amount, description) {
+                try {
+                    this.showLoading();
+                    
+                    // Simular criação de PIX (substitua pela integração real)
+                    const pixData = await this.generatePixTransaction(amount, description);
+                    
+                    this.hideLoading();
+                    this.showPixModal(pixData);
+                    
+                } catch (error) {
+                    console.error('❌ Erro ao criar PIX:', error);
+                    this.hideLoading();
+                    this.showError('Erro ao gerar PIX. Tente novamente.');
+                }
+            }
+
+            async generatePixTransaction(amount, description) {
+                // Simular resposta da API (substitua pela integração real)
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve({
+                            id: 'pix_' + Date.now(),
+                            pix_code: '00020126580014BR.GOV.BCB.PIX0136123e4567-e12b-12d1-a456-426614174000520400005303986540517.005802BR5913STELLA BEGHINI6009SAO PAULO61080540900062070503***6304ABCD',
+                            amount: amount,
+                            description: description
+                        });
+                    }, 1500);
                 });
+            }
+
+            showLoading() {
+                if (typeof swal !== 'undefined') {
+                    swal({
+                        title: 'Gerando PIX...',
+                        text: 'Aguarde um momento',
+                        icon: 'info',
+                        buttons: false,
+                        closeOnClickOutside: false
+                    });
+                } else {
+                    console.log('🔄 Carregando...');
+                }
+            }
+
+            hideLoading() {
+                if (typeof swal !== 'undefined') {
+                    swal.close();
+                }
+            }
+
+            showError(message) {
+                if (typeof swal !== 'undefined') {
+                    swal({
+                        title: 'Erro',
+                        text: message,
+                        icon: 'error',
+                        button: 'OK'
+                    });
+                } else {
+                    alert(message);
+                }
+            }
+
+            showPixModal(data) {
+                const modal = document.getElementById('pixModal');
+                const pixCodeInput = document.getElementById('pixCode');
+                const amountElement = document.querySelector('.pix-amount');
+                
+                if (modal && pixCodeInput) {
+                    // Atualizar valores
+                    pixCodeInput.value = data.pix_code;
+                    if (amountElement) {
+                        amountElement.textContent = `R$ ${data.amount.toFixed(2).replace('.', ',')}`;
+                    }
+                    
+                    // Gerar QR Code
+                    this.generateQRCode(data.pix_code);
+                    
+                    // Mostrar modal
+                    modal.style.display = 'block';
+                }
+            }
+
+            async generateQRCode(pixCode) {
+                try {
+                    const qrCanvas = document.getElementById('pixQRCode');
+                    if (!qrCanvas) return;
+
+                    if (typeof QRCode !== 'undefined') {
+                        await QRCode.toCanvas(qrCanvas, pixCode, {
+                            width: 200,
+                            height: 200,
+                            color: {
+                                dark: '#000000',
+                                light: '#FFFFFF'
+                            }
+                        });
+                        console.log('✅ QR Code gerado');
+                    }
+                } catch (error) {
+                    console.error('❌ Erro ao gerar QR Code:', error);
+                }
+            }
+
+            hidePixModal() {
+                const modal = document.getElementById('pixModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                }
+            }
+
+            copyPixCode() {
+                const pixCodeInput = document.getElementById('pixCode');
+                if (pixCodeInput) {
+                    const pixCode = pixCodeInput.value;
+                    
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(pixCode).then(() => {
+                            this.showCopyFeedback();
+                        }).catch(() => {
+                            this.fallbackCopy(pixCode);
+                        });
+                    } else {
+                        this.fallbackCopy(pixCode);
+                    }
+                }
+            }
+
+            fallbackCopy(text) {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    this.showCopyFeedback();
+                } catch (err) {
+                    alert('Código PIX: ' + text);
+                }
+                
+                document.body.removeChild(textArea);
+            }
+
+            showCopyFeedback() {
+                if (typeof swal !== 'undefined') {
+                    swal({
+                        title: 'Copiado!',
+                        text: 'Código PIX copiado para a área de transferência',
+                        icon: 'success',
+                        timer: 2000,
+                        buttons: false
+                    });
+                } else {
+                    alert('Código PIX copiado!');
+                }
+            }
+        }
+
+        // Inicializar sistema quando página carregar
+        document.addEventListener('DOMContentLoaded', () => {
+            new UpsellPaymentSystem();
+        });
+    </script>
+
+    <script>
+        function revealOffer() {
+            document.getElementById('popup').classList.add('hidden');
+            document.getElementById('upsell-content').classList.remove('hidden');
+            startCountdown();
+        }
+
+        function startCountdown() {
+            let hours = 0;
+            let minutes = 5;
+            let seconds = 0;
+
+            const countdownInterval = setInterval(function() {
+                if (hours === 0 && minutes === 0 && seconds === 0) {
+                    clearInterval(countdownInterval);
+                    return;
+                }
+
+                if (seconds > 0) {
+                    seconds--;
+                } else {
+                    seconds = 59;
+                    if (minutes > 0) {
+                        minutes--;
+                    } else {
+                        minutes = 59;
+                        if (hours > 0) {
+                            hours--;
+                        }
+                    }
+                }
+
+                document.getElementById('hours').textContent = hours < 10 ? '0' + hours : hours;
+                document.getElementById('minutes').textContent = minutes < 10 ? '0' + minutes : minutes;
+                document.getElementById('seconds').textContent = seconds < 10 ? '0' + seconds : seconds;
+            }, 1000);
+        }
+
+        // Inicializar carrossel
+        $(document).ready(function(){
+            $('.comment-carousel').slick({
+                dots: true,
+                infinite: true,
+                speed: 300,
+                slidesToShow: 1,
+                adaptiveHeight: true
             });
         });
+
+        // Salvar step
+        localStorage.setItem('lastStep', 'upsell1');
     </script>
 </body>
 
