@@ -96,9 +96,8 @@
             margin: 30px auto;
             max-width: 700px;
             transition: transform 0.3s ease;
-            position: relative;
-            left: 50%;
-            transform: translateX(-50%);
+            width: 100%;
+            box-sizing: border-box;
         }
         .offer-container:hover {
             transform: translateY(-5px);
@@ -182,6 +181,8 @@
             transition: all 0.3s ease;
             border: none;
             margin-bottom: 40px;
+            cursor: pointer;
+            width: auto;
         }
         .btn-upsell:hover {
             transform: translateY(-3px);
@@ -325,15 +326,19 @@
             z-index: 10000;
             left: 0;
             top: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             background-color: rgba(0, 0, 0, 0.8);
             animation: fadeIn 0.3s ease;
+            overflow: auto;
         }
         
         .pix-modal-content {
             background-color: #fff;
-            margin: 5% auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             padding: 30px;
             border-radius: 15px;
             width: 90%;
@@ -341,6 +346,8 @@
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             animation: slideIn 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
         @keyframes slideIn {
@@ -567,7 +574,7 @@
                 </div>
             </div>
             
-            <a id="buy-button" class="btn-upsell" href="https://pay.pagamentoseguroofc.site/686b10ae454e0b110f2d174e">QUERO VÍDEOS PERSONALIZADOS!</a>
+            <button id="buy-button" class="btn-upsell" type="button">QUERO VÍDEOS PERSONALIZADOS!</button>
             
             <div class="guarantee-section">
                 <div class="guarantee-icon">
@@ -605,7 +612,7 @@
 
     </div>
 
-    <a id="buy-button-bottom" class="btn-upsell" href="https://pay.pagamentoseguroofc.site/686b10ae454e0b110f2d174e">QUERO MEUS VÍDEOS!</a>
+    <button id="buy-button-bottom" class="btn-upsell" type="button">QUERO MEUS VÍDEOS!</button>
 </div>
 
 <!-- Modal PIX -->
@@ -813,9 +820,14 @@
             // Botão para abrir modal PIX
             const buyButtons = document.querySelectorAll('#buy-button, #buy-button-bottom');
             buyButtons.forEach(button => {
+                // Remove todos os event listeners existentes
+                button.onclick = null;
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Botão clicado - abrindo modal PIX');
                     showPixModal();
+                    return false;
                 });
             });
             
