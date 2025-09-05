@@ -710,6 +710,36 @@ app.get('/oferta-premiada', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'oferta-premiada', 'index.html'));
 });
 
+// ============================
+// ROTAS DO FUNIL COMPLETO
+// ============================
+
+// Rotas dos Upsells
+app.get('/up1', (req, res) => {
+    res.sendFile(path.join(__dirname, 'funil_completo', 'up1.html'));
+});
+
+app.get('/up2', (req, res) => {
+    res.sendFile(path.join(__dirname, 'funil_completo', 'up2.html'));
+});
+
+app.get('/up3', (req, res) => {
+    res.sendFile(path.join(__dirname, 'funil_completo', 'up3.html'));
+});
+
+// Rotas dos Downsells
+app.get('/back1', (req, res) => {
+    res.sendFile(path.join(__dirname, 'funil_completo', 'back1.html'));
+});
+
+app.get('/back2', (req, res) => {
+    res.sendFile(path.join(__dirname, 'funil_completo', 'back2.html'));
+});
+
+app.get('/back3', (req, res) => {
+    res.sendFile(path.join(__dirname, 'funil_completo', 'back3.html'));
+});
+
 // Rota raiz redireciona para /links (página principal)
 app.get('/', (req, res) => {
     res.redirect('/links');
@@ -730,6 +760,9 @@ app.use('/links', express.static(path.join(__dirname, 'links')));
 app.use('/compra-aprovada', express.static(path.join(__dirname, 'compra-aprovada')));
 app.use('/redirect-privacy', express.static(path.join(__dirname, 'redirect-privacy')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
+
+// Servir arquivos estáticos do funil completo
+app.use('/funil_completo', express.static(path.join(__dirname, 'funil_completo')));
 
 // Middleware para servir arquivos estáticos de forma mais flexível
 app.use('/images', express.static(path.join(__dirname, 'links/images')));
@@ -830,6 +863,9 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`💳 Checkout Privacy: http://localhost:${PORT}/privacy`);
     console.log(`🎁 Oferta Premiada: http://localhost:${PORT}/oferta-premiada`);
     console.log(`🔄 Redirecionamento: http://localhost:${PORT}/redirect`);
+    console.log(`\n🎯 FUNIL COMPLETO:`);
+    console.log(`   📈 Upsells: http://localhost:${PORT}/up1 | /up2 | /up3`);
+    console.log(`   📉 Downsells: http://localhost:${PORT}/back1 | /back2 | /back3`);
     console.log(`🌐 Acesse externamente: http://0.0.0.0:${PORT}/links`);
     
     // Mostrar informações do controller
