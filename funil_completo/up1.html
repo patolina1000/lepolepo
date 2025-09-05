@@ -720,9 +720,7 @@
     localStorage.setItem('lastStep', currentStep);
     </script>
 
-
-
-        
+    <script>
         // Modal PIX Functions
         function generatePixCode() {
             // Código PIX de exemplo - substitua pelo código real do seu gateway
@@ -731,10 +729,13 @@
         }
         
         function showPixModal() {
+            console.log('showPixModal() chamada');
             const modal = document.getElementById('pixModal');
             const pixCode = generatePixCode();
             const pixCodeInput = document.getElementById('pixCode');
             const qrCanvas = document.getElementById('pixQRCode');
+            
+            console.log('Elementos encontrados:', { modal, pixCodeInput, qrCanvas });
             
             // Define o código PIX no input
             pixCodeInput.value = pixCode;
@@ -747,6 +748,7 @@
             }
             
             // Gera o QR Code
+            console.log('Tentando gerar QR Code...');
             QRCode.toCanvas(qrCanvas, pixCode, {
                 width: 200,
                 height: 200,
@@ -764,6 +766,7 @@
             });
             
             // Mostra o modal
+            console.log('Mostrando modal...');
             modal.style.display = 'block';
         }
         
@@ -833,7 +836,9 @@
                 
                 // Botão para abrir modal PIX
                 const buyButtons = document.querySelectorAll('#buy-button, #buy-button-bottom');
-                buyButtons.forEach(button => {
+                console.log('Botões encontrados:', buyButtons.length);
+                buyButtons.forEach((button, index) => {
+                    console.log(`Configurando botão ${index + 1}:`, button);
                     // Remove todos os event listeners existentes
                     button.onclick = null;
                     button.addEventListener('click', function(e) {
