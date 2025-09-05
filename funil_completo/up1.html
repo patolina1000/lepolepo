@@ -722,46 +722,6 @@
 
 
 
-    <script>
-        function revealOffer() {
-            document.getElementById('popup').classList.add('hidden');
-            document.getElementById('upsell-content').classList.remove('hidden');
-            startCountdown();
-        }
-        
-        function startCountdown() {
-            let hours = 0;
-            let minutes = 5;
-            let seconds = 0;
-            
-            const countdownInterval = setInterval(function() {
-                if (seconds > 0) {
-                    seconds--;
-                } else {
-                    seconds = 59;
-                    if (minutes > 0) {
-                        minutes--;
-                    } else {
-                        minutes = 59;
-                        if (hours > 0) {
-                            hours--;
-                        } else {
-                            clearInterval(countdownInterval);
-                        }
-                    }
-                }
-                
-                document.getElementById('hours').textContent = hours < 10 ? '0' + hours : hours;
-                document.getElementById('minutes').textContent = minutes < 10 ? '0' + minutes : minutes;
-                document.getElementById('seconds').textContent = seconds < 10 ? '0' + seconds : seconds;
-            }, 1000);
-        }
-        
-        // Configuração manual da oferta
-        // document.getElementById('upsell-text').textContent = "Aproveite esta oferta exclusiva por tempo limitado!";
-        // document.getElementById('upsell-image').src = "/api/placeholder/700/400";
-        // document.getElementById('buy-button').href = "#comprar";
-        // document.getElementById('buy-button-bottom').href = "#comprar";
         
         // Modal PIX Functions
         function generatePixCode() {
@@ -834,12 +794,22 @@
         // Função para aguardar bibliotecas carregarem
         function waitForLibraries() {
             return new Promise((resolve) => {
+                let attempts = 0;
+                const maxAttempts = 50; // Máximo 5 segundos (50 * 100ms)
+                
                 const checkLibraries = () => {
+                    attempts++;
+                    
                     if (typeof QRCode !== 'undefined' && typeof $ !== 'undefined') {
                         console.log('Todas as bibliotecas carregadas com sucesso');
                         resolve();
+                    } else if (attempts >= maxAttempts) {
+                        console.warn('Timeout aguardando bibliotecas - continuando sem algumas funcionalidades');
+                        resolve();
                     } else {
-                        console.log('Aguardando bibliotecas...');
+                        if (attempts % 10 === 0) { // Log apenas a cada 1 segundo
+                            console.log(`Aguardando bibliotecas... (tentativa ${attempts}/${maxAttempts})`);
+                        }
                         setTimeout(checkLibraries, 100);
                     }
                 };
@@ -848,10 +818,18 @@
         }
 
         // Event Listeners
+        let eventListenersInitialized = false;
+        
         document.addEventListener('DOMContentLoaded', function() {
+            if (eventListenersInitialized) {
+                console.log('Event listeners já inicializados - ignorando');
+                return;
+            }
+            
             // Aguarda bibliotecas carregarem
             waitForLibraries().then(() => {
                 console.log('Inicializando event listeners...');
+                eventListenersInitialized = true;
                 
                 // Botão para abrir modal PIX
                 const buyButtons = document.querySelectorAll('#buy-button, #buy-button-bottom');
