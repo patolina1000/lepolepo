@@ -1,8 +1,8 @@
-# Arquivos de ambiente
-.env
-.env.local
-.env.production
-.env.development
+# Arquivos de ambiente (comentado para Vercel)
+# .env
+# .env.local
+# .env.production
+# .env.development
 
 # Arquivos de configuração sensíveis
 app-config.json
@@ -45,8 +45,8 @@ jspm_packages/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
-.env
+# dotenv environment variables file (comentado para Vercel)
+# .env
 
 # IDE
 .vscode/
