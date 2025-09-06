@@ -775,7 +775,7 @@
     function loadMediaContent() {
         const currentPage = window.location.pathname.split('/').pop().replace('.html', '');
         const mediaContainer = document.getElementById('media-container');
-        const basePath = './assets/';
+        const basePath = '/assets/';
         
         // Tentar carregar vídeo primeiro
         const videoPath = basePath + currentPage + '.mp4';

@@ -29,6 +29,10 @@
       "dest": "/redirect-privacy/assets/$1"
     },
     {
+      "src": "/assets/(.*)",
+      "dest": "/funil_completo/assets/$1"
+    },
+    {
       "src": "/redirect-privacy",
       "dest": "/server.js"
     },
