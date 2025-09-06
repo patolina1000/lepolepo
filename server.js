@@ -780,6 +780,8 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // Servir arquivos estáticos do funil completo
 app.use('/funil_completo', express.static(path.join(__dirname, 'funil_completo')));
+// Permitir acesso direto aos assets do funil
+app.use('/assets', express.static(path.join(__dirname, 'funil_completo/assets')));
 
 // Middleware para servir arquivos estáticos de forma mais flexível
 app.use('/images', express.static(path.join(__dirname, 'links/images')));
