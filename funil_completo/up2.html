@@ -270,33 +270,43 @@
         }
         
         .btn-decline {
-            color: #666;
-            text-decoration: underline;
-            font-size: 14px;
+            background: linear-gradient(135deg, #e0e0e0, #bdbdbd);
+            color: #333;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: 22px;
             font-weight: 600;
-            background: none;
+            display: inline-block;
+            text-decoration: none;
+            margin: 20px auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
             border: none;
             cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-block;
-            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            max-width: 400px;
         }
-        
+
         .btn-decline:hover {
-            color: #999;
-            text-decoration: underline;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            color: #333;
+            text-decoration: none;
+            background: linear-gradient(135deg, #d5d5d5, #a8a8a8);
         }
         
         @media (max-width: 768px) {
-            .btn-upsell {
+            .btn-upsell, .btn-decline {
                 padding: 18px 30px;
                 font-size: 20px;
                 margin: 15px 0;
             }
         }
-        
+
         @media (max-width: 480px) {
-            .btn-upsell {
+            .btn-upsell, .btn-decline {
                 padding: 15px 25px;
                 font-size: 18px;
                 margin: 10px 0;

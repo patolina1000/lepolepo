@@ -276,33 +276,43 @@
         }
         
         .btn-decline {
-            color: #666;
-            text-decoration: underline;
-            font-size: 14px;
+            background: linear-gradient(135deg, #e0e0e0, #bdbdbd);
+            color: #333;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: 22px;
             font-weight: 600;
-            background: none;
+            display: inline-block;
+            text-decoration: none;
+            margin: 20px auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
             border: none;
             cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-block;
-            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            max-width: 400px;
         }
-        
+
         .btn-decline:hover {
-            color: #999;
-            text-decoration: underline;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            color: #333;
+            text-decoration: none;
+            background: linear-gradient(135deg, #d5d5d5, #a8a8a8);
         }
         
         @media (max-width: 768px) {
-            .btn-upsell {
+            .btn-upsell, .btn-decline {
                 padding: 18px 30px;
                 font-size: 20px;
                 margin: 15px 0;
             }
         }
-        
+
         @media (max-width: 480px) {
-            .btn-upsell {
+            .btn-upsell, .btn-decline {
                 padding: 15px 25px;
                 font-size: 18px;
                 margin: 10px 0;
@@ -799,7 +809,60 @@
     function revealOffer() {
         document.getElementById('popup').classList.add('hidden');
         document.getElementById('upsell-content').classList.remove('hidden');
+        loadMediaContent();
         startCountdown();
+    }
+
+    // Função para carregar mídia baseada no nome da página
+    function loadMediaContent() {
+        const currentPage = window.location.pathname.split('/').pop().replace('.html', '');
+        const mediaContainer = document.getElementById('media-container');
+        const basePath = '/assets/';
+
+        // Tentar carregar vídeo primeiro
+        const videoPath = basePath + currentPage + '.mp4';
+        const imagePath = basePath + currentPage + '.jpg';
+
+        // Criar elemento de vídeo para testar se existe
+        const video = document.createElement('video');
+        video.src = videoPath;
+        video.autoplay = true;
+        video.loop = true;
+        video.muted = true;
+        video.playsInline = true;
+        video.controls = false;
+        video.style.width = '100%';
+        video.style.height = '100%';
+        video.style.objectFit = 'cover';
+        video.style.borderRadius = '12px';
+
+        video.onerror = function() {
+            // Se vídeo não existir, carregar imagem
+            const img = document.createElement('img');
+            img.src = imagePath;
+            img.alt = 'Oferta Especial';
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '12px';
+
+            img.onerror = function() {
+                // Se nem vídeo nem imagem existirem, usar imagem padrão
+                this.src = '../images/banner.jpg';
+            };
+
+            // Remover vídeo e adicionar imagem
+            mediaContainer.removeChild(video);
+            mediaContainer.insertBefore(img, mediaContainer.firstChild);
+        };
+
+        video.onloadeddata = function() {
+            // Vídeo carregou com sucesso
+            console.log('Vídeo carregado:', videoPath);
+        };
+
+        // Adicionar vídeo ao container (antes do badge)
+        mediaContainer.insertBefore(video, mediaContainer.firstChild);
     }
 
     function startCountdown() {
