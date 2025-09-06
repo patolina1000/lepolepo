@@ -784,6 +784,7 @@ app.use('/funil_completo', express.static(path.join(__dirname, 'funil_completo')
 app.use('/assets', express.static(path.join(__dirname, 'funil_completo/assets')));
 
 // Middleware para servir arquivos estáticos de forma mais flexível
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use('/images', express.static(path.join(__dirname, 'links/images')));
 app.use('/icons', express.static(path.join(__dirname, 'links/icons')));
 app.use('/compra-aprovada/images', express.static(path.join(__dirname, 'compra-aprovada/images')));
