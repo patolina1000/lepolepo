@@ -751,33 +751,7 @@
             </div>
         </div>
 
-        <!-- <div class="photo-gallery">
-            <div class="gallery-title">Veja os resultados</div>
-            <div class="gallery-container">
-                <div class="gallery-item">
-                    <img src="/api/placeholder/200/150" alt="Foto de Resultado 1">
-                </div>
-                <div class="gallery-item">
-                    <img src="/api/placeholder/200/150" alt="Foto de Resultado 2">
-                </div>
-                <div class="gallery-item">
-                    <img src="/api/placeholder/200/150" alt="Foto de Resultado 3">
-                </div>
-                <div class="gallery-item">
-                    <img src="/api/placeholder/200/150" alt="Foto de Resultado 4">
-                </div>
-                <div class="gallery-item">
-                    <img src="/api/placeholder/200/150" alt="Foto de Resultado 5">
-                </div>
-                <div class="gallery-item">
-                    <img src="/api/placeholder/200/150" alt="Foto de Resultado 6">
-                </div>
-            </div>
-        </div> -->
-
         </div>
-
-        <!-- Botão duplicado removido para seguir as regras especificadas -->
 
             </div>
         </div>
@@ -898,285 +872,149 @@
 
 
 
+    <!-- CSS e JS necessários para integração de pagamento -->
+    <link rel="stylesheet" href="../public/css/pix-modal.css">
+    <link rel="stylesheet" href="../public/css/payment-modal.css">
+    
+    <!-- jQuery -->
+    <script src="../public/js/jquery.min.js"></script>
+    
+    <!-- SweetAlert -->
+    <script src="../public/js/sweetalert.min.js"></script>
+    
+    <!-- QRCode.js -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    
+    <!-- Configuração SyncPay -->
+    <script src="../public/js/config.js"></script>
+    
+    <!-- Integração SyncPay -->
+    <script src="../public/js/syncpay-integration.js"></script>
+    
+    <!-- Integração Universal de Pagamentos -->
+    <script src="../public/js/universal-payment-integration.js"></script>
+    
+    <!-- Modal de Pagamento -->
+    <script src="../public/js/payment-modal.js"></script>
+    
+    <!-- Popup PIX Alternativo -->
+    <script src="../public/js/pix-popup-alternative.js"></script>
+
     <script>
-        // Função para gerar PIX e mostrar pop-up
+        // Configuração SYNCPAY para o funil
+        window.SYNCPAY_CONFIG = {
+            client_id: "708ddc0b-357d-4548-b158-615684caa616",
+            client_secret: "c08d40e5-3049-48c9-85c0-fd3cc6ca502c",
+            plans: {
+                upsell2_chat: {
+                    price: 67.90,
+                    description: 'Chat Exclusivo'
+                }
+            }
+        };
+
+        // Função para gerar PIX usando a integração universal
         async function gerarPixPlano(planoId, planoNome, planoValor) {
             try {
-                if (window.PixelTracker) {
-                    window.PixelTracker.trackInitiateCheckout(planoValor, planoNome);
+                console.log('🚀 Iniciando geração de PIX:', { planoId, planoNome, planoValor });
+                
+                // Verificar se a integração universal está disponível
+                if (!window.universalPayment && !window.syncPay) {
+                    alert('Serviço de pagamento indisponível. Tente novamente em alguns instantes.');
+                    return;
                 }
+
+                // Usar a integração universal que detecta o gateway automaticamente
+                const paymentService = window.universalPayment || window.syncPay;
+                
                 // Mostrar loading
-                Swal.fire({
-                    title: 'Gerando PIX...',
-                    text: 'Aguarde um momento',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading()
-                    }
-                });
-
-                const response = await fetch('/api/gerar-pix-checkout', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        plano_id: planoId,
-                        valor: planoValor
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.success && data.qr_code_base64 && data.pix_copia_cola) {
-                    // Fechar loading
-                    Swal.close();
-
-                    // Coletar dados visuais já disponíveis na página
-                    const coverSrc = '../images/banner.jpg';
-                    const avatarSrc = '../images/perfil.jpg';
-                    const nomePerfil = 'Criador(a)';
-                    const handlePerfil = '@perfil';
-
-                    // Modal moderna mantendo a mesma lógica de funcionamento
+                if (paymentService.showLoading) {
+                    paymentService.showLoading();
+                } else if (typeof Swal !== 'undefined') {
                     Swal.fire({
-                        title: '',
-                        html: `
-                            <div class="pix-modal" style="text-align:left; font-family: inherit; color:#222; margin: -30px; border-radius: 16px; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                                <div class="pix-cover" style="position: relative; overflow:hidden; width:100%; border-top-left-radius:16px; border-top-right-radius:16px; margin: 0; padding: 0;">
-                                    <img src="${coverSrc}" alt="capa" style="width: 100%; height: 108px; object-fit: cover; display:block;">
-                                    <button type="button" class="pix-close" aria-label="Fechar" style="position:absolute; top:12px; right:12px; z-index:3; width:34px; height:34px; border:none; border-radius:50%; background:#ffffff; color:#6B7280; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,.12); cursor:pointer;">
-                                        ×
-                                    </button>
-                                    <div class="pix-avatar" style="position:absolute; left:16px; bottom:10px; z-index:2; width:55px; height:55px; border-radius:50%; overflow:hidden; border:3px solid #00ff88; box-shadow: 0 0 15px rgba(0, 255, 136, 0.7); animation: pulse-online 2s infinite;">
-                                        <img src="${avatarSrc}" alt="avatar" style="width:100%; height:100%; object-fit:cover; display:block;">
-                                    </div>
-                                    <div class="pix-identity" style="position:absolute; left:85px; bottom:22px; z-index:2; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.25);">
-                                        <div style="font-weight:700; font-size:18px; line-height:1.2;">${nomePerfil}</div>
-                                        <div style="font-size:12px; color:#e5e7eb;">${handlePerfil}</div>
-                                    </div>
-                                </div>
-
-                                <div class="pix-content-scroll" style="flex: 1; overflow-y: auto; overflow-x: hidden;">
-                                <div style="padding: 18px 50px 0 50px;">
-                                    <div style="font-weight:600; margin: 0 0 10px 0; font-size:16px; color:#222; text-align:left;">Benefícios Exclusivos</div>
-                                    <div style="display:flex; flex-direction:column; gap:8px; color:#374151; text-align:left;">
-                                        <div style="display:flex; gap:10px; align-items:flex-start; justify-content:flex-start;">
-                                            <span style="color:#ef4444; font-size:14px; line-height:1;">✔</span>
-                                            <span style="font-size:14px;">Acesso ao conteúdo</span>
-                                        </div>
-                                        <div style="display:flex; gap:10px; align-items:flex-start; justify-content:flex-start;">
-                                            <span style="color:#ef4444; font-size:14px; line-height:1;">✔</span>
-                                            <span style="font-size:14px;">Chat exclusivo com o criador</span>
-                                        </div>
-                                        <div style="display:flex; gap:10px; align-items:flex-start; justify-content:flex-start;">
-                                            <span style="color:#ef4444; font-size:14px; line-height:1;">✔</span>
-                                            <span style="font-size:14px;">Cancele a qualquer hora</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div style="padding: 18px 50px 0 50px;">
-                                    <div style="background:#F3F4F6; border-radius:16px; box-shadow: 0 6px 16px rgba(0,0,0,.06); padding:20px;">
-                                        <div style="font-weight:600; color:#222; margin-bottom:10px;">Plano: ${planoNome}</div>
-                                        <div style="color:#6B7280; font-size:13px;">Valor</div>
-                                        <div style="margin-top:6px; font-weight:700; font-size:20px; color:#111827;">R$ ${planoValor.toFixed(2)}</div>
-                                    </div>
-                                </div>
-
-                                <div style="padding: 18px 50px 0 50px;">
-                                    <div style="background:#F3F4F6; border-radius:16px; box-shadow: 0 6px 16px rgba(0,0,0,.06); padding:24px; display:flex; align-items:center; justify-content:center;">
-                                        <img src="${data.qr_code_base64}" alt="QR Code PIX" style="width: 256px; height: 256px; max-width: 100%; object-fit: contain;">
-                                    </div>
-                                </div>
-
-                                <div style="padding: 18px 50px 0 50px;">
-                                    <div style="font-weight:700; color:#6B7280; font-size:12px; letter-spacing:.24px;">CHAVE PIX</div>
-                                    <div style="position: relative; margin-top:10px;">
-                                        <div style="background:#fff; border:1px solid #e5e7eb; border-radius:14px; padding:12px 36px 12px 12px; font-family: monospace; font-size:12px; color:#111827; white-space: nowrap; overflow-x: auto; box-shadow: 0 2px 6px rgba(0,0,0,.04);">${data.pix_copia_cola}</div>
-                                        <div style="position:absolute; right:10px; top:50%; transform: translateY(-50%); color:#9CA3AF; font-size:16px; user-select:none;">›</div>
-                                    </div>
-                                </div>
-
-                                <div style="padding: 8px 50px 50px 50px;">
-                                    <button id="copiar-pix" onclick="copiarPixCola('${data.pix_copia_cola}')" style="width:100%; border:none; border-radius:16px; padding: 14px 16px; color:#fff; font-weight:800; letter-spacing:.2px; cursor:pointer; background: linear-gradient(90deg,#ff8a5c,#ffb199); box-shadow: 0 10px 18px rgba(255,138,92,.35); text-transform: uppercase;">
-                                        COPIAR CHAVE PIX
-                                    </button>
-                                </div>
-                                </div>
-                            </div>
-                        `,
-                        showCloseButton: false,
-                        showConfirmButton: false,
-                        width: window.innerWidth <= 768 ? '95vw' : '480px',
-                        backdrop: false,
+                        title: 'Gerando PIX...',
+                        text: 'Aguarde um momento',
+                        allowOutsideClick: false,
                         didOpen: () => {
-                            const popup = Swal.getPopup();
-                            if (popup) {
-                                popup.style.padding = '0';
-                                popup.style.borderRadius = '16px';
-                                popup.style.overflow = 'hidden';
-                                popup.style.width = window.innerWidth <= 768 ? '95vw' : '480px';
-                                popup.style.height = 'calc(100vh - 80px)';
-                                popup.style.maxHeight = 'calc(100vh - 80px)';
-                                popup.style.maxWidth = window.innerWidth <= 768 ? '95vw' : '480px';
-                                popup.style.minWidth = window.innerWidth <= 768 ? '95vw' : '480px';
-                                popup.style.boxShadow = '0 12px 32px rgba(0,0,0,.12)';
-                                popup.style.position = 'fixed';
-                                popup.style.top = '50%';
-                                popup.style.left = '50%';
-                                popup.style.transform = 'translate(-50%, -50%)';
-                                popup.style.margin = '0';
-                                popup.style.pointerEvents = 'auto';
-                                popup.style.touchAction = 'pan-y';
-                                popup.style.userSelect = 'none';
-                                popup.style.webkitUserDrag = 'none';
-                                popup.style.userDrag = 'none';
-                            }
-                            // Backdrop custom
-                            const existing = document.querySelector('.modal-backdrop');
-                            if (!existing) {
-                                const backdrop = document.createElement('div');
-                                backdrop.className = 'modal-backdrop';
-                                backdrop.style.position = 'fixed';
-                                backdrop.style.inset = '0';
-                                backdrop.style.background = 'rgba(0,0,0,.40)';
-                                backdrop.style.zIndex = '900';
-                                document.body.appendChild(backdrop);
-                                backdrop.addEventListener('click', () => Swal.close());
-                            }
-                            // Z-index do modal acima do backdrop
-                            const container = Swal.getContainer();
-                            if (container) {
-                                container.style.zIndex = '1000';
-                                container.style.padding = '0 20px 40px 20px';
-                                container.style.margin = '0';
-                                container.style.display = 'flex';
-                                container.style.alignItems = 'center';
-                                container.style.justifyContent = 'center';
-                                container.style.minHeight = '100vh';
-                                container.style.maxHeight = '100vh';
-                                container.style.overflow = 'hidden';
-                                container.style.position = 'fixed';
-                                container.style.top = '0';
-                                container.style.left = '0';
-                                container.style.right = '0';
-                                container.style.bottom = '0';
-                            }
-                            // Bloquear scroll do body
-                            document.body.style.overflow = 'hidden';
-                            // Ação do botão X custom
-                            const btnX = document.querySelector('.pix-close');
-                            if (btnX) btnX.addEventListener('click', () => Swal.close());
-                            
-                            // Bloquear drag de todos os elementos do modal
-                            const modal = document.querySelector('.pix-modal');
-                            if (modal) {
-                                // Bloquear eventos de drag
-                                modal.addEventListener('dragstart', (e) => e.preventDefault());
-                                modal.addEventListener('drag', (e) => e.preventDefault());
-                                modal.addEventListener('dragend', (e) => e.preventDefault());
-                                
-                                // Bloquear seleção de texto (exceto chave PIX)
-                                modal.addEventListener('selectstart', (e) => {
-                                    if (!e.target.style.fontFamily?.includes('monospace')) {
-                                        e.preventDefault();
-                                    }
-                                });
-                                
-                                // Bloquear movimento touch horizontal
-                                let startX = 0;
-                                let startY = 0;
-                                modal.addEventListener('touchstart', (e) => {
-                                    startX = e.touches[0].clientX;
-                                    startY = e.touches[0].clientY;
-                                });
-                                
-                                modal.addEventListener('touchmove', (e) => {
-                                    const currentX = e.touches[0].clientX;
-                                    const diffX = Math.abs(currentX - startX);
-                                    
-                                    // Se movimento horizontal for maior que 10px, bloquear
-                                    if (diffX > 10) {
-                                        e.preventDefault();
-                                    }
-                                });
-                                
-                                // Controlar scroll vertical para manter dentro dos limites
-                                const scrollArea = modal.querySelector('.pix-content-scroll');
-                                if (scrollArea) {
-                                    scrollArea.addEventListener('scroll', (e) => {
-                                        // Limitar scroll para não sair dos limites
-                                        const maxScroll = scrollArea.scrollHeight - scrollArea.clientHeight;
-                                        if (scrollArea.scrollTop < 0) {
-                                            scrollArea.scrollTop = 0;
-                                        } else if (scrollArea.scrollTop > maxScroll) {
-                                            scrollArea.scrollTop = maxScroll;
-                                        }
-                                    });
-                                    
-                                    // Bloquear overscroll (bounce effect)
-                                    scrollArea.addEventListener('touchmove', (e) => {
-                                        const scrollTop = scrollArea.scrollTop;
-                                        const maxScroll = scrollArea.scrollHeight - scrollArea.clientHeight;
-                                        
-                                        // Se está no topo e tentando rolar para cima, ou no final e tentando rolar para baixo
-                                        if ((scrollTop <= 0 && e.touches[0].clientY > startY) || 
-                                            (scrollTop >= maxScroll && e.touches[0].clientY < startY)) {
-                                            e.preventDefault();
-                                        }
-                                    });
-                                }
-                            }
-                        },
-                        willClose: () => {
-                            // Remover backdrop e restaurar scroll
-                            const backdrop = document.querySelector('.modal-backdrop');
-                            if (backdrop) backdrop.remove();
-                            document.body.style.overflow = '';
+                            Swal.showLoading()
                         }
                     });
-
-                } else {
-                    throw new Error(data.error || 'Erro desconhecido ao gerar PIX');
                 }
-
-            } catch (error) {
-                console.error('Erro ao gerar PIX:', error);
                 
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Erro',
-                    text: 'Erro ao gerar PIX. Tente novamente.',
-                    confirmButtonText: 'OK'
-                });
+                // Dados do cliente padrão
+                const clientData = {
+                    name: 'Cliente',
+                    cpf: '12345678901',
+                    email: 'cliente@exemplo.com',
+                    phone: '11999999999'
+                };
+                
+                // Criar transação PIX
+                const transaction = await paymentService.createPixTransaction(planoValor, planoNome, clientData);
+                console.log('✅ Transação PIX criada:', transaction);
+                
+                // Fechar loading
+                if (typeof Swal !== 'undefined') {
+                    Swal.close();
+                }
+                
+                // Mostrar modal com o PIX gerado
+                if (paymentService.showPixModal && transaction.pix_code) {
+                    paymentService.showPixModal(transaction);
+                } else if (window.showPaymentModal) {
+                    // Usar modal de pagamento como fallback
+                    window.showPaymentModal({
+                        pix_qr_code: transaction.pix_code,
+                        pix_copy_paste: transaction.pix_code,
+                        amount: planoValor,
+                        identifier: transaction.id,
+                        status: 'pending',
+                        gateway: transaction.gateway
+                    });
+                } else if (window.showPixPopup) {
+                    // Usar popup alternativo
+                    window.showPixPopup({
+                        pix_code: transaction.pix_code,
+                        amount: planoValor,
+                        id: transaction.id,
+                        gateway: transaction.gateway
+                    });
+                } else {
+                    alert(`PIX gerado com sucesso! Código PIX foi copiado para a área de transferência.`);
+                    // Tentar copiar para área de transferência
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(transaction.pix_code);
+                    }
+                }
+                
+            } catch (error) {
+                console.error('❌ Erro ao gerar PIX:', error);
+                
+                // Fechar loading em caso de erro
+                if (typeof Swal !== 'undefined') {
+                    Swal.close();
+                }
+                
+                alert(`Erro ao gerar PIX: ${error.message || 'Tente novamente em alguns instantes.'}`);
             }
         }
 
-        // Função para copiar código PIX
-        window.copiarPixCola = function(codigo) {
-            navigator.clipboard.writeText(codigo).then(function() {
-                // Mostrar feedback de sucesso
-                const btn = document.getElementById('copiar-pix');
-                const textoOriginal = btn.innerHTML;
-                btn.innerHTML = '✅ Copiado!';
-                btn.style.background = '#28a745';
-                
-                setTimeout(() => {
-                    btn.innerHTML = textoOriginal;
-                    btn.style.background = '';
-                }, 2000);
-            }).catch(function(err) {
-                console.error('Erro ao copiar:', err);
-                alert('Erro ao copiar. Selecione e copie manualmente.');
-            });
-        }
+        // Aguardar carregamento das dependências
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 UP2.html carregado - Sistema de pagamento ativo');
+            
+            // Verificar dependências após um tempo
+            setTimeout(() => {
+                console.log('🔍 Verificando dependências...');
+                console.log('✅ universalPayment:', typeof window.universalPayment !== 'undefined' ? 'OK' : '❌ FALTANDO');
+                console.log('✅ syncPay:', typeof window.syncPay !== 'undefined' ? 'OK' : '❌ FALTANDO');
+                console.log('✅ showPaymentModal:', typeof window.showPaymentModal !== 'undefined' ? 'OK' : '❌ FALTANDO');
+                console.log('✅ showPixPopup:', typeof window.showPixPopup !== 'undefined' ? 'OK' : '❌ FALTANDO');
+            }, 1000);
+        });
 
-        // Funções já definidas acima
-        
-        // Configuração manual da oferta
-        // document.getElementById('upsell-text').textContent = "Aproveite esta oferta exclusiva por tempo limitado!";
-        // document.getElementById('upsell-image').src = "/api/placeholder/700/400";
+    </script>
+    <script>
         // document.getElementById('buy-button').href = "#comprar";
         // document.getElementById('buy-button-bottom').href = "#comprar";
     </script>
