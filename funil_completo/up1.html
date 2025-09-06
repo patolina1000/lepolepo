@@ -932,10 +932,34 @@
                 const transaction = await paymentService.createPixTransaction(planoValor, planoNome, clientData);
                 console.log('✅ Transação PIX criada:', transaction);
                 
-                // Fechar loading
-                if (typeof Swal !== 'undefined') {
-                    Swal.close();
+                // Fechar loading - Garantir que feche completamente
+                try {
+                    if (typeof Swal !== 'undefined') {
+                        Swal.close();
+                    }
+                    // Fechar loading nativo também se existir
+                    const nativeLoading = document.getElementById('nativeLoading');
+                    if (nativeLoading) {
+                        nativeLoading.remove();
+                    }
+                } catch (loadingError) {
+                    console.warn('Erro ao fechar loading:', loadingError);
                 }
+                
+                // Timeout de segurança para garantir que o loading seja fechado
+                setTimeout(() => {
+                    try {
+                        if (typeof Swal !== 'undefined') {
+                            Swal.close();
+                        }
+                        const remainingLoading = document.getElementById('nativeLoading');
+                        if (remainingLoading) {
+                            remainingLoading.remove();
+                        }
+                    } catch (e) {
+                        console.warn('Timeout de limpeza de loading:', e);
+                    }
+                }, 500);
                 
                 // Mostrar modal com o PIX gerado
                 if (paymentService.showPixModal && transaction.pix_code) {
@@ -969,9 +993,18 @@
             } catch (error) {
                 console.error('❌ Erro ao gerar PIX:', error);
                 
-                // Fechar loading em caso de erro
-                if (typeof Swal !== 'undefined') {
-                    Swal.close();
+                // Fechar loading em caso de erro - Garantir que feche completamente
+                try {
+                    if (typeof Swal !== 'undefined') {
+                        Swal.close();
+                    }
+                    // Fechar loading nativo também se existir
+                    const nativeLoading = document.getElementById('nativeLoading');
+                    if (nativeLoading) {
+                        nativeLoading.remove();
+                    }
+                } catch (loadingError) {
+                    console.warn('Erro ao fechar loading no catch:', loadingError);
                 }
                 
                 alert(`Erro ao gerar PIX: ${error.message || 'Tente novamente em alguns instantes.'}`);
