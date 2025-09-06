@@ -181,10 +181,27 @@
             document.body.appendChild(loading);
         }
 
+        hideLoading() {
+            if (typeof swal !== 'undefined' && typeof swal.close === 'function') {
+                try {
+                    swal.close();
+                } catch (error) {
+                    console.warn('Erro ao fechar SweetAlert:', error);
+                }
+            }
+
+            const existingLoading = document.getElementById('nativeLoading');
+            if (existingLoading) {
+                existingLoading.remove();
+            }
+        }
+
         showPixModal(data) {
             // Usar o modal de pagamento personalizado
             console.log(`💳 PIX gerado via ${data.gateway?.toUpperCase() || this.currentGateway.toUpperCase()}:`, data);
-            
+
+            this.hideLoading();
+
             try {
                 if (window.showPaymentModal && typeof window.showPaymentModal === 'function') {
                     // Usar o modal personalizado
@@ -231,6 +248,7 @@
     // Manter compatibilidade com código existente criando um bridge
     window.syncPay = {
         showLoading: () => universalPayment.showLoading(),
+        hideLoading: () => universalPayment.hideLoading(),
         createPixTransaction: (amount, description, clientData) => universalPayment.createPixTransaction(amount, description, clientData),
         showPixModal: (data) => universalPayment.showPixModal(data)
     };
