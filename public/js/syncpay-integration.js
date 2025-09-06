@@ -796,11 +796,28 @@
             `;
             document.body.appendChild(loading);
         },
-        
+
+        hideLoading: function() {
+            if (typeof swal !== 'undefined' && typeof swal.close === 'function') {
+                try {
+                    swal.close();
+                } catch (error) {
+                    console.warn('Erro ao fechar SweetAlert:', error);
+                }
+            }
+
+            const existingLoading = document.getElementById('nativeLoading');
+            if (existingLoading) {
+                existingLoading.remove();
+            }
+        },
+
         showPixModal: function(data) {
             // Usar o modal de pagamento personalizado
             console.log('💳 PIX gerado:', data);
-            
+
+            this.hideLoading();
+
             try {
                 if (window.showPaymentModal && typeof window.showPaymentModal === 'function') {
                     // Usar o modal personalizado
