@@ -706,6 +706,11 @@ app.get('/privacy', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Alias para a página de checkout
+app.get('/checkout', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 app.get('/oferta-premiada', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'oferta-premiada', 'index.html'));
 });
@@ -732,11 +737,23 @@ app.get('/back1', (req, res) => {
     res.sendFile(path.join(__dirname, 'funil_completo', 'back1.html'));
 });
 
+app.get('/back1.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'funil_completo', 'back1.html'));
+});
+
 app.get('/back2', (req, res) => {
     res.sendFile(path.join(__dirname, 'funil_completo', 'back2.html'));
 });
 
+app.get('/back2.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'funil_completo', 'back2.html'));
+});
+
 app.get('/back3', (req, res) => {
+    res.sendFile(path.join(__dirname, 'funil_completo', 'back3.html'));
+});
+
+app.get('/back3.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'funil_completo', 'back3.html'));
 });
 
