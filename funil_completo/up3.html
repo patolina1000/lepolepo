@@ -4,41 +4,56 @@
 <!-- Mirrored from privasimaria.site/app/up3.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 21 Mar 2025 23:19:23 GMT -->
 <head>
 
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oferta Especial</title>
     <link rel="stylesheet" href="../../cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="../public/css/payment-modal.css">
     <style>
         :root {
             --color-primary-start: #F58370;
             --color-primary-end: #FFBF9A;
         }
         
+        * {
+            box-sizing: border-box;
+            font-weight: 600;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-align: center;
-            background-color: #f0f2f5;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ff914d, #ff5e62);
             color: #333;
             line-height: 1.6;
-        }
-        .header {
+            margin: 0;
             padding: 15px;
-            background: #F0F2F5;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            min-height: 100vh;
             display: flex;
+            align-items: center;
             justify-content: center;
-            position: relative;
-            z-index: 100;
+            overflow-x: hidden;
+            max-width: 100vw;
+            box-sizing: border-box;
         }
-        .logo img {
-            max-width: 150px;
-            transition: transform 0.3s ease;
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px 8px;
+            }
         }
-        .logo img:hover {
-            transform: scale(1.05);
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 8px 5px;
+            }
+        }
+        .main-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            overflow-x: hidden;
+            box-sizing: border-box;
         }
         .popup {
             position: fixed;
@@ -78,30 +93,101 @@
         .offer-container {
             background: #fff;
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
-            margin: 30px auto;
-            max-width: 700px;
-            transition: transform 0.3s ease; 
-           margin-right: 10px;
-           margin-left: 10px;  
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            margin: 0 auto;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+        
+        @media (max-width: 768px) {
+            .offer-container {
+                padding: 20px 15px;
+                margin: 8px auto;
+                max-width: calc(100vw - 16px);
+                width: calc(100vw - 16px);
+                border-radius: 15px;
+            }
+            .main-container {
+                max-width: calc(100vw - 16px);
+                padding: 0;
+                box-sizing: border-box;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .offer-container {
+                padding: 15px 12px;
+                margin: 5px auto;
+                max-width: calc(100vw - 10px);
+                width: calc(100vw - 10px);
+            }
+            .main-container {
+                max-width: calc(100vw - 10px);
+                padding: 0;
+                box-sizing: border-box;
+            }
+            .offer-title {
+                font-size: 24px !important;
+            }
+            .offer-subtitle {
+                font-size: 16px !important;
+                line-height: 1.4 !important;
+            }
         }
         .offer-container:hover {
             transform: translateY(-5px);
         }
-        .offer-image {
+        .media-container {
             position: relative;
             overflow: hidden;
-            border-radius: 10px;
+            border-radius: 12px;
             margin-bottom: 20px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            aspect-ratio: 16/9;
+            width: 100%;
         }
-        .offer-image img {
-            max-width: 100%;
+        
+        .media-container video,
+        .media-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
             transition: transform 0.5s ease;
         }
-        .offer-image:hover img {
-            transform: scale(1.03);
+        
+        .media-container:hover video,
+        .media-container:hover img {
+            transform: scale(1.02);
+        }
+        
+        @media (max-width: 768px) {
+            .media-container {
+                border-radius: 12px;
+                margin-bottom: 15px;
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+            }
+            
+            .media-container video,
+            .media-container img {
+                border-radius: 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .media-container {
+                border-radius: 10px;
+                margin-bottom: 12px;
+            }
+            
+            .media-container video,
+            .media-container img {
+                border-radius: 10px;
+            }
         }
         .discount-badge {
             position: absolute;
@@ -123,7 +209,7 @@
         .offer-title {
             color: #222;
             font-size: 28px;
-            font-weight: bold;
+            font-weight: 600;
             margin-bottom: 15px;
         }
         .offer-subtitle {
@@ -154,29 +240,242 @@
             font-weight: bold;
         }
         .btn-upsell {
-            background: linear-gradient(to right, var(--color-primary-start), var(--color-primary-end));
+            background: linear-gradient(135deg, #ff5e62, #ff914d);
             color: white;
-            padding: 15px 30px;
+            padding: 20px 40px;
             border-radius: 50px;
-            font-size: 20px;
-            font-weight: bold;
+            font-size: 22px;
+            font-weight: 600;
             display: inline-block;
             text-decoration: none;
-            margin-top: 20px;
-            box-shadow: 0 6px 12px rgba(245, 131, 112, 0.3);
+            margin: 20px auto;
+            box-shadow: 0 10px 30px rgba(255, 94, 98, 0.4);
             transition: all 0.3s ease;
             border: none;
-            margin-bottom: 40px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            max-width: 400px;
         }
         .btn-upsell:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(245, 131, 112, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 94, 98, 0.6);
             color: white;
             text-decoration: none;
+            background: linear-gradient(135deg, #ff4447, #ff7f3a);
         }
         .btn-upsell:active {
-            transform: translateY(1px);
+            transform: translateY(-2px);
         }
+        
+        .btn-decline {
+            color: #666;
+            text-decoration: underline;
+            font-size: 14px;
+            font-weight: 600;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 15px;
+        }
+        
+        .btn-decline:hover {
+            color: #999;
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .btn-upsell {
+                padding: 18px 30px;
+                font-size: 20px;
+                margin: 15px 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .btn-upsell {
+                padding: 15px 25px;
+                font-size: 18px;
+                margin: 10px 0;
+            }
+        }
+        
+        /* Estilos para o modal PIX fixo com scroll interno */
+        .swal2-container.swal2-center {
+            padding: 0 !important;
+            overflow: hidden !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        
+        .swal2-popup {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            margin: 0 !important;
+            height: calc(100vh - 80px) !important;
+            max-height: calc(100vh - 80px) !important;
+            overflow: hidden !important;
+            pointer-events: auto !important;
+            touch-action: pan-y !important;
+            user-select: none !important;
+            -webkit-user-drag: none !important;
+            -khtml-user-drag: none !important;
+            -moz-user-drag: none !important;
+            -o-user-drag: none !important;
+            user-drag: none !important;
+            overscroll-behavior: contain !important;
+            scroll-snap-type: y mandatory !important;
+        }
+        
+        /* Scroll apenas no conteúdo interno com limites */
+        .pix-content-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0,0,0,0.3) transparent;
+            max-height: 100% !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            overscroll-behavior: contain !important;
+            -webkit-overflow-scrolling: touch !important;
+            scroll-behavior: smooth !important;
+        }
+        
+        .pix-content-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .pix-content-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .pix-content-scroll::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.3);
+            border-radius: 3px;
+        }
+        
+        .pix-content-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.5);
+        }
+        
+        /* Scroll suave para o container */
+        .swal2-container {
+            scroll-behavior: smooth;
+        }
+        
+        /* Estilo da scrollbar personalizada */
+        .swal2-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .swal2-container::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        
+        .swal2-container::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.3);
+            border-radius: 3px;
+        }
+        
+        .swal2-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.5);
+        }
+        
+        /* Bloquear movimento horizontal do modal */
+        .swal2-container {
+            pointer-events: none !important;
+            touch-action: none !important;
+        }
+        
+        .swal2-popup {
+            pointer-events: auto !important;
+            touch-action: pan-y !important;
+        }
+        
+        /* Bloquear drag e seleção do modal e todo seu conteúdo */
+        .pix-modal, .pix-modal *, .pix-cover, .pix-cover *, .pix-content-scroll, .pix-content-scroll * {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+            -webkit-user-drag: none !important;
+            -khtml-user-drag: none !important;
+            -moz-user-drag: none !important;
+            -o-user-drag: none !important;
+            user-drag: none !important;
+            -webkit-touch-callout: none !important;
+            pointer-events: auto !important;
+            touch-action: pan-y !important;
+        }
+        
+        /* Bloquear especificamente imagens de serem arrastadas */
+        .pix-modal img, .pix-cover img, .pix-avatar img {
+            -webkit-user-drag: none !important;
+            -khtml-user-drag: none !important;
+            -moz-user-drag: none !important;
+            -o-user-drag: none !important;
+            user-drag: none !important;
+            pointer-events: none !important;
+            -webkit-touch-callout: none !important;
+        }
+        
+        /* Bloquear movimento de texto e divs */
+        .pix-modal div, .pix-modal span, .pix-modal p {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            user-select: none !important;
+            -webkit-user-drag: none !important;
+            user-drag: none !important;
+        }
+        
+        /* Permitir seleção apenas no texto da chave PIX */
+        .pix-modal input, .pix-modal div[style*="monospace"] {
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+        }
+        
+        /* Controlar limites de scroll rigorosamente */
+        .pix-modal {
+            position: relative !important;
+            contain: layout style paint !important;
+            isolation: isolate !important;
+        }
+        
+        .pix-content-scroll {
+            contain: layout style paint !important;
+            will-change: scroll-position !important;
+            transform: translateZ(0) !important;
+            backface-visibility: hidden !important;
+        }
+        
+        /* Bloquear qualquer overflow ou movimento além dos limites */
+        .swal2-popup, .pix-modal, .pix-content-scroll {
+            overscroll-behavior-x: none !important;
+            overscroll-behavior-y: contain !important;
+            -ms-overflow-style: auto !important;
+            scrollbar-gutter: stable !important;
+        }
+
+        @keyframes pulse-online {
+            0% {
+                border-color: #00ff88 !important;
+                box-shadow: 0 0 15px rgba(0, 255, 136, 0.7) !important;
+            }
+            50% {
+                border-color: #00cc66 !important;
+                box-shadow: 0 0 25px rgba(0, 255, 136, 1) !important;
+            }
+            100% {
+                border-color: #00ff88 !important;
+                box-shadow: 0 0 15px rgba(0, 255, 136, 0.7) !important;
+            }
+        }
+        
         .timer-container {
             margin: 20px 0;
             font-size: 16px;
@@ -363,187 +662,15 @@
             border-radius: 9px;
             padding: 15px;
         }
-        
-        /* CSS do Modal de Pagamento do /public */
-        .payment-modal {
-            display: none;
-            position: fixed;
-            z-index: 10000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .payment-modal-content {
-            background-color: #fff;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            animation: slideIn 0.3s ease;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        .payment-modal-header {
-            margin-bottom: 20px;
-        }
-        
-        .payment-modal-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-        
-        .payment-modal-subtitle {
-            color: #666;
-            font-size: 16px;
-        }
-        
-        .payment-amount {
-            font-size: 32px;
-            font-weight: bold;
-            color: var(--color-primary-start);
-            margin: 20px 0;
-        }
-        
-        .payment-qr-container {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        
-        .payment-qr-code {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto;
-            display: block;
-        }
-        
-        .payment-code-container {
-            margin: 20px 0;
-        }
-        
-        .payment-code-label {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .payment-code-input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            text-align: center;
-            background: #f8f9fa;
-        }
-        
-        .payment-copy-btn {
-            background: linear-gradient(to right, var(--color-primary-start), var(--color-primary-end));
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 10px 5px;
-            transition: all 0.3s ease;
-        }
-        
-        .payment-copy-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(245, 131, 112, 0.4);
-        }
-        
-        .payment-close-btn {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 10px 5px;
-            transition: all 0.3s ease;
-        }
-        
-        .payment-close-btn:hover {
-            background: #5a6268;
-            transform: translateY(-2px);
-        }
-        
-        .payment-instructions {
-            background: #e3f2fd;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            text-align: left;
-        }
-        
-        .payment-instructions h4 {
-            color: #1976d2;
-            margin-bottom: 10px;
-        }
-        
-        .payment-instructions ol {
-            margin: 0;
-            padding-left: 20px;
-        }
-        
-        .payment-instructions li {
-            margin-bottom: 5px;
-            color: #333;
-        }
     </style>
 
-<script>
-    // ALTERE O LINK PARA A PÁGINA QUE QUISER MOSTRAR QUANDO O USUÁRIO TENTAR SAIR
-    const link = 'back3.html';
-  
-    function setBackRedirect(url) {
-      let urlBackRedirect = url;
-      urlBackRedirect = urlBackRedirect =
-        urlBackRedirect.trim() +
-        (urlBackRedirect.indexOf('?') > 0 ? '&' : '?') +
-        document.location.search.replace('?', '').toString();
-  
-      history.pushState({}, '', location.href);
-      history.pushState({}, '', location.href);
-      history.pushState({}, '', location.href);
-  
-      window.addEventListener('popstate', () => {
-        console.log('onpopstate', urlBackRedirect);
-        setTimeout(() => {
-          location.href = urlBackRedirect;
-        }, 1);
-      });
-    }
-  
-    setBackRedirect(link);
-  </script>
+<!-- Script de redirecionamento automático removido para seguir as regras especificadas -->
+<!-- 🔥 FACEBOOK PIXEL - ROTA 2 (PRIVACY) -->
+<!-- Sistema unificado que lê o mesmo FB_PIXEL_ID dos bots -->
+<script src="../js/pixel-init.js"></script>
+
 </head>
 <body>
-    <div class="header">
-        <div class="logo">
-            <img src="logosem.png" alt="Logo">
-        </div>
-    </div>
-
     <div id="popup" class="popup">
         <div class="popup-content">
             <h2>Dentro de 1 hora ela ligará!</h2>
@@ -552,10 +679,12 @@
         </div>
     </div>
 
-    <div id="upsell-content" class="hidden">
-        <div class="offer-container">
-            <div class="offer-image">
-                <img id="upsell-image" src="./Untitled-image-5.jpg" alt="Oferta Especial">
+    <div class="main-container">
+        <div id="upsell-content" class="hidden">
+            <div class="offer-container">
+            <!-- Mídia única (vídeo ou imagem) -->
+            <div class="media-container" id="media-container">
+                <!-- Será preenchido via JavaScript -->
                 <div class="discount-badge">50% OFF</div>
             </div>
             
@@ -607,7 +736,12 @@
                 </div>
             </div>
             
-            <button id="buy-button" class="btn-upsell" type="button">QUERO FALAR COM ELA AGORA!</button>
+            <a id="buy-button" class="btn-upsell" href="#" onclick="gerarPixPlano('upsell3_whatsapp', 'WhatsApp Exclusivo', 47.90);">QUERO O WHATSAPP!</a>
+            
+            <!-- Botão para recusar e ir para back2 -->
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="back3.html" class="btn-decline">Não, obrigado. Talvez mais tarde.</a>
+            </div>
             
             <div class="guarantee-section">
                 <div class="guarantee-icon">
@@ -643,115 +777,78 @@
             </div>
         </div> -->
 
-        <div class="comments">
-            <h3 class="comments-title">
-                <span class="comments-icon"><i class="fas fa-comment-alt"></i></span>
-                O que nossos clientes dizem:
-            </h3>
-            
-            <div class="comment">
-                <div class="comment-avatar">
-                    <img src="coments/271545321_1117982212343686_2003270280594003741_n.jpg" alt="Ana Paula">
-                </div>
-                <div class="comment-content">
-                    <div class="comment-author">Lucas Mendes</div>
-                    <div class="comment-text">"Ter o WhatsApp mudou tudo, agora posso falar quando quiser"</div>
-                    <div class="comment-rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="comment">
-                <div class="comment-avatar">
-                    <img src="coments/michel.jpg" alt="Roberto Almeida">
-                </div>
-                <div class="comment-content">
-                    <div class="comment-author">Bento Sales</div>
-                    <div class="comment-text">"Tive que esconder meu celular,recebo conteúdos exclusivos todos os dias"</div>
-                    <div class="comment-rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-            </div>
-            
-                        <div class="comment">
-                            <div class="comment-avatar">
-                                <img src="coments/alexsandro.jpg" alt="Ana Paula">
-                </div>
-                <div class="comment-content">
-                    <div class="comment-author">Rodrigo Monteiro</div>
-                                <div class="comment-text">"A sensação de ter essa proximidade é indescritível, muito humilde, adorei falar com ela, ainda mandou um beijo para minha filha que é fã"</div>
-                                <div class="comment-rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                            </div>
-                        </div>
         </div>
-    </div>
-    
-    <button id="buy-button-bottom" class="btn-upsell" type="button">NÃO QUERO FALAR AGORA</button>
-</div>
 
-<!-- Modal PIX -->
-<div id="pixModal" class="pix-modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8);">
-    <div class="pix-modal-content" style="background-color: #fefefe; margin: 5% auto; padding: 30px; border-radius: 15px; max-width: 450px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-        <div class="pix-modal-header">
-            <h2 class="pix-modal-title" style="color: #333; margin-bottom: 10px;">💳 Pagamento via PIX</h2>
-            <p class="pix-modal-subtitle" style="color: #666; margin-bottom: 20px;">Escaneie o QR Code ou copie o código PIX</p>
-        </div>
-        
-        <div class="pix-amount" style="font-size: 24px; font-weight: bold; color: #27ae60; margin-bottom: 20px;">R$ 19,90</div>
-        
-        <div class="pix-qr-container" style="margin: 20px 0;">
-            <canvas id="pixQRCode" class="pix-qr-code" style="border: 1px solid #ddd; border-radius: 8px;"></canvas>
-        </div>
-        
-        <div class="pix-code-container" style="margin: 20px 0;">
-            <label class="pix-code-label" style="display: block; margin-bottom: 10px; font-weight: bold; color: #333;">Código PIX (Copie e cole no seu app):</label>
-            <input type="text" id="pixCode" class="pix-code-input" readonly style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 12px;">
-            <button id="copyPixCode" class="pix-copy-btn" style="background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">📋 Copiar Código</button>
-        </div>
-        
-        <div class="pix-instructions" style="text-align: left; margin: 20px 0;">
-            <h4 style="color: #333; margin-bottom: 10px;">📱 Como pagar:</h4>
-            <ol style="color: #666; padding-left: 20px;">
-                <li>Abra o app do seu banco</li>
-                <li>Escolha a opção PIX</li>
-                <li>Escaneie o QR Code ou cole o código PIX</li>
-                <li>Confirme o pagamento de R$ 19,90</li>
-            </ol>
-        </div>
-        
-        <div>
-            <button id="closePixModal" class="pix-close-btn" style="background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">❌ Fechar</button>
+        <!-- Botão duplicado removido para seguir as regras especificadas -->
+
+            </div>
         </div>
     </div>
 </div>
 
 <!-- Adicione o jQuery e o Slick Carousel JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-<!-- QRCode.js para gerar QR Codes -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="../../code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../../cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     function revealOffer() {
         document.getElementById('popup').classList.add('hidden');
         document.getElementById('upsell-content').classList.remove('hidden');
+        loadMediaContent();
         startCountdown();
+    }
+    
+    // Função para carregar mídia baseada no nome da página
+    function loadMediaContent() {
+        const currentPage = window.location.pathname.split('/').pop().replace('.html', '');
+        const mediaContainer = document.getElementById('media-container');
+        const basePath = './assets/';
+        
+        // Tentar carregar vídeo primeiro
+        const videoPath = basePath + currentPage + '.mp4';
+        const imagePath = basePath + currentPage + '.jpg';
+        
+        // Criar elemento de vídeo para testar se existe
+        const video = document.createElement('video');
+        video.src = videoPath;
+        video.autoplay = true;
+        video.loop = true;
+        video.muted = true;
+        video.playsInline = true;
+        video.controls = false;
+        video.style.width = '100%';
+        video.style.height = '100%';
+        video.style.objectFit = 'cover';
+        video.style.borderRadius = '12px';
+        
+        video.onerror = function() {
+            // Se vídeo não existir, carregar imagem
+            const img = document.createElement('img');
+            img.src = imagePath;
+            img.alt = 'Oferta Especial';
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '12px';
+            
+            img.onerror = function() {
+                // Se nem vídeo nem imagem existirem, usar imagem padrão
+                this.src = '../images/banner.jpg';
+            };
+            
+            // Remover vídeo e adicionar imagem
+            mediaContainer.removeChild(video);
+            mediaContainer.insertBefore(img, mediaContainer.firstChild);
+        };
+        
+        video.onloadeddata = function() {
+            // Vídeo carregou com sucesso
+            console.log('Vídeo carregado:', videoPath);
+        };
+        
+        // Adicionar vídeo ao container (antes do badge)
+        mediaContainer.insertBefore(video, mediaContainer.firstChild);
     }
 
     function startCountdown() {
@@ -802,13 +899,282 @@
 
 
     <script>
-        function revealOffer() {
-            document.getElementById('popup').classList.add('hidden');
-            document.getElementById('upsell-content').classList.remove('hidden');
-            startCountdown();
+        // Função para gerar PIX e mostrar pop-up
+        async function gerarPixPlano(planoId, planoNome, planoValor) {
+            try {
+                if (window.PixelTracker) {
+                    window.PixelTracker.trackInitiateCheckout(planoValor, planoNome);
+                }
+                // Mostrar loading
+                Swal.fire({
+                    title: 'Gerando PIX...',
+                    text: 'Aguarde um momento',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+
+                const response = await fetch('/api/gerar-pix-checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        plano_id: planoId,
+                        valor: planoValor
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.qr_code_base64 && data.pix_copia_cola) {
+                    // Fechar loading
+                    Swal.close();
+
+                    // Coletar dados visuais já disponíveis na página
+                    const coverSrc = '../images/banner.jpg';
+                    const avatarSrc = '../images/perfil.jpg';
+                    const nomePerfil = 'Criador(a)';
+                    const handlePerfil = '@perfil';
+
+                    // Modal moderna mantendo a mesma lógica de funcionamento
+                    Swal.fire({
+                        title: '',
+                        html: `
+                            <div class="pix-modal" style="text-align:left; font-family: inherit; color:#222; margin: -30px; border-radius: 16px; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
+                                <div class="pix-cover" style="position: relative; overflow:hidden; width:100%; border-top-left-radius:16px; border-top-right-radius:16px; margin: 0; padding: 0;">
+                                    <img src="${coverSrc}" alt="capa" style="width: 100%; height: 108px; object-fit: cover; display:block;">
+                                    <button type="button" class="pix-close" aria-label="Fechar" style="position:absolute; top:12px; right:12px; z-index:3; width:34px; height:34px; border:none; border-radius:50%; background:#ffffff; color:#6B7280; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,.12); cursor:pointer;">
+                                        ×
+                                    </button>
+                                    <div class="pix-avatar" style="position:absolute; left:16px; bottom:10px; z-index:2; width:55px; height:55px; border-radius:50%; overflow:hidden; border:3px solid #00ff88; box-shadow: 0 0 15px rgba(0, 255, 136, 0.7); animation: pulse-online 2s infinite;">
+                                        <img src="${avatarSrc}" alt="avatar" style="width:100%; height:100%; object-fit:cover; display:block;">
+                                    </div>
+                                    <div class="pix-identity" style="position:absolute; left:85px; bottom:22px; z-index:2; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.25);">
+                                        <div style="font-weight:700; font-size:18px; line-height:1.2;">${nomePerfil}</div>
+                                        <div style="font-size:12px; color:#e5e7eb;">${handlePerfil}</div>
+                                    </div>
+                                </div>
+
+                                <div class="pix-content-scroll" style="flex: 1; overflow-y: auto; overflow-x: hidden;">
+                                <div style="padding: 18px 50px 0 50px;">
+                                    <div style="font-weight:600; margin: 0 0 10px 0; font-size:16px; color:#222; text-align:left;">Benefícios Exclusivos</div>
+                                    <div style="display:flex; flex-direction:column; gap:8px; color:#374151; text-align:left;">
+                                        <div style="display:flex; gap:10px; align-items:flex-start; justify-content:flex-start;">
+                                            <span style="color:#ef4444; font-size:14px; line-height:1;">✔</span>
+                                            <span style="font-size:14px;">Acesso ao conteúdo</span>
+                                        </div>
+                                        <div style="display:flex; gap:10px; align-items:flex-start; justify-content:flex-start;">
+                                            <span style="color:#ef4444; font-size:14px; line-height:1;">✔</span>
+                                            <span style="font-size:14px;">Chat exclusivo com o criador</span>
+                                        </div>
+                                        <div style="display:flex; gap:10px; align-items:flex-start; justify-content:flex-start;">
+                                            <span style="color:#ef4444; font-size:14px; line-height:1;">✔</span>
+                                            <span style="font-size:14px;">Cancele a qualquer hora</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="padding: 18px 50px 0 50px;">
+                                    <div style="background:#F3F4F6; border-radius:16px; box-shadow: 0 6px 16px rgba(0,0,0,.06); padding:20px;">
+                                        <div style="font-weight:600; color:#222; margin-bottom:10px;">Plano: ${planoNome}</div>
+                                        <div style="color:#6B7280; font-size:13px;">Valor</div>
+                                        <div style="margin-top:6px; font-weight:700; font-size:20px; color:#111827;">R$ ${planoValor.toFixed(2)}</div>
+                                    </div>
+                                </div>
+
+                                <div style="padding: 18px 50px 0 50px;">
+                                    <div style="background:#F3F4F6; border-radius:16px; box-shadow: 0 6px 16px rgba(0,0,0,.06); padding:24px; display:flex; align-items:center; justify-content:center;">
+                                        <img src="${data.qr_code_base64}" alt="QR Code PIX" style="width: 256px; height: 256px; max-width: 100%; object-fit: contain;">
+                                    </div>
+                                </div>
+
+                                <div style="padding: 18px 50px 0 50px;">
+                                    <div style="font-weight:700; color:#6B7280; font-size:12px; letter-spacing:.24px;">CHAVE PIX</div>
+                                    <div style="position: relative; margin-top:10px;">
+                                        <div style="background:#fff; border:1px solid #e5e7eb; border-radius:14px; padding:12px 36px 12px 12px; font-family: monospace; font-size:12px; color:#111827; white-space: nowrap; overflow-x: auto; box-shadow: 0 2px 6px rgba(0,0,0,.04);">${data.pix_copia_cola}</div>
+                                        <div style="position:absolute; right:10px; top:50%; transform: translateY(-50%); color:#9CA3AF; font-size:16px; user-select:none;">›</div>
+                                    </div>
+                                </div>
+
+                                <div style="padding: 8px 50px 50px 50px;">
+                                    <button id="copiar-pix" onclick="copiarPixCola('${data.pix_copia_cola}')" style="width:100%; border:none; border-radius:16px; padding: 14px 16px; color:#fff; font-weight:800; letter-spacing:.2px; cursor:pointer; background: linear-gradient(90deg,#ff8a5c,#ffb199); box-shadow: 0 10px 18px rgba(255,138,92,.35); text-transform: uppercase;">
+                                        COPIAR CHAVE PIX
+                                    </button>
+                                </div>
+                                </div>
+                            </div>
+                        `,
+                        showCloseButton: false,
+                        showConfirmButton: false,
+                        width: window.innerWidth <= 768 ? '95vw' : '480px',
+                        backdrop: false,
+                        didOpen: () => {
+                            const popup = Swal.getPopup();
+                            if (popup) {
+                                popup.style.padding = '0';
+                                popup.style.borderRadius = '16px';
+                                popup.style.overflow = 'hidden';
+                                popup.style.width = window.innerWidth <= 768 ? '95vw' : '480px';
+                                popup.style.height = 'calc(100vh - 80px)';
+                                popup.style.maxHeight = 'calc(100vh - 80px)';
+                                popup.style.maxWidth = window.innerWidth <= 768 ? '95vw' : '480px';
+                                popup.style.minWidth = window.innerWidth <= 768 ? '95vw' : '480px';
+                                popup.style.boxShadow = '0 12px 32px rgba(0,0,0,.12)';
+                                popup.style.position = 'fixed';
+                                popup.style.top = '50%';
+                                popup.style.left = '50%';
+                                popup.style.transform = 'translate(-50%, -50%)';
+                                popup.style.margin = '0';
+                                popup.style.pointerEvents = 'auto';
+                                popup.style.touchAction = 'pan-y';
+                                popup.style.userSelect = 'none';
+                                popup.style.webkitUserDrag = 'none';
+                                popup.style.userDrag = 'none';
+                            }
+                            // Backdrop custom
+                            const existing = document.querySelector('.modal-backdrop');
+                            if (!existing) {
+                                const backdrop = document.createElement('div');
+                                backdrop.className = 'modal-backdrop';
+                                backdrop.style.position = 'fixed';
+                                backdrop.style.inset = '0';
+                                backdrop.style.background = 'rgba(0,0,0,.40)';
+                                backdrop.style.zIndex = '900';
+                                document.body.appendChild(backdrop);
+                                backdrop.addEventListener('click', () => Swal.close());
+                            }
+                            // Z-index do modal acima do backdrop
+                            const container = Swal.getContainer();
+                            if (container) {
+                                container.style.zIndex = '1000';
+                                container.style.padding = '0 20px 40px 20px';
+                                container.style.margin = '0';
+                                container.style.display = 'flex';
+                                container.style.alignItems = 'center';
+                                container.style.justifyContent = 'center';
+                                container.style.minHeight = '100vh';
+                                container.style.maxHeight = '100vh';
+                                container.style.overflow = 'hidden';
+                                container.style.position = 'fixed';
+                                container.style.top = '0';
+                                container.style.left = '0';
+                                container.style.right = '0';
+                                container.style.bottom = '0';
+                            }
+                            // Bloquear scroll do body
+                            document.body.style.overflow = 'hidden';
+                            // Ação do botão X custom
+                            const btnX = document.querySelector('.pix-close');
+                            if (btnX) btnX.addEventListener('click', () => Swal.close());
+                            
+                            // Bloquear drag de todos os elementos do modal
+                            const modal = document.querySelector('.pix-modal');
+                            if (modal) {
+                                // Bloquear eventos de drag
+                                modal.addEventListener('dragstart', (e) => e.preventDefault());
+                                modal.addEventListener('drag', (e) => e.preventDefault());
+                                modal.addEventListener('dragend', (e) => e.preventDefault());
+                                
+                                // Bloquear seleção de texto (exceto chave PIX)
+                                modal.addEventListener('selectstart', (e) => {
+                                    if (!e.target.style.fontFamily?.includes('monospace')) {
+                                        e.preventDefault();
+                                    }
+                                });
+                                
+                                // Bloquear movimento touch horizontal
+                                let startX = 0;
+                                let startY = 0;
+                                modal.addEventListener('touchstart', (e) => {
+                                    startX = e.touches[0].clientX;
+                                    startY = e.touches[0].clientY;
+                                });
+                                
+                                modal.addEventListener('touchmove', (e) => {
+                                    const currentX = e.touches[0].clientX;
+                                    const diffX = Math.abs(currentX - startX);
+                                    
+                                    // Se movimento horizontal for maior que 10px, bloquear
+                                    if (diffX > 10) {
+                                        e.preventDefault();
+                                    }
+                                });
+                                
+                                // Controlar scroll vertical para manter dentro dos limites
+                                const scrollArea = modal.querySelector('.pix-content-scroll');
+                                if (scrollArea) {
+                                    scrollArea.addEventListener('scroll', (e) => {
+                                        // Limitar scroll para não sair dos limites
+                                        const maxScroll = scrollArea.scrollHeight - scrollArea.clientHeight;
+                                        if (scrollArea.scrollTop < 0) {
+                                            scrollArea.scrollTop = 0;
+                                        } else if (scrollArea.scrollTop > maxScroll) {
+                                            scrollArea.scrollTop = maxScroll;
+                                        }
+                                    });
+                                    
+                                    // Bloquear overscroll (bounce effect)
+                                    scrollArea.addEventListener('touchmove', (e) => {
+                                        const scrollTop = scrollArea.scrollTop;
+                                        const maxScroll = scrollArea.scrollHeight - scrollArea.clientHeight;
+                                        
+                                        // Se está no topo e tentando rolar para cima, ou no final e tentando rolar para baixo
+                                        if ((scrollTop <= 0 && e.touches[0].clientY > startY) || 
+                                            (scrollTop >= maxScroll && e.touches[0].clientY < startY)) {
+                                            e.preventDefault();
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        willClose: () => {
+                            // Remover backdrop e restaurar scroll
+                            const backdrop = document.querySelector('.modal-backdrop');
+                            if (backdrop) backdrop.remove();
+                            document.body.style.overflow = '';
+                        }
+                    });
+
+                } else {
+                    throw new Error(data.error || 'Erro desconhecido ao gerar PIX');
+                }
+
+            } catch (error) {
+                console.error('Erro ao gerar PIX:', error);
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro',
+                    text: 'Erro ao gerar PIX. Tente novamente.',
+                    confirmButtonText: 'OK'
+                });
+            }
         }
+
+        // Função para copiar código PIX
+        window.copiarPixCola = function(codigo) {
+            navigator.clipboard.writeText(codigo).then(function() {
+                // Mostrar feedback de sucesso
+                const btn = document.getElementById('copiar-pix');
+                const textoOriginal = btn.innerHTML;
+                btn.innerHTML = '✅ Copiado!';
+                btn.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    btn.innerHTML = textoOriginal;
+                    btn.style.background = '';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Erro ao copiar:', err);
+                alert('Erro ao copiar. Selecione e copie manualmente.');
+            });
+        }
+
+        // Funções já definidas acima
         
-        function startCountdown() {
+        function startCountdownDuplicated() {
             let hours = 0;
             let minutes = 5;
             let seconds = 0;
@@ -842,309 +1208,10 @@
         // document.getElementById('buy-button').href = "#comprar";
         // document.getElementById('buy-button-bottom').href = "#comprar";
     </script>
-
-    <!-- SweetAlert para notificações -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     
-    <!-- Configuração SYNCPAY -->
-    <script>
-        window.SYNCPAY_CONFIG = {
-            client_id: "708ddc0b-357d-4548-b158-615684caa616",
-            client_secret: "c08d40e5-3049-48c9-85c0-fd3cc6ca502c",
-            plans: {
-                upsell3: {
-                    price: 19.90,
-                    description: 'Chamada Exclusiva - Upsell 3'
-                }
-            }
-        };
-    </script>
-    
-    <!-- Integração SyncPay -->
-    <script src="../public/js/syncpay-integration.js"></script>
-    
-    <!-- Integração Universal de Pagamentos -->
-    <script src="../public/js/universal-payment-integration.js"></script>
-    
-    <!-- Modal de Pagamento -->
-    <script src="../public/js/payment-modal.js"></script>
-    
-    <!-- Popup PIX Alternativo -->
-    <script src="../public/js/pix-popup-alternative.js"></script>
-    
-    <!-- Sistema de Pagamento para UP3 -->
-    <script>
-        class UpsellPaymentSystemUP3 {
-            constructor() {
-                this.init();
-            }
-
-            async init() {
-                await this.waitForLibraries();
-                this.setupEventListeners();
-            }
-
-            waitForLibraries() {
-                return new Promise((resolve) => {
-                    let attempts = 0;
-                    const maxAttempts = 50;
-                    
-                    const checkLibraries = () => {
-                        attempts++;
-                        
-                        const qrCodeReady = typeof QRCode !== 'undefined';
-                        const jqueryReady = typeof $ !== 'undefined';
-                        const universalPaymentReady = window.universalPayment && typeof window.universalPayment.createPixTransaction === 'function';
-                        const syncPayReady = window.syncPay && typeof window.syncPay.createPixTransaction === 'function';
-                        
-                        console.log(`🔍 UP3: Verificando bibliotecas (tentativa ${attempts}):`, {
-                            QRCode: qrCodeReady,
-                            jQuery: jqueryReady,
-                            universalPayment: universalPaymentReady,
-                            syncPay: syncPayReady
-                        });
-                        
-                        if (qrCodeReady && jqueryReady && (universalPaymentReady || syncPayReady)) {
-                            console.log('✅ UP3: Todas as bibliotecas carregadas');
-                            resolve();
-                        } else if (attempts >= maxAttempts) {
-                            console.warn('⚠️ UP3: Timeout aguardando bibliotecas - continuando mesmo assim');
-                            resolve();
-                        } else {
-                            setTimeout(checkLibraries, 100);
-                        }
-                    };
-                    checkLibraries();
-                });
-            }
-
-            setupEventListeners() {
-                // Configurar botão "QUERO FALAR COM ELA AGORA!" para gerar PIX real
-                const buyButton = document.getElementById('buy-button');
-                if (buyButton) {
-                    console.log('🔧 UP3: Configurando botão principal para PIX real');
-                    buyButton.addEventListener('click', async (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        console.log('💳 UP3: Botão PIX clicado - gerando pagamento real');
-                        await this.createPixPayment(19.90, 'Chamada Exclusiva - Upsell 3');
-                        return false;
-                    });
-                }
-                
-                // Configurar botão "NÃO QUERO FALAR AGORA" para redirecionar
-                const buyButtonBottom = document.getElementById('buy-button-bottom');
-                if (buyButtonBottom) {
-                    console.log('🔧 UP3: Configurando botão secundário para redirecionamento');
-                    buyButtonBottom.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        console.log('↩️ UP3: Redirecionando para back3');
-                        window.location.href = 'back3.html';
-                        return false;
-                    });
-                }
-
-                this.setupModalEvents();
-            }
-
-            setupModalEvents() {
-                const closeButton = document.getElementById('closePixModal');
-                if (closeButton) {
-                    closeButton.addEventListener('click', () => this.hidePixModal());
-                }
-                
-                const copyButton = document.getElementById('copyPixCode');
-                if (copyButton) {
-                    copyButton.addEventListener('click', () => this.copyPixCode());
-                }
-                
-                const modal = document.getElementById('pixModal');
-                if (modal) {
-                    modal.addEventListener('click', (e) => {
-                        if (e.target === modal) {
-                            this.hidePixModal();
-                        }
-                    });
-                }
-            }
-
-            async createPixPayment(amount, description) {
-                try {
-                    this.showLoading();
-                    
-                    // Verificar se há serviço de pagamento disponível
-                    const paymentService = window.universalPayment || window.syncPay;
-                    
-                    if (!paymentService) {
-                        console.error('❌ UP3: Nenhum serviço de pagamento disponível!');
-                        console.log('🔍 UP3: Verificando estado das bibliotecas:');
-                        console.log('  - window.universalPayment:', typeof window.universalPayment);
-                        console.log('  - window.syncPay:', typeof window.syncPay);
-                        throw new Error('Serviço de pagamento não disponível');
-                    }
-                    
-                    console.log('✅ UP3: Serviço de pagamento encontrado:', paymentService.constructor.name);
-                    const pixData = await paymentService.createPixTransaction(amount, description, {
-                        name: 'Cliente Upsell 3',
-                        cpf: '12345678901',
-                        email: 'cliente@exemplo.com',
-                        phone: '11999999999'
-                    });
-                    
-                    this.hideLoading();
-                    
-                    // Usar o sistema de modal de pagamento do /public
-                    if (window.showPaymentModal) {
-                        window.showPaymentModal({
-                            pix_qr_code: pixData.pix_code,
-                            pix_copy_paste: pixData.pix_code,
-                            amount: amount,
-                            identifier: pixData.id,
-                            status: 'pending',
-                            gateway: pixData.gateway || 'syncpay'
-                        });
-                    } else {
-                        // Fallback para modal próprio
-                        this.showPixModal(pixData);
-                    }
-                    
-                } catch (error) {
-                    console.error('❌ UP3: Erro ao criar PIX:', error);
-                    this.hideLoading();
-                    this.showError('Erro ao gerar PIX. Tente novamente.');
-                }
-            }
-
-            showLoading() {
-                if (typeof swal !== 'undefined') {
-                    swal({
-                        title: 'Gerando PIX...',
-                        text: 'Aguarde um momento',
-                        icon: 'info',
-                        buttons: false,
-                        closeOnClickOutside: false
-                    });
-                }
-            }
-
-            hideLoading() {
-                if (typeof swal !== 'undefined') {
-                    swal.close();
-                }
-            }
-
-            showError(message) {
-                if (typeof swal !== 'undefined') {
-                    swal({
-                        title: 'Erro',
-                        text: message,
-                        icon: 'error',
-                        button: 'OK'
-                    });
-                } else {
-                    alert(message);
-                }
-            }
-
-            showPixModal(data) {
-                const modal = document.getElementById('pixModal');
-                const pixCodeInput = document.getElementById('pixCode');
-                const amountElement = document.querySelector('.pix-amount');
-                
-                if (modal && pixCodeInput) {
-                    pixCodeInput.value = data.pix_code;
-                    if (amountElement) {
-                        amountElement.textContent = `R$ ${data.amount.toFixed(2).replace('.', ',')}`;
-                    }
-                    
-                    this.generateQRCode(data.pix_code);
-                    modal.style.display = 'block';
-                }
-            }
-
-            async generateQRCode(pixCode) {
-                try {
-                    const qrCanvas = document.getElementById('pixQRCode');
-                    if (!qrCanvas) return;
-
-                    if (typeof QRCode !== 'undefined') {
-                        await QRCode.toCanvas(qrCanvas, pixCode, {
-                            width: 200,
-                            height: 200,
-                            color: {
-                                dark: '#000000',
-                                light: '#FFFFFF'
-                            }
-                        });
-                        console.log('✅ UP3: QR Code gerado');
-                    }
-                } catch (error) {
-                    console.error('❌ UP3: Erro ao gerar QR Code:', error);
-                }
-            }
-
-            hidePixModal() {
-                const modal = document.getElementById('pixModal');
-                if (modal) {
-                    modal.style.display = 'none';
-                }
-            }
-
-            copyPixCode() {
-                const pixCodeInput = document.getElementById('pixCode');
-                if (pixCodeInput) {
-                    const pixCode = pixCodeInput.value;
-                    
-                    if (navigator.clipboard) {
-                        navigator.clipboard.writeText(pixCode).then(() => {
-                            this.showCopyFeedback();
-                        }).catch(() => {
-                            this.fallbackCopy(pixCode);
-                        });
-                    } else {
-                        this.fallbackCopy(pixCode);
-                    }
-                }
-            }
-
-            fallbackCopy(text) {
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                textArea.style.position = 'fixed';
-                textArea.style.left = '-999999px';
-                document.body.appendChild(textArea);
-                textArea.select();
-                
-                try {
-                    document.execCommand('copy');
-                    this.showCopyFeedback();
-                } catch (err) {
-                    alert('Código PIX: ' + text);
-                }
-                
-                document.body.removeChild(textArea);
-            }
-
-            showCopyFeedback() {
-                if (typeof swal !== 'undefined') {
-                    swal({
-                        title: 'Copiado!',
-                        text: 'Código PIX copiado para a área de transferência',
-                        icon: 'success',
-                        timer: 2000,
-                        buttons: false
-                    });
-                } else {
-                    alert('Código PIX copiado!');
-                }
-            }
-        }
-
-        // Inicializar sistema UP3
-        document.addEventListener('DOMContentLoaded', () => {
-            new UpsellPaymentSystemUP3();
-        });
-    </script>
+    <!-- 🎯 Kwai Tracking Scripts -->
+    <script src="../js/kwai-tracker.js"></script>
+    <script src="../js/tracking-integration.js"></script>
 </body>
 
 <!-- Mirrored from privasimaria.site/app/up3.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 21 Mar 2025 23:19:24 GMT -->
