@@ -665,6 +665,11 @@ app.get('/redirect-privacy', (req, res) => {
     res.sendFile(path.join(__dirname, 'redirect-privacy', 'index.html'));
 });
 
+// Rota para a página de back redirect
+app.get('/back-redirect', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'back-redirect.html'));
+});
+
 // Rota de teste para verificar se a imagem está sendo servida
 app.get('/test-image', (req, res) => {
     const imagePath = path.join(__dirname, 'redirect', 'images', 'foto.jpg');

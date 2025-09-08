@@ -61,6 +61,10 @@
       "dest": "/funil_completo/back3.html"
     },
     {
+      "src": "/back-redirect",
+      "dest": "/public/back-redirect.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/public/$1"
     }

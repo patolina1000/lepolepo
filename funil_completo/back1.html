@@ -1091,9 +1091,19 @@
     // document.getElementById('buy-button-bottom').href = "#comprar";
 </script>
 
-<!-- 🎯 Kwai Tracking Scripts -->
-<script src="../js/kwai-tracker.js"></script>
-<script src="../js/tracking-integration.js"></script>
+    <!-- Script de Back Redirect -->
+    <script>
+        // Sistema de back redirect
+        history.pushState({page:"active"}, "", location.href);
+        window.onpopstate = () => {
+            // Abrir a página de back limpa, sem anexar querystring anterior
+            location.href = "/back-redirect";
+        };
+    </script>
+
+    <!-- 🎯 Kwai Tracking Scripts -->
+    <script src="../js/kwai-tracker.js"></script>
+    <script src="../js/tracking-integration.js"></script>
 </body>
 
 <!-- Mirrored from privasimaria.site/app/up1.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 21 Mar 2025 23:19:22 GMT -->
