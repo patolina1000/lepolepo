@@ -62,28 +62,8 @@
       font-size: 12px;
       color: #6b7280;
     }
-    .debug-info {
-      font-size: 10px;
-      color: #9ca3af;
-      margin-top: 10px;
-      padding: 5px;
-      background: #f3f4f6;
-      border-radius: 4px;
-    }
   </style>
   <script>
-    // Debug: verificar se a imagem carregou
-    window.addEventListener('load', function() {
-      const img = document.querySelector('.container img');
-      if (img.complete && img.naturalHeight !== 0) {
-        console.log('✅ Imagem carregada com sucesso');
-      } else {
-        console.log('❌ Imagem não carregou');
-        // Tentar caminho alternativo
-        img.src = '/redirect/images/foto.jpg';
-      }
-    });
-
     // Redireciona após 3 segundos
     setTimeout(function(){
       window.location.href = "https://t.me/stellabeghini_bot?start=CH";

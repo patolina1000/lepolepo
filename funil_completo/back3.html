@@ -279,13 +279,13 @@
         .btn-decline {
             background: linear-gradient(135deg, #e0e0e0, #bdbdbd);
             color: #333;
-            padding: 20px 40px;
+            padding: 16px 32px;
             border-radius: 50px;
-            font-size: 22px;
+            font-size: 17px;
             font-weight: 600;
             display: inline-block;
             text-decoration: none;
-            margin: 20px auto;
+            margin: 10px auto;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             transition: all 0.3s ease;
             border: none;
@@ -293,7 +293,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             width: 100%;
-            max-width: 400px;
+            max-width: 320px;
         }
 
         .btn-decline:hover {
@@ -597,6 +597,43 @@
         .gallery-item:hover img {
             transform: scale(1.1);
         }
+        
+        /* Logo Privacy em cima do banner */
+        .privacy-logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px 0;
+        }
+        
+        .privacy-logo {
+            height: 40px;
+            width: auto;
+            max-width: 150px;
+        }
+        
+        @media (max-width: 768px) {
+            .privacy-logo-container {
+                margin-bottom: 15px;
+                padding: 12px 0;
+            }
+            
+            .privacy-logo {
+                height: 35px;
+                max-width: 130px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .privacy-logo-container {
+                margin-bottom: 10px;
+                padding: 10px 0;
+            }
+            
+            .privacy-logo {
+                height: 30px;
+                max-width: 110px;
+            }
+        }
         .comments {
             background: #fff;
             padding: 30px;
@@ -708,24 +745,22 @@
 
 </head>
 <body>
-    <div id="popup" class="popup">
-        <div class="popup-content">
-            <h2>🎁 Seu Presente Exclusivo Chegou!</h2>
-            <p>Parabéns, bb! Você é o sortudo nº100 e acabou de desbloquear o presente mais cabuloso dessa porra toda.</p>
-            <button class="btn-upsell" onclick="revealOffer()">Revelar Meu Presente</button>
-        </div>
-    </div>
 
     <div class="main-container">
-        <div id="upsell-content" class="hidden">
+        <div id="upsell-content">
             <div class="offer-container">
+            <!-- Logo Privacy em cima do banner -->
+            <div class="privacy-logo-container">
+                <img src="../public/images/logo-black.svg" alt="Privacy" class="privacy-logo">
+            </div>
+            
             <!-- Mídia única (vídeo ou imagem) -->
             <div class="media-container" id="media-container">
                 <!-- Será preenchido via JavaScript -->
                 <div class="urgent-badge">URGENTE!</div>
             </div>
             
-            <h1 class="offer-title">😡 ÚLTIMO AVISO!</h1>
+            <h1 class="offer-title">© 2025 Todos os direitos reservados a Stella Beghini.</h1>
             <h2 class="offer-subtitle">Cara, tu vai mesmo perder a chance de ver ela toda molhadinha falando teu nome? ESTA É A ÚLTIMA PROPOSTA!</h2>
             
             <div class="offer-text" id="offer-text">
@@ -779,11 +814,11 @@
                 </div>
             </div>
             
-            <a id="buy-button" class="btn-upsell" href="#" onclick="gerarPixPlano('back3_videos', 'Vídeos Personalizados - PREÇO FINAL', 4.90);">ACEITO! QUERO POR R$ 4,90!</a>
+            <a id="buy-button" class="btn-upsell" href="#" onclick="gerarPixPlano('back3_videos', 'Vídeos Personalizados - PREÇO FINAL', 4.90, '../compra-aprovada/index.html');">ACEITO! QUERO POR R$ 4,90!</a>
             
-            <!-- Botão para recusar e sair do funil -->
+            <!-- Botão para recusar e ir para compra aprovada -->
             <div style="text-align: center; margin-top: 20px;">
-                <a href="../index.html" class="btn-decline">Não, vou continuar sozinho e triste...</a>
+                <a href="../compra-aprovada/index.html" class="btn-decline">RECUSAR ESSA OFERTA</a>
             </div>
             
             <div class="guarantee-section">
@@ -791,8 +826,7 @@
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
                 <div class="guarantee-text">
-                    <strong style="color: #ff0000;">⚠️ ÚLTIMO AVISO</strong><br>
-                    <strong>Saia da página e nunca mais verá essa oferta!</strong>
+                    <strong style="color: #000000;">© 2025 Todos os direitos reservados a Stella Beghini.</strong>
                 </div>
             </div>
             </div>
@@ -807,12 +841,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    function revealOffer() {
-        document.getElementById('popup').classList.add('hidden');
-        document.getElementById('upsell-content').classList.remove('hidden');
-        loadMediaContent();
-        startCountdown();
-    }
 
     // Função para carregar mídia baseada no nome da página
     function loadMediaContent() {
@@ -958,7 +986,7 @@
     };
 
     // Função para gerar PIX usando a integração universal
-    async function gerarPixPlano(planoId, planoNome, planoValor) {
+    async function gerarPixPlano(planoId, planoNome, planoValor, redirectUrl = null) {
         try {
             console.log('🚀 Iniciando geração de PIX:', { planoId, planoNome, planoValor });
 
@@ -1035,19 +1063,35 @@
                     amount: planoValor,
                     identifier: transaction.id,
                     status: 'pending',
-                    gateway: transaction.gateway
+                    gateway: transaction.gateway,
+                    onSuccess: () => {
+                        if (redirectUrl) {
+                            window.location.href = redirectUrl;
+                        }
+                    }
                 });
             } else if (window.showPixPopup) {
                 window.showPixPopup({
                     pix_code: transaction.pix_code,
                     amount: planoValor,
                     id: transaction.id,
-                    gateway: transaction.gateway
+                    gateway: transaction.gateway,
+                    onSuccess: () => {
+                        if (redirectUrl) {
+                            window.location.href = redirectUrl;
+                        }
+                    }
                 });
             } else {
                 alert(`PIX gerado com sucesso! Código PIX foi copiado para a área de transferência.`);
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(transaction.pix_code);
+                }
+                // Redirecionar após 3 segundos se não houver modal
+                if (redirectUrl) {
+                    setTimeout(() => {
+                        window.location.href = redirectUrl;
+                    }, 3000);
                 }
             }
 
@@ -1074,6 +1118,10 @@
     // Aguardar carregamento das dependências
     document.addEventListener('DOMContentLoaded', function() {
         console.log('📄 BACK3.html carregado - Sistema de pagamento ativo');
+        
+        // Carregar conteúdo diretamente
+        loadMediaContent();
+        startCountdown();
 
         // Verificar dependências após um tempo
         setTimeout(() => {

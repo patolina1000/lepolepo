@@ -666,9 +666,6 @@ app.get('/redirect-privacy', (req, res) => {
 });
 
 // Rota para a página de back redirect
-app.get('/back-redirect', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'back-redirect.html'));
-});
 
 // Rota de teste para verificar se a imagem está sendo servida
 app.get('/test-image', (req, res) => {
@@ -827,9 +824,10 @@ app.use('*', (req, res) => {
             timestamp: new Date().toISOString()
         });
     }
-
-    // Para outras rotas, redirecionar para /links
-    res.redirect('/links');
+    
+    // Para outras rotas, redirecionar para /links (página principal)
+    console.log(`🔄 [404 Redirect] Redirecionando ${req.path} para /links`);
+    res.redirect(301, '/links');
 });
 
 // Middleware para tratamento de erros globais

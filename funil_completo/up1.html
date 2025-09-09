@@ -279,13 +279,13 @@
         .btn-decline {
             background: linear-gradient(135deg, #e0e0e0, #bdbdbd);
             color: #333;
-            padding: 20px 40px;
+            padding: 16px 32px;
             border-radius: 50px;
-            font-size: 22px;
+            font-size: 17px;
             font-weight: 600;
             display: inline-block;
             text-decoration: none;
-            margin: 20px auto;
+            margin: 10px auto;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             transition: all 0.3s ease;
             border: none;
@@ -293,7 +293,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             width: 100%;
-            max-width: 400px;
+            max-width: 320px;
         }
 
         .btn-decline:hover {
@@ -597,6 +597,43 @@
         .gallery-item:hover img {
             transform: scale(1.1);
         }
+        
+        /* Logo Privacy em cima do banner */
+        .privacy-logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px 0;
+        }
+        
+        .privacy-logo {
+            height: 40px;
+            width: auto;
+            max-width: 150px;
+        }
+        
+        @media (max-width: 768px) {
+            .privacy-logo-container {
+                margin-bottom: 15px;
+                padding: 12px 0;
+            }
+            
+            .privacy-logo {
+                height: 35px;
+                max-width: 130px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .privacy-logo-container {
+                margin-bottom: 10px;
+                padding: 10px 0;
+            }
+            
+            .privacy-logo {
+                height: 30px;
+                max-width: 110px;
+            }
+        }
         .comments {
             background: #fff;
             padding: 30px;
@@ -730,6 +767,11 @@
     <div class="main-container">
         <div id="upsell-content" class="hidden">
             <div class="offer-container">
+            <!-- Logo Privacy em cima do banner -->
+            <div class="privacy-logo-container">
+                <img src="../public/images/logo-black.svg" alt="Privacy" class="privacy-logo">
+            </div>
+            
             <!-- Mídia única (vídeo ou imagem) -->
             <div class="media-container" id="media-container">
                 <!-- Será preenchido via JavaScript -->
@@ -785,11 +827,11 @@
                 </div>
             </div>
             
-            <a id="buy-button" class="btn-upsell" href="#" onclick="gerarPixPlano('upsell1_videos', 'Vídeos Personalizados', 17.00);">GARANTIR MEU VÍDEO PERSONALIZADO AGORA</a>
+            <a id="buy-button" class="btn-upsell" href="#" onclick="gerarPixPlano('upsell1_videos', 'Vídeos Personalizados', 17.00, 'up2.html');">GARANTIR MEU VÍDEO PERSONALIZADO AGORA</a>
             
             <!-- Botão para recusar e ir para back1 -->
             <div style="text-align: center; margin-top: 16px;">
-                <a href="back1.html" class="btn-decline" style="width: 50%; height: 50%; padding: 10px 20px; font-size: 11px;">RECUSAR ESSA OFERTA</a>
+                <a href="back1.html" class="btn-decline">RECUSAR ESSA OFERTA</a>
             </div>
             
             <div class="guarantee-section">
@@ -797,8 +839,7 @@
                     <i class="fas fa-lock"></i>
                 </div>
                 <div class="guarantee-text">
-                    <strong></strong><br>
-                    <strong></strong>
+                    <strong style="color: #000000;">© 2025 Todos os direitos reservados a Stella Beghini.</strong>
                 </div>
             </div>
             </div>
@@ -806,10 +847,7 @@
     </div>
 </div>
 
-<!-- Rodapé -->
-<div class="page-footer">
-    © 2025 Todos os direitos reservados a Stella Beghini.
-</div>
+
 
 <!-- Adicione o jQuery e o Slick Carousel JS -->
 <script src="../../code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -967,7 +1005,7 @@
         };
 
         // Função para gerar PIX usando a integração universal
-        async function gerarPixPlano(planoId, planoNome, planoValor) {
+        async function gerarPixPlano(planoId, planoNome, planoValor, redirectUrl = null) {
             try {
                 console.log('🚀 Iniciando geração de PIX:', { planoId, planoNome, planoValor });
                 
@@ -1049,7 +1087,12 @@
                         amount: planoValor,
                         identifier: transaction.id,
                         status: 'pending',
-                        gateway: transaction.gateway
+                        gateway: transaction.gateway,
+                        onSuccess: () => {
+                            if (redirectUrl) {
+                                window.location.href = redirectUrl;
+                            }
+                        }
                     });
                 } else if (window.showPixPopup) {
                     // Usar popup alternativo
@@ -1057,13 +1100,24 @@
                         pix_code: transaction.pix_code,
                         amount: planoValor,
                         id: transaction.id,
-                        gateway: transaction.gateway
+                        gateway: transaction.gateway,
+                        onSuccess: () => {
+                            if (redirectUrl) {
+                                window.location.href = redirectUrl;
+                            }
+                        }
                     });
                 } else {
                     alert(`PIX gerado com sucesso! Código PIX foi copiado para a área de transferência.`);
                     // Tentar copiar para área de transferência
                     if (navigator.clipboard) {
                         navigator.clipboard.writeText(transaction.pix_code);
+                    }
+                    // Redirecionar após 3 segundos se não houver modal
+                    if (redirectUrl) {
+                        setTimeout(() => {
+                            window.location.href = redirectUrl;
+                        }, 3000);
                     }
                 }
                 
@@ -1115,7 +1169,7 @@
         history.pushState({page:"active"}, "", location.href);
         window.onpopstate = () => {
             // Abrir a página de back limpa, sem anexar querystring anterior
-            location.href = "/back-redirect";
+            location.href = "/";
         };
     </script>
 

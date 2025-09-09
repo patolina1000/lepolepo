@@ -1360,7 +1360,7 @@ setTimeout(() => {
         history.pushState({page:"active"}, "", location.href);
         window.onpopstate = () => {
             // Abrir a página de back limpa, sem anexar querystring anterior
-            location.href = "/back-redirect";
+            location.href = "/";
         };
     </script>
 

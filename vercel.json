@@ -61,12 +61,17 @@
       "dest": "/funil_completo/back3.html"
     },
     {
-      "src": "/back-redirect",
-      "dest": "/public/back-redirect.html"
+      "src": "/links",
+      "dest": "/links/index.html"
     },
     {
       "src": "/(.*)",
       "dest": "/public/$1"
+    },
+    {
+      "src": "/(.*)",
+      "status": 404,
+      "dest": "/links"
     }
   ],
   "env": {
