@@ -827,25 +827,9 @@ app.use('*', (req, res) => {
             timestamp: new Date().toISOString()
         });
     }
-    
-    // Para outras rotas, retornar página 404 HTML
-    res.status(404).send(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Página não encontrada</title>
-            <style>
-                body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-                .error { color: #e74c3c; font-size: 24px; }
-            </style>
-        </head>
-        <body>
-            <div class="error">404 - Página não encontrada</div>
-            <p>A página <strong>${req.path}</strong> não existe.</p>
-            <a href="/links">Voltar ao início</a>
-        </body>
-        </html>
-    `);
+
+    // Para outras rotas, redirecionar para /links
+    res.redirect('/links');
 });
 
 // Middleware para tratamento de erros globais
