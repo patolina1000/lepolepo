@@ -818,7 +818,7 @@
             
             <!-- Botão para recusar e ir para compra aprovada -->
             <div style="text-align: center; margin-top: 20px;">
-                <a href="../compra-aprovada/index.html" class="btn-decline">RECUSAR ESSA OFERTA</a>
+                <a href="obrigado.html" class="btn-decline">RECUSAR ESSA OFERTA</a>
             </div>
             
             <div class="guarantee-section">
@@ -903,7 +903,7 @@
         // Verifica se o tempo acabou
         if (hours === 0 && minutes === 0 && seconds === 0) {
             clearInterval(countdownInterval); // Para o contador
-            window.location.href = 'back2.html'; // Redireciona para próximo back
+            window.location.href = 'obrigado.html'; // Redireciona para obrigado
             return; // Sai da função
         }
 
@@ -1144,8 +1144,8 @@
         // Sistema de back redirect
         history.pushState({page:"active"}, "", location.href);
         window.onpopstate = () => {
-            // Abrir a página de back limpa, sem anexar querystring anterior
-            location.href = "/";
+            // Abrir a página de obrigado
+            location.href = "obrigado.html";
         };
     </script>
 

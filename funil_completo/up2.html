@@ -886,6 +886,7 @@
         // Verifica se o tempo acabou
         if (hours === 0 && minutes === 0 && seconds === 0) {
             clearInterval(countdownInterval); // Para o contador
+            window.location.href = 'back2.html'; // Redireciona para back2
             return; // Sai da função
         }
 

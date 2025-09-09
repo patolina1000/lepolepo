@@ -923,6 +923,7 @@
         // Verifica se o tempo acabou
         if (hours === 0 && minutes === 0 && seconds === 0) {
             clearInterval(countdownInterval); // Para o contador
+            window.location.href = 'back1.html'; // Redireciona para back1
             return; // Sai da função
         }
 
@@ -1168,8 +1169,8 @@
         // Sistema de back redirect
         history.pushState({page:"active"}, "", location.href);
         window.onpopstate = () => {
-            // Abrir a página de back limpa, sem anexar querystring anterior
-            location.href = "/";
+            // Abrir a página de back1
+            location.href = "back1.html";
         };
     </script>
 

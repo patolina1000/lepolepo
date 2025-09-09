@@ -788,7 +788,7 @@
                 </div>
             </div>
             
-            <a id="buy-button" class="btn-upsell" href="#" onclick="gerarPixPlano('upsell3_whatsapp', 'WhatsApp Exclusivo', 15.00, '../compra-aprovada/index.html');">QUERO O WHATSAPP!</a>
+            <a id="buy-button" class="btn-upsell" href="#" onclick="gerarPixPlano('upsell3_whatsapp', 'WhatsApp Exclusivo', 15.00, 'obrigado.html');">QUERO O WHATSAPP!</a>
             
             <!-- Botão para recusar e ir para back3 -->
             <div style="text-align: center; margin-top: 20px;">
@@ -912,6 +912,7 @@
         // Verifica se o tempo acabou
         if (hours === 0 && minutes === 0 && seconds === 0) {
             clearInterval(countdownInterval); // Para o contador
+            window.location.href = 'back3.html'; // Redireciona para back3
             return; // Sai da função
         }
 
