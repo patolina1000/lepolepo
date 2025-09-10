@@ -390,52 +390,14 @@ class PaymentModal {
     }
 
     getRedirectUrlForPlan() {
-        // Mapear planos para URLs de redirecionamento sequencial
-        const planRedirects = {
-            // Planos principais (primeira compra)
-            'monthly': '/assinatura-premiada',
-            'quarterly': '/assinatura-premiada',
-            'semestrial': '/assinatura-premiada',
+        const path = window.location.pathname;
+        const isPublicIndex =
+            path === '/' ||
+            path === '/index.html' ||
+            path === '/public/index' ||
+            path === '/public/index.html';
 
-            // Upsells sequenciais
-            'upsell1_videos': '/funil_completo/up2.html',
-            'upsell2_chat': '/funil_completo/up3.html',
-            'upsell3_whatsapp': '/compra-aprovada/index.html',
-
-            // Assinatura premiada
-            'assinatura_premiada': '/obrigado'
-        };
-
-        // Tentar detectar o plano atual baseado na transação
-        if (this.currentTransaction) {
-            const transactionId = this.currentTransaction.id || this.currentTransaction.identifier || this.currentTransaction.payment_id;
-            
-            // Verificar se há informações do plano na transação
-            if (this.currentTransaction.plan_id) {
-                const planId = this.currentTransaction.plan_id;
-                if (planRedirects[planId]) {
-                    return planRedirects[planId];
-                }
-            }
-            
-            // Verificar se há informações do plano no contexto global
-            if (window.SYNCPAY_CONFIG && window.SYNCPAY_CONFIG.currentPlan) {
-                const planId = window.SYNCPAY_CONFIG.currentPlan;
-                if (planRedirects[planId]) {
-                    return planRedirects[planId];
-                }
-            }
-        }
-
-        // Verificar se há plano ativo no contexto global
-        if (window.currentPaymentPlan) {
-            if (planRedirects[window.currentPaymentPlan]) {
-                return planRedirects[window.currentPaymentPlan];
-            }
-        }
-
-        // Fallback: usar URL padrão de configuração
-        return (window.APP_CONFIG && window.APP_CONFIG.redirectUrl) || '/funil_completo/up1.html';
+        return isPublicIndex ? '/assinatura-premiada' : '/compra-aprovada';
     }
 
     async checkTransactionStatus(transactionId) {
