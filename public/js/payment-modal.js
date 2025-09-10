@@ -397,7 +397,7 @@ class PaymentModal {
             path === '/public/index' ||
             path === '/public/index.html';
 
-        return isPublicIndex ? '/assinatura-premiada' : '/compra-aprovada';
+        return isPublicIndex ? '/funil_completo/assinatura-premiada.html' : '/compra-aprovada';
     }
 
     async checkTransactionStatus(transactionId) {
