@@ -422,7 +422,7 @@ class PaymentModal {
 
         console.log('🔍 É página pública?', isPublicIndex);
         
-        const redirectUrl = isPublicIndex ? '/funil_completo/assinatura-premiada.html' : '/compra-aprovada';
+        const redirectUrl = isPublicIndex ? '/assinatura-premiada' : '/assinatura-premiada';
         console.log('🔍 URL de redirecionamento:', redirectUrl);
         
         return redirectUrl;
