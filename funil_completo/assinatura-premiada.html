@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Assinatura Premiada</title>
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --accent:#ff7a00;        /* laranja brand */
+      --accent-2:#ff5e62;      /* coral de apoio */
+      --text:#1c1c1c;
+      --muted:#6b7280;
+      --border:#e5e7eb;        /* cinza sutil */
+      --border-card:#f7f7f8;   /* fundo dos cards */
+      --chip:#fff7ef;
+      --badge-grad: linear-gradient(135deg, var(--accent), var(--accent-2));
+      --shadow-1: 0 8px 18px rgba(17,17,17,.04);
+      --shadow-2: 0 14px 28px rgba(17,17,17,.06);
+
+      --online-green:#10b154;  /* verde do aro */
+      --online-ring:5px;       /* espessura do aro (ajuste aqui) */
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      background:#fff;
+      color:var(--text);
+      font-family:'Montserrat',sans-serif;
+      line-height:1.6;
+      overflow-x:hidden;
+    }
+    .container{max-width:1000px;margin:0 auto;padding:20px}
+    .img-fluid{max-width:100%;height:auto;display:block}
+
+    /* Logo Privacy (PNG) */
+    .brand-cap{
+      width:100%;
+      margin:0;
+      padding:0;
+      margin-top:30px;
+      text-align:center;
+    }
+    .brand-cap img{
+      height:40px;
+      width:auto;
+      display:block;
+      margin:0 auto;
+    }
+
+    /* Aviso importante (texto) */
+    .notice-wrap{
+      padding:10px 20px 0;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+    .notice-card{
+      background:var(--border-card);
+      border:1px solid var(--accent);
+      border-radius:14px;box-shadow:var(--shadow-1);
+      padding:20px;text-align:center;
+    }
+    .notice-card h2{color:#1c1c1c;font-size:22px;font-weight:900;margin-bottom:6px}
+    .notice-card p{color:var(--muted);font-size:14px}
+
+    /* Hero */
+    .hero{display:flex;flex-direction:column;align-items:center;padding:28px 20px;text-align:center}
+    .profile-img-wrapper{
+      position:relative;
+      display:inline-block;
+      margin-top:-60px; /* mover foto mais para cima */
+    }
+    /* ARO VERDE colado na foto (sem espaço branco) */
+    .profile-img{
+      width:200px;height:200px;border-radius:50%;
+      border:var(--online-ring) solid var(--online-green); /* aro grudado */
+      object-fit:cover;
+      box-shadow:0 0 10px rgba(16, 177, 84, 0.18);            /* glow leve */
+      margin-top: 0;
+    }
+    .caption{font-size:13px;color:var(--accent);font-weight:800;margin:14px 0 10px;text-transform:uppercase;letter-spacing:.8px}
+    .hero-title{font-size:30px;font-weight:900;margin-bottom:12px;color:var(--text);text-wrap:balance}
+    .hero-description{font-size:18px;color:var(--muted)}
+
+    /* Divider */
+    .divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:4px 0}
+
+    /* Surfaces (cards) com BORDA LARANJA */
+    .surface{
+      background:var(--border-card);
+      border:1px solid var(--accent);
+      border-radius:14px;
+      box-shadow:var(--shadow-1);
+    }
+
+    /* Benefícios */
+    .benefits-section{padding:10px 20px 10px;text-align:center}
+    .benefits-title{text-align:center;font-size:20px;margin-bottom:14px;color:var(--text);text-transform:uppercase;letter-spacing:.8px}
+    .benefits-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;max-width:900px;margin:0 auto}
+    .benefit-item{
+      padding:16px;border-left:4px solid var(--accent);
+      background:#ffffff;border-radius:10px;transition:.2s
+    }
+    .benefit-item:hover{transform:translateY(-2px);box-shadow:var(--shadow-2)}
+    .benefit-icon{color:var(--accent);font-size:20px;margin-bottom:8px}
+    .benefit-title{font-weight:900;margin-bottom:4px;font-size:16px;color:var(--text)}
+    .benefit-description{font-size:14px;color:var(--muted)}
+    .chip{display:inline-block;background:var(--chip);color:#a24a00;font-size:12px;font-weight:800;border:1px solid #ffe3cc;border-radius:999px;padding:6px 10px;margin:0 auto 14px;text-transform:uppercase;letter-spacing:.6px}
+
+    /* Preço */
+    .price-section{padding:24px 20px 18px 20px;text-align:center;margin:18px auto 8px;max-width:840px;position:relative}
+    .price-badge{
+      position:absolute;top:-14px;right:-14px;
+      background:var(--badge-grad);
+      color:#fff;padding:10px 16px;border-radius:999px;
+      font-weight:800;font-size:14px;
+      box-shadow:0 10px 24px rgba(255,94,98,.25);
+      transform:rotate(12deg); /* >>> giro pro outro lado */
+      animation:badge-bounce-tilt 1.6s ease-in-out infinite;
+      transform-origin:center;
+    }
+    @keyframes badge-bounce-tilt{
+      0%,100%{transform:rotate(12deg) translateY(0) scale(1)}
+      30%{transform:rotate(12deg) translateY(-6px) scale(1.04)}
+      60%{transform:rotate(12deg) translateY(0) scale(0.98)}
+    }
+    .price-section h3{color:var(--text);margin-bottom:6px}
+    .old-price{display:block;color:#9b9b9b;text-decoration:line-through;font-size:18px;margin-bottom:6px}
+    .new-price{display:block;font-size:40px;font-weight:900;margin-bottom:8px;background:var(--badge-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .price-installment{font-size:15px;color:var(--muted)}
+
+    /* Oferta + Timer */
+    .offer-timer{padding:18px 16px;text-align:center;margin:18px auto 8px;max-width:840px}
+    .offer-title-small{font-weight:900;font-size:18px;color:var(--text);margin-bottom:6px}
+    .timer{display:flex;justify-content:center;gap:12px;margin-top:6px}
+    .timer-item{display:flex;flex-direction:column;align-items:center;min-width:72px;border:2px solid rgba(255,122,0,.25);border-radius:10px;padding:8px 10px;background:#fff}
+    .timer-number{font-size:22px;font-weight:800;color:var(--accent)}
+    .timer-label{font-size:11px;text-transform:uppercase;color:var(--muted)}
+
+    /* CTAs (sem links) */
+    .cta-section{text-align:center;padding:8px 20px 32px}
+    .btn{display:inline-block;padding:16px 36px;border-radius:999px;text-decoration:none;font-weight:900;font-size:16px;text-transform:uppercase;margin:10px;border:none;cursor:pointer;transition:.22s}
+    .btn-primary{background:var(--badge-grad);color:#fff;box-shadow:0 12px 26px rgba(255,94,98,.28),0 4px 10px rgba(0,0,0,.06)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(255,94,98,.4),0 6px 12px rgba(0,0,0,.08)}
+    .btn-secondary{background:#fff;color:var(--muted);border:1px solid var(--border)}
+    .btn-secondary:hover{background:#fafafa;color:#444}
+
+    /* Footer */
+    .footer{text-align:center;padding:18px;color:var(--muted);font-size:13px;border-top:1px solid var(--border);background:#fff;margin-top:8px}
+
+    /* Fade-ins */
+    .fade-in{animation:fadeIn .8s ease-in}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+    @media (max-width:768px){
+      .hero-title{font-size:26px}
+      .new-price{font-size:34px}
+      .btn{display:block;margin:10px auto;max-width:320px}
+      .brand-card img{height:34px}
+    }
+
+    /* Estilos para o modal PIX fixo com scroll interno */
+    .swal2-container.swal2-center {
+        padding: 0 !important;
+        overflow: hidden !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    .swal2-popup {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        margin: 0 !important;
+        height: calc(100vh - 80px) !important;
+        max-height: calc(100vh - 80px) !important;
+        overflow: hidden !important;
+        pointer-events: auto !important;
+        touch-action: pan-y !important;
+        -webkit-user-select: none !important;
+        user-select: none !important;
+        -webkit-user-drag: none !important;
+        -khtml-user-drag: none !important;
+        -moz-user-drag: none !important;
+        -o-user-drag: none !important;
+        user-drag: none !important;
+        overscroll-behavior: contain !important;
+        scroll-snap-type: y mandatory !important;
+    }
+    
+    /* Scroll apenas no conteúdo interno com limites */
+    .pix-content-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(0,0,0,0.3) transparent;
+        max-height: 100% !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        overscroll-behavior: contain !important;
+        -webkit-overflow-scrolling: touch !important;
+        scroll-behavior: smooth !important;
+    }
+    
+    .pix-content-scroll::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .pix-content-scroll::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    .pix-content-scroll::-webkit-scrollbar-thumb {
+        background: rgba(0,0,0,0.3);
+        border-radius: 3px;
+    }
+    
+    .pix-content-scroll::-webkit-scrollbar-thumb:hover {
+        background: rgba(0,0,0,0.5);
+    }
+    
+    /* Scroll suave para o container */
+    .swal2-container {
+        scroll-behavior: smooth;
+    }
+    
+    /* Estilo da scrollbar personalizada */
+    .swal2-container::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .swal2-container::-webkit-scrollbar-track {
+        background: rgba(0,0,0,0.1);
+    }
+    
+    .swal2-container::-webkit-scrollbar-thumb {
+        background: rgba(0,0,0,0.3);
+        border-radius: 3px;
+    }
+    
+    .swal2-container::-webkit-scrollbar-thumb:hover {
+        background: rgba(0,0,0,0.5);
+    }
+    
+    /* Bloquear movimento horizontal do modal */
+    .swal2-container {
+        pointer-events: none !important;
+        touch-action: none !important;
+    }
+    
+    .swal2-popup {
+        pointer-events: auto !important;
+        touch-action: pan-y !important;
+    }
+    
+    /* Bloquear drag e seleção do modal e todo seu conteúdo */
+    .pix-modal, .pix-modal *, .pix-cover, .pix-cover *, .pix-content-scroll, .pix-content-scroll * {
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        -webkit-user-select: none !important;
+        user-select: none !important;
+        -webkit-user-drag: none !important;
+        -khtml-user-drag: none !important;
+        -moz-user-drag: none !important;
+        -o-user-drag: none !important;
+        user-drag: none !important;
+        -webkit-touch-callout: none !important;
+        pointer-events: auto !important;
+        touch-action: pan-y !important;
+    }
+    
+    /* Bloquear especificamente imagens de serem arrastadas */
+    .pix-modal img, .pix-cover img, .pix-avatar img {
+        -webkit-user-drag: none !important;
+        -khtml-user-drag: none !important;
+        -moz-user-drag: none !important;
+        -o-user-drag: none !important;
+        user-drag: none !important;
+        pointer-events: none !important;
+        -webkit-touch-callout: none !important;
+    }
+    
+    /* Bloquear movimento de texto e divs */
+    .pix-modal div, .pix-modal span, .pix-modal p {
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+        -webkit-user-drag: none !important;
+        -khtml-user-drag: none !important;
+        -moz-user-drag: none !important;
+        -o-user-drag: none !important;
+        user-drag: none !important;
+    }
+    
+    /* Permitir seleção apenas no texto da chave PIX */
+    .pix-modal input, .pix-modal div[style*="monospace"] {
+        -webkit-user-select: text !important;
+        -moz-user-select: text !important;
+        -ms-user-select: text !important;
+        user-select: text !important;
+    }
+    
+    /* Controlar limites de scroll rigorosamente */
+    .pix-modal {
+        position: relative !important;
+        contain: layout style paint !important;
+        isolation: isolate !important;
+    }
+    
+    .pix-content-scroll {
+        contain: layout style paint !important;
+        will-change: scroll-position !important;
+        transform: translateZ(0) !important;
+        backface-visibility: hidden !important;
+    }
+    
+    /* Bloquear qualquer overflow ou movimento além dos limites */
+    .swal2-popup, .pix-modal, .pix-content-scroll {
+        overscroll-behavior-x: none !important;
+        overscroll-behavior-y: contain !important;
+        -ms-overflow-style: auto !important;
+        scrollbar-gutter: stable !important;
+    }
+
+    @keyframes pulse-online {
+        0% {
+            border-color: #00ff88 !important;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.7) !important;
+        }
+        50% {
+            border-color: #00cc66 !important;
+            box-shadow: 0 0 25px rgba(0, 255, 136, 1) !important;
+        }
+        100% {
+            border-color: #00ff88 !important;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.7) !important;
+        }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo Privacy -->
+  <div class="brand-cap">
+    <img src="images/privacy-logo.png" alt="Privacy Logo">
+  </div>
+
+  <!-- Aviso importante -->
+  <div class="container notice-wrap">
+    <div class="notice-card surface">
+      <h2><span style="color:var(--accent)">Aviso importante:</span> não feche esta página!</h2>
+      <p>Essa é uma oportunidade única e secreta que não vai aparecer de novo.</p>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="container">
+    <div class="hero fade-in">
+      <div class="profile-img-wrapper">
+        <img src="images/perfil-stella.jpg" alt="Stella Beghini" class="profile-img"/>
+      </div>
+      <div class="hero-content">
+        <span class="caption">Mensagem exclusiva para você</span>
+        <h2 class="hero-title">Acabei de preparar algo proibido, feito sob medida e 100% personalizado só pra você</h2>
+        <p class="hero-description">
+          Vou gravar até <strong style="color:var(--accent)">10 minutos</strong> de putaria explícita,
+          falando e gemendo <strong style="color:var(--accent)">seu nome</strong>, abrindo meu corpo como você mandar,
+          sem frescura, sem censura, pedindo pra você me comer bem gostoso.
+        </p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- BENEFÍCIOS -->
+    <section class="benefits-section fade-in">
+      <div class="chip" style="text-align:center;">o que você vai receber agora</div>
+      <div class="benefits-list">
+        <div class="benefit-item surface">
+          <div class="benefit-icon">✔️</div>
+          <div class="benefit-title">Seu nome na minha pele</div>
+          <div class="benefit-description">Eu marco seu nome onde você mandar, pra ficar gravado quem manda em mim.</div>
+        </div>
+        <div class="benefit-item surface">
+          <div class="benefit-icon">✔️</div>
+          <div class="benefit-title">Comando e obediência</div>
+          <div class="benefit-description">Provoco com a bucetinha até ver sua pica gozar litros de porra sem parar.</div>
+        </div>
+        <div class="benefit-item surface">
+          <div class="benefit-icon">✔️</div>
+          <div class="benefit-title">Fantasias e fetiches liberados</div>
+          <div class="benefit-description">Eu entro no seu jogo e deixo o cuzinho empinado onde quiser.</div>
+        </div>
+        <div class="benefit-item surface">
+          <div class="benefit-icon">✔️</div>
+          <div class="benefit-title">Entrega sigilosa</div>
+          <div class="benefit-description">Entrega 100% privada, com sua assinatura inclusa.</div>
+        </div>
+        <div class="benefit-item surface">
+          <div class="benefit-icon">✔️</div>
+          <div class="benefit-title">Bônus exclusivo</div>
+          <div class="benefit-description">Meu WhatsApp pessoal para marcar encontros presenciais.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- PREÇO (selo inclinado pro lado certo) -->
+    <div class="price-section surface fade-in">
+      <div class="price-badge">88% OFF HOJE!</div>
+      <h3>Por tempo limitado, acesse tudo por apenas:</h3>
+      <span class="old-price">De R$ 147,00</span>
+      <span class="new-price">Por R$ 17,00</span>
+      <p class="price-installment">Esta oferta expira em:</p>
+      <div class="timer">
+        <div class="timer-item">
+          <span class="timer-number" id="minutes">05</span>
+          <span class="timer-label">min</span>
+        </div>
+        <div class="timer-item">
+          <span class="timer-number" id="seconds">00</span>
+          <span class="timer-label">seg</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTAs (href vazio p/ sua API de PIX) -->
+    <div class="cta-section fade-in">
+      <a href="#" class="btn btn-primary" onclick="gerarPixPlano('assinatura_premiada', 'Vídeo Personalizado - Assinatura Premiada', 17.00, 'obrigado.html');">GARANTIR MEU VÍDEO PERSONALIZADO</a>
+      <a href="obrigado.html" class="btn btn-secondary">Não, sou frouxo</a>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>© 2025 Todos os direitos reservados.</p>
+    </div>
+  </div>
+
+  <!-- CSS e JS necessários para integração de pagamento -->
+  <link rel="stylesheet" href="../public/css/pix-modal.css">
+  <link rel="stylesheet" href="../public/css/payment-modal.css">
+
+  <!-- jQuery -->
+  <script src="../public/js/jquery.min.js"></script>
+
+  <!-- SweetAlert -->
+  <script src="../public/js/sweetalert.min.js"></script>
+
+  <!-- QRCode.js -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+
+  <!-- Configuração SyncPay -->
+  <script src="../public/js/config.js"></script>
+
+  <!-- Integração SyncPay -->
+  <script src="../public/js/syncpay-integration.js"></script>
+
+  <!-- Integração Universal de Pagamentos -->
+  <script src="../public/js/universal-payment-integration.js"></script>
+
+  <!-- Modal de Pagamento -->
+  <script src="../public/js/payment-modal.js"></script>
+
+  <!-- Popup PIX Alternativo -->
+  <script src="../public/js/pix-popup-alternative.js"></script>
+
+  <script>
+    // Configuração SYNCPAY para o funil
+    window.SYNCPAY_CONFIG = {
+        client_id: "708ddc0b-357d-4548-b158-615684caa616",
+        client_secret: "c08d40e5-3049-48c9-85c0-fd3cc6ca502c",
+        plans: {
+            assinatura_premiada: {
+                price: 17.00,
+                description: 'Vídeo Personalizado - Assinatura Premiada'
+            }
+        }
+    };
+
+    // Função para gerar PIX usando a integração universal
+    async function gerarPixPlano(planoId, planoNome, planoValor, redirectUrl = null) {
+        try {
+            console.log('🚀 Iniciando geração de PIX:', { planoId, planoNome, planoValor });
+
+            // Verificar se a integração universal está disponível
+            if (!window.universalPayment && !window.syncPay) {
+                alert('Serviço de pagamento indisponível. Tente novamente em alguns instantes.');
+                return;
+            }
+
+            // Usar a integração universal que detecta o gateway automaticamente
+            const paymentService = window.universalPayment || window.syncPay;
+
+            // Mostrar loading
+            if (paymentService.showLoading) {
+                paymentService.showLoading();
+            } else if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    title: 'Gerando PIX...',
+                    text: 'Aguarde um momento',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+            }
+
+            // Dados do cliente padrão
+            const clientData = {
+                name: 'Cliente',
+                cpf: '12345678901',
+                email: 'cliente@exemplo.com',
+                phone: '11999999999'
+            };
+
+            // Criar transação PIX
+            const transaction = await paymentService.createPixTransaction(planoValor, planoNome, clientData);
+            console.log('✅ Transação PIX criada:', transaction);
+
+            // Fechar loading - Garantir que feche completamente
+            try {
+                if (typeof Swal !== 'undefined') {
+                    Swal.close();
+                }
+                const nativeLoading = document.getElementById('nativeLoading');
+                if (nativeLoading) {
+                    nativeLoading.remove();
+                }
+            } catch (loadingError) {
+                console.warn('Erro ao fechar loading:', loadingError);
+            }
+
+            // Timeout de segurança para garantir que o loading seja fechado
+            setTimeout(() => {
+                try {
+                    if (typeof Swal !== 'undefined') {
+                        Swal.close();
+                    }
+                    const remainingLoading = document.getElementById('nativeLoading');
+                    if (remainingLoading) {
+                        remainingLoading.remove();
+                    }
+                } catch (e) {
+                    console.warn('Timeout de limpeza de loading:', e);
+                }
+            }, 500);
+
+            // Mostrar modal com o PIX gerado
+            if (paymentService.showPixModal && transaction.pix_code) {
+                paymentService.showPixModal(transaction);
+            } else if (window.showPaymentModal) {
+                window.showPaymentModal({
+                    pix_qr_code: transaction.pix_code,
+                    pix_copy_paste: transaction.pix_code,
+                    amount: planoValor,
+                    identifier: transaction.id,
+                    status: 'pending',
+                    gateway: transaction.gateway,
+                    onSuccess: () => {
+                        if (redirectUrl) {
+                            window.location.href = redirectUrl;
+                        }
+                    }
+                });
+            } else if (window.showPixPopup) {
+                window.showPixPopup({
+                    pix_code: transaction.pix_code,
+                    amount: planoValor,
+                    id: transaction.id,
+                    gateway: transaction.gateway,
+                    onSuccess: () => {
+                        if (redirectUrl) {
+                            window.location.href = redirectUrl;
+                        }
+                    }
+                });
+            } else {
+                alert(`PIX gerado com sucesso! Código PIX foi copiado para a área de transferência.`);
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(transaction.pix_code);
+                }
+                // Redirecionar após 3 segundos se não houver modal
+                if (redirectUrl) {
+                    setTimeout(() => {
+                        window.location.href = redirectUrl;
+                    }, 3000);
+                }
+            }
+
+        } catch (error) {
+            console.error('❌ Erro ao gerar PIX:', error);
+
+            // Fechar loading em caso de erro - Garantir que feche completamente
+            try {
+                if (typeof Swal !== 'undefined') {
+                    Swal.close();
+                }
+                const nativeLoading = document.getElementById('nativeLoading');
+                if (nativeLoading) {
+                    nativeLoading.remove();
+                }
+            } catch (loadingError) {
+                console.warn('Erro ao fechar loading no catch:', loadingError);
+            }
+
+            alert(`Erro ao gerar PIX: ${error.message || 'Tente novamente em alguns instantes.'}`);
+        }
+    }
+
+    // Timer (05:00 -> 00:00)
+    function startTimer(totalSeconds){
+      let t = totalSeconds;
+      const minEl = document.getElementById('minutes');
+      const secEl = document.getElementById('seconds');
+      const iv = setInterval(()=>{
+        const m = String(Math.floor(t/60)).padStart(2,'0');
+        const s = String(t%60).padStart(2,'0');
+        minEl.textContent = m;
+        secEl.textContent = s;
+        if(t<=0){ clearInterval(iv); }
+        t--;
+      },1000);
+    }
+    window.addEventListener('load',()=> startTimer(5*60));
+
+    // Fade-in on scroll
+    document.addEventListener('DOMContentLoaded', function() {
+      const fadeElements = document.querySelectorAll('.fade-in');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, { threshold: 0.1 });
+
+      fadeElements.forEach(el=>{
+        el.style.opacity=0;
+        el.style.transform='translateY(12px)';
+        el.style.transition='opacity .8s ease, transform .8s ease';
+        observer.observe(el);
+      });
+
+      // Verificar dependências após um tempo
+      setTimeout(() => {
+          console.log('🔍 Verificando dependências...');
+          console.log('✅ universalPayment:', typeof window.universalPayment !== 'undefined' ? 'OK' : '❌ FALTANDO');
+          console.log('✅ syncPay:', typeof window.syncPay !== 'undefined' ? 'OK' : '❌ FALTANDO');
+          console.log('✅ showPaymentModal:', typeof window.showPaymentModal !== 'undefined' ? 'OK' : '❌ FALTANDO');
+          console.log('✅ showPixPopup:', typeof window.showPixPopup !== 'undefined' ? 'OK' : '❌ FALTANDO');
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
