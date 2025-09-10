@@ -717,6 +717,11 @@ app.get('/oferta-premiada', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'oferta-premiada', 'index.html'));
 });
 
+// Rota para assinatura premiada
+app.get('/assinatura-premiada', (req, res) => {
+    res.sendFile(path.join(__dirname, 'funil_completo', 'assinatura-premiada.html'));
+});
+
 // ============================
 // ROTAS DO FUNIL COMPLETO
 // ============================
@@ -869,6 +874,7 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`📱 Página Principal: http://localhost:${PORT}/links`);
     console.log(`💳 Checkout Privacy: http://localhost:${PORT}/privacy`);
     console.log(`🎁 Oferta Premiada: http://localhost:${PORT}/oferta-premiada`);
+    console.log(`🏆 Assinatura Premiada: http://localhost:${PORT}/assinatura-premiada`);
     console.log(`🔄 Redirecionamento: http://localhost:${PORT}/redirect`);
     console.log(`\n🎯 FUNIL COMPLETO:`);
     console.log(`   📈 Upsells: http://localhost:${PORT}/up1 | /up2 | /up3`);
