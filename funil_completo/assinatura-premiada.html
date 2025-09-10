@@ -433,8 +433,8 @@
 
     <!-- CTAs (href vazio p/ sua API de PIX) -->
     <div class="cta-section fade-in">
-      <a href="#" class="btn btn-primary" onclick="gerarPixPlano('assinatura_premiada', 'Vídeo Personalizado - Assinatura Premiada', 17.00, 'obrigado.html');">GARANTIR MEU VÍDEO PERSONALIZADO</a>
-      <a href="obrigado.html" class="btn btn-secondary">Não, sou frouxo</a>
+      <a href="#" class="btn btn-primary" onclick="gerarPixPlano('assinatura_premiada', 'Vídeo Personalizado - Assinatura Premiada', 17.00, '/obrigado');">GARANTIR MEU VÍDEO PERSONALIZADO</a>
+      <a href="/obrigado" class="btn btn-secondary">Não, sou frouxo</a>
     </div>
 
     <!-- Footer -->
@@ -497,6 +497,9 @@
 
             // Usar a integração universal que detecta o gateway automaticamente
             const paymentService = window.universalPayment || window.syncPay;
+
+            // Definir plano atual para redirecionamento
+            window.currentPaymentPlan = planoId;
 
             // Mostrar loading
             if (paymentService.showLoading) {

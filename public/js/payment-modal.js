@@ -393,14 +393,17 @@ class PaymentModal {
         // Mapear planos para URLs de redirecionamento sequencial
         const planRedirects = {
             // Planos principais (primeira compra)
-            'monthly': '/funil_completo/up1.html',
-            'quarterly': '/funil_completo/up1.html', 
-            'semestrial': '/funil_completo/up1.html',
-            
+            'monthly': '/assinatura-premiada',
+            'quarterly': '/assinatura-premiada',
+            'semestrial': '/assinatura-premiada',
+
             // Upsells sequenciais
             'upsell1_videos': '/funil_completo/up2.html',
             'upsell2_chat': '/funil_completo/up3.html',
-            'upsell3_whatsapp': '/compra-aprovada/index.html'
+            'upsell3_whatsapp': '/compra-aprovada/index.html',
+
+            // Assinatura premiada
+            'assinatura_premiada': '/obrigado'
         };
 
         // Tentar detectar o plano atual baseado na transação

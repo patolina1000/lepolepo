@@ -722,6 +722,11 @@ app.get('/assinatura-premiada', (req, res) => {
     res.sendFile(path.join(__dirname, 'funil_completo', 'assinatura-premiada.html'));
 });
 
+// Página de agradecimento
+app.get('/obrigado', (req, res) => {
+    res.sendFile(path.join(__dirname, 'funil_completo', 'obrigado.html'));
+});
+
 // ============================
 // ROTAS DO FUNIL COMPLETO
 // ============================
